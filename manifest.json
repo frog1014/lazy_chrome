@@ -45,6 +45,12 @@
     "independent": {
       "description": "__MSG_independent__"
     },
+    "toggle-mute": {
+      "description": "__MSG_toggleMute__"
+    },
+    "toShutUp": {
+      "description": "__MSG_toShutUp__"
+    },
     "newQueryWithPasted": {
       "suggested_key": {
         "default": "Ctrl+Shift+Q"

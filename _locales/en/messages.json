@@ -31,6 +31,14 @@
         "message": "Move this tab to a new window",
         "description": ""
     },
+    "toggleMute": {
+        "message": "Toggle current tab muted",
+        "description": ""
+    },
+    "toShutUp": {
+        "message": "Make other tab be muted",
+        "description": ""
+    },
     "newQueryWithPasted": {
         "message": "Seach in a new tab with pasted content",
         "description": ""

@@ -31,6 +31,14 @@
     "message": "將分頁獨立於新視窗",
     "description": ""
   },
+  "toggleMute": {
+    "message": "分頁靜音",
+    "description": ""
+  },
+  "toShutUp": {
+    "message": "其他分頁靜音",
+    "description": ""
+  },
   "newQueryWithPasted": {
     "message": "貼上並搜尋",
     "description": ""
