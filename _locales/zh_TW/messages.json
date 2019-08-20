@@ -1,0 +1,38 @@
+{
+  "appName": {
+    "message": "My App",
+    "description": "The title of the application, displayed in the web store."
+  },
+  "appDesc": {
+    "message": "讓你效率加倍、滑鼠再見",
+    "description": ""
+  },
+  "togglePin": {
+    "message": "釘選(固定)分頁",
+    "description": ""
+  },
+  "duplicate": {
+    "message": "複製分頁",
+    "description": ""
+  },
+  "newTabWithUrl": {
+    "message": "貼上並開啟至新分頁",
+    "description": ""
+  },
+  "openNotepad": {
+    "message": "開啟記事本",
+    "description": ""
+  },
+  "newQueryWithSelected": {
+    "message": "搜尋選取的文字",
+    "description": ""
+  },
+  "independent": {
+    "message": "將分頁獨立於新視窗",
+    "description": ""
+  },
+  "newQueryWithPasted": {
+    "message": "貼上並搜尋",
+    "description": ""
+  }
+}

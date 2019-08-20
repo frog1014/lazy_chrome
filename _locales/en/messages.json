@@ -1,0 +1,38 @@
+{
+    "appName": {
+        "message": "My App",
+        "description": "The title of the application, displayed in the web store."
+    },
+    "appDesc": {
+        "message": "Kill the mouse! Make your some common actions faster when surfing",
+        "description": ""
+    },
+    "togglePin": {
+        "message": "Toggle pin the active tab",
+        "description": ""
+    },
+    "duplicate": {
+        "message": "Duplicate active tab to a new",
+        "description": ""
+    },
+    "newTabWithUrl": {
+        "message": "Open a new tab with pasted url",
+        "description": ""
+    },
+    "openNotepad": {
+        "message": "Open notepad",
+        "description": ""
+    },
+    "newQueryWithSelected": {
+        "message": "Seach with selected text",
+        "description": ""
+    },
+    "independent": {
+        "message": "Move this tab to a new window",
+        "description": ""
+    },
+    "newQueryWithPasted": {
+        "message": "Seach in a new tab with pasted content",
+        "description": ""
+    }
+}
