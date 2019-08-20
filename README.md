@@ -1,8 +1,11 @@
 ### Lazy Chrome
 
 A extension for super speed up your sufing experience
+Lazy Chrome is a mouse terminator
 
-[Lazy Chrome - Chrome 線上應用程式商店](https://chrome.google.com/webstore/detail/lazy-chrome/boijmdgjfcoancndoiclnglhjakeopch "Lazy Chrome - Chrome 線上應用程式商店")
+Super speed up your common operations with your custom shortcut keys
+duplicate, pin or paste URL and open in a new tab!
+****************
 
 效率加倍
 滑鼠再見
@@ -11,7 +14,10 @@ A extension for super speed up your sufing experience
 終極消滅滑鼠
 左手回歸鍵盤 
 右手食指放鬆
+*********
+[Lazy Chrome - Chrome 線上應用程式商店](https://chrome.google.com/webstore/detail/lazy-chrome/boijmdgjfcoancndoiclnglhjakeopch "Lazy Chrome - Chrome 線上應用程式商店")
 
+## 功能 Features
 點選APP的圖示自訂常用的快速鍵
 目前支援動作請見下列
 
@@ -24,3 +30,16 @@ A extension for super speed up your sufing experience
 - 將分頁獨立至新視窗
 - 分頁靜音
 - 將其他分頁靜音
+***************************
+click the app icon to config your short cuts
+the default actions:
+
+- pin: alt + 1
+- duplicate: alt + 3
+- paste and open: ctrl + shift + v
+- paste and search by Google: ctrl + shift + v
+- search with selected text
+- make a tab be independent
+- open notepad in Chrome
+- mute current tab
+- mute the other tabs
