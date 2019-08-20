@@ -43,6 +43,12 @@ function getPasted() {
   return helperdiv.value;
 }
 
+function getCurrentTab(callback) {
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, callback)
+}
 chrome.commands.onCommand.addListener(function (command) {
   console.log(command)
   switch (command) {
@@ -56,6 +62,38 @@ chrome.commands.onCommand.addListener(function (command) {
         chrome.tabs.update(current.id, {
           'pinned': !current.pinned
         });
+      });
+      break
+    }
+
+    case "toggle-mute": {
+      chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, function (tabs) {
+        // Toggle the muted status
+        var current = tabs[0]
+        console.log(current)
+        chrome.tabs.update(current.id, {
+          'muted': !current.mutedInfo.muted
+        });
+      });
+      break
+    }
+
+    case "toShutUp": {
+      chrome.tabs.query({
+        currentWindow: true,
+        audible: true
+      }, function (tabs) {
+        console.log(tabs)
+        getCurrentTab(current => {
+          tabs.forEach(element => {
+            chrome.tabs.update(element.id, {
+              'muted': element.id == current[0].id ? current[0].mutedInfo.muted : true
+            });
+          })
+        })
       });
       break
     }
