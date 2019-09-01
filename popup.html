@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lazy Chrome</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+        integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css">
+    <!--<![endif]-->
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+    <!--[if lte IE 8]>
+            <link rel="stylesheet" href="/combo/1.18.13?/css/layouts/marketing-old-ie.css">
+        <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="/css/popup.css">
+    <!--<![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="l-box-lrg">
+        <h1 class="splash-head">Lazy Chrome</h1>
+        <p class="splash-subhead" id="popup_splash_1">
+            Just leave this tab open and your browser won't be closed automatically
+        </p>
+        <p class="splash-subhead" id="features">
+            NOTE: Due to a change in the API of Chrome, you will need to click
+            anywhere on this page once to make this script work
+        </p>
+        <p>
+            <a href="#" id="go_shortcut_setting" class="pure-button pure-button-primary">設定快速鍵(請捲動至Lazy Chrome區塊)</a>
+        </p>
+        <p class="splash-subhead ">
+            <label for="check-prevent-close-tab" class="tool" data-tip="a" id="popup_splash_prevent_close_tab"
+                class="pure-checkbox"></label>
+            <input id="check-prevent-close-tab" type="checkbox">
+
+        </p>
+    </div>
+</body>
+<script src="common.js"></script>
+<script src="popup.js"></script>
+
+</html>

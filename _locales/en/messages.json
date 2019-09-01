@@ -1,6 +1,6 @@
 {
     "appName": {
-        "message": "My App",
+        "message": "Lazy Chrome",
         "description": "The title of the application, displayed in the web store."
     },
     "appDesc": {
@@ -39,8 +39,57 @@
         "message": "Make other tab be muted",
         "description": ""
     },
+    "prevent_clost_tab_splash": {
+        "message": "Prevent browser close tab",
+        "description": ""
+    },
+    "prevent_clost_tab_splash1": {
+        "message": "Just leave this tab open and your browser won't be closed automatically",
+        "description": ""
+    },
+    "prevent_clost_tab_splash2": {
+        "message": "NOTE: Due to a change in the API of Chrome, you will need to click anywhere on this page once or press any alphabet key to make this script work",
+        "description": ""
+    },
+    "prevent_clost_tab_splash3": {
+        "message": "CLICK ANYWHERE or press any alphabet key$brtag$BACK TO LAST TAB (LAST TAB OR NEW TAB OR YOU MOVED HERE)",
+        "description": "",
+        "placeholders": {
+            "brtag": {
+                "content": "$1",
+                "example": "<br/>"
+            }
+        }
+    },
+    "prevent_clost_tab_splash4": {
+        "message": "How to disable/enable: You will find the option by clicking the extension icon",
+        "description": ""
+    },
     "newQueryWithPasted": {
         "message": "Seach in a new tab with pasted content",
         "description": ""
+    },
+    "features": {
+        "message": "The default actions:$br$pin: alt + 1$br$duplicate: alt + 3$br$paste and open: ctrl + shift + v$br$paste and search by Google: ctrl + shift + v$br$search with selected text$br$make a tab be independent$br$open notepad in Chrome$br$mute current tab$br$mute the other tabs$br$",
+        "description": "",
+        "placeholders": {
+            "br": {
+                "content": "$1",
+                "example": "<br/>"
+            }
+        }
+    },
+    "popup_splash_prevent_close_tab": {
+        "message": "Enabale the prevent close tab (help?)",
+        "description": ""
+    },
+    "popup_splash_prevent_close_tab_toolip": {
+        "message": "A prevent close tab will be created when a Chrome window created",
+        "description": ""
+    },
+    "go_shortcut_setting": {
+        "message": "Set short cut(Please scroll to Lazy Chrome section)",
+        "description": ""
     }
+
 }

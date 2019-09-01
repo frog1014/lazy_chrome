@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "My App",
+    "message": "Lazy Chrome",
     "description": "The title of the application, displayed in the web store."
   },
   "appDesc": {
@@ -42,5 +42,47 @@
   "newQueryWithPasted": {
     "message": "貼上並搜尋",
     "description": ""
+  },
+  "prevent_clost_tab_splash": {
+    "message": "防關閉分頁",
+    "description": ""
+  },
+  "prevent_clost_tab_splash1": {
+    "message": "只要保留此分頁，您的瀏覽器就會在關閉前提醒您",
+    "description": ""
+  },
+  "prevent_clost_tab_splash2": {
+    "message": "注意: 由於Google API的限制，您必須先在此網頁任意處點擊或按下鍵盤任意字母以啟用防關閉功能",
+    "description": ""
+  },
+  "prevent_clost_tab_splash3": {
+    "message": "按下任意字母或點擊任意處<br/>回到上一個分頁或開啟新分頁",
+    "description": ""
+  },
+  "prevent_clost_tab_splash4": {
+    "message": "如何關閉/啟用此功能: 您將可以藉由點擊此應用程式的圖示找到設定的選項",
+    "description": ""
+  },
+  "go_shortcut_setting": {
+    "message": "設定快速鍵(請捲動至Lazy Chrome區塊)",
+    "description": ""
+  },
+  "popup_splash_prevent_close_tab": {
+    "message": "啟用防關閉視窗 (說明)",
+    "description": ""
+  },
+  "popup_splash_prevent_close_tab_toolip": {
+    "message": "在每次開啟新視窗時自動開啟防關閉視窗",
+    "description": ""
+  },
+  "features": {
+    "message": "支援動作(預設快速鍵):$br$$br$釘選分頁: Alt + 1$br$複製分頁: Alt + 3$br$貼上網址並開啟於新分頁: Ctrl + Shift + V$br$開啟記事本:$br$貼上文字並搜尋: Ctrl + Shift + Q$br$選取文字並搜尋$br$將分頁獨立至新視窗$br$分頁靜音$br$將其他分頁靜音$br$",
+    "description": "",
+    "placeholders": {
+      "br": {
+        "content": "$1",
+        "example": "<br/>"
+      }
+    }
   }
 }

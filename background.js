@@ -9,6 +9,72 @@ chrome.browserAction.onClicked.addListener(function (tab) {
   })
 });
 
+var curTabID = 0;
+var windowsTemp = []
+
+chrome.tabs.onActivated.addListener(info => {
+  console.log('onActivated', info)
+  var isFind = false
+  var target = {}
+  windowsTemp.forEach(element => {
+    if (element.windowId == info.windowId) {
+      element.lastId = element.tabId
+      element.tabId = info.tabId
+      isFind = true
+      target = element
+    }
+  })
+
+  if (!isFind) {
+    windowsTemp.push(info)
+    target = info
+  }
+
+  chrome.runtime.sendMessage({
+    activatedObj: target
+  });
+})
+
+var windowsOnCreatedTimeount
+chrome.windows.onRemoved.addListener(windowId => {
+  console.log('windows.onRemoved', windowId)
+  clearTimeout(windowsOnCreatedTimeount)
+})
+chrome.windows.onCreated.addListener(window => {
+  console.log('windows.onCreated', window)
+  getStorageData(isPreventCloseTabTag, value => {
+    if (value && window.type == 'normal') {
+      windowsOnCreatedTimeount = setTimeout(() => {
+        try {
+          chrome.windows.get(window.id, window => {
+            getTabs(tabs => {
+              var isFind = tabs.find(tab => {
+                return tab.url == getPreventCloseTabUrl()
+              })
+              chrome.tabs.create({
+                url: getPreventCloseTabUrl(),
+                pinned: true
+              }, (obj) => {
+                isFind && chrome.tabs.remove(isFind.id)
+                getTabs(tabs => {
+                  console.log(tabs)
+                  chrome.tabs.update(tabs[0].id, {
+                    'active': true
+                  })
+                })
+                clearTimeout(windowsOnCreatedTimeount)
+              })
+            })
+          })
+        } catch (error) {
+          console.error('windows.onCreated', error)
+          clearTimeout(windowsOnCreatedTimeount)
+        }
+      }, 666)
+    }
+  })
+})
+
 chrome.runtime.onInstalled.addListener(function () {
   chrome.storage.sync.set({
     color: '#3aa757'
@@ -28,35 +94,13 @@ chrome.runtime.onInstalled.addListener(function () {
   });
 });
 
-function getPasted() {
-  let bg = chrome.extension.getBackgroundPage(); // get the background page
-  bg.document.body.innerHTML = ""; // clear the background page
 
-  // add a DIV, contentEditable=true, to accept the paste action
-  var helperdiv = bg.document.createElement("input");
-  document.body.appendChild(helperdiv);
-  helperdiv.focus();
-  // trigger the paste action
-  bg.document.execCommand("Paste");
 
-  // read the clipboard contents from the helperdiv
-  return helperdiv.value;
-}
-
-function getCurrentTab(callback) {
-  chrome.tabs.query({
-    active: true,
-    currentWindow: true
-  }, callback)
-}
 chrome.commands.onCommand.addListener(function (command) {
   console.log(command)
   switch (command) {
     case "toggle-pin": {
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, function (tabs) {
+      getCurrentTab(function (tabs) {
         // Toggle the pinned status
         var current = tabs[0]
         chrome.tabs.update(current.id, {
@@ -67,10 +111,7 @@ chrome.commands.onCommand.addListener(function (command) {
     }
 
     case "toggle-mute": {
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, function (tabs) {
+      getCurrentTab(function (tabs) {
         // Toggle the muted status
         var current = tabs[0]
         console.log(current)
@@ -99,10 +140,7 @@ chrome.commands.onCommand.addListener(function (command) {
     }
 
     case "duplicate": {
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, function (tabs) {
+      getCurrentTab(function (tabs) {
         var current = tabs[0]
         chrome.tabs.duplicate(current.id);
       });
@@ -110,19 +148,16 @@ chrome.commands.onCommand.addListener(function (command) {
     }
 
     case "independent": {
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, function (tabs) {
+      getCurrentTab(function (tabs) {
         var current = tabs[0]
         chrome.windows.create({
           focused: true
         }, function (newWin) {
-          chrome.tabs.move(current.id, { windowId: newWin.id, index: -1 }, function () {
-            chrome.tabs.query({
-              active: true,
-              currentWindow: true
-            }, function (tabs) {
+          chrome.tabs.move(current.id, {
+            windowId: newWin.id,
+            index: -1
+          }, function () {
+            getCurrentTab(function (tabs) {
               chrome.tabs.remove(tabs[0].id);
             })
           });
