@@ -4,7 +4,7 @@
         "description": "The title of the application, displayed in the web store."
     },
     "appDesc": {
-        "message": "A keyboard short-cut customization tool of Chrome",
+        "message": "Toggle pin tab, duplicate tab, mute tab and more in custom keyboard shortcuts",
         "description": ""
     },
     "togglePin": {
