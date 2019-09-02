@@ -4,7 +4,7 @@
     "description": "The title of the application, displayed in the web store."
   },
   "appDesc": {
-    "message": "讓你效率加倍、滑鼠再見",
+    "message": "Lazy Chrome是一個快速鍵自訂工具，內含許多功能可讓您以自訂的快速鍵迅速操作分頁",
     "description": ""
   },
   "togglePin": {
@@ -44,7 +44,15 @@
     "description": ""
   },
   "prevent_clost_tab_splash": {
-    "message": "防關閉分頁",
+    "message": "防關閉分頁<br/>已啟用",
+    "description": ""
+  },
+  "keepSameDomain": {
+    "message": "只保留相同網域的分頁",
+    "description": ""
+  },
+  "prevent_clost_tab_splash_inactive": {
+    "message": "防關閉分頁<br/>未啟用",
     "description": ""
   },
   "prevent_clost_tab_splash1": {
@@ -60,7 +68,7 @@
     "description": ""
   },
   "prevent_clost_tab_splash4": {
-    "message": "如何關閉/啟用此功能: 您將可以藉由點擊此應用程式的圖示找到設定的選項",
+    "message": "如何關閉/啟用此功能: 您可藉由點擊此應用程式的圖示找到設定的選項",
     "description": ""
   },
   "go_shortcut_setting": {
@@ -76,7 +84,7 @@
     "description": ""
   },
   "features": {
-    "message": "支援動作(預設快速鍵):$br$$br$釘選分頁: Alt + 1$br$複製分頁: Alt + 3$br$貼上網址並開啟於新分頁: Ctrl + Shift + V$br$開啟記事本:$br$貼上文字並搜尋: Ctrl + Shift + Q$br$選取文字並搜尋$br$將分頁獨立至新視窗$br$分頁靜音$br$將其他分頁靜音$br$",
+    "message": "支援動作(預設快速鍵):$br$$br$釘選分頁: Alt + 1$br$複製分頁: Alt + 3$br$貼上網址並開啟於新分頁: Ctrl + Shift + V$br$開啟記事本:$br$貼上文字並搜尋: Ctrl + Shift + Q$br$選取文字並搜尋$br$將分頁獨立至新視窗$br$分頁靜音$br$將其他分頁靜音$br$只保留相同網域的分頁$br$",
     "description": "",
     "placeholders": {
       "br": {

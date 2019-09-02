@@ -42,28 +42,22 @@ chrome.windows.onRemoved.addListener(windowId => {
 })
 chrome.windows.onCreated.addListener(window => {
   console.log('windows.onCreated', window)
-  getStorageData(isPreventCloseTabTag, value => {
+  isPreventClose(value => {
     if (value && window.type == 'normal') {
       windowsOnCreatedTimeount = setTimeout(() => {
         try {
-          chrome.windows.get(window.id, window => {
-            getTabs(tabs => {
-              var isFind = tabs.find(tab => {
-                return tab.url == getPreventCloseTabUrl()
-              })
-              chrome.tabs.create({
-                url: getPreventCloseTabUrl(),
-                pinned: true
-              }, (obj) => {
-                isFind && chrome.tabs.remove(isFind.id)
-                getTabs(tabs => {
-                  console.log(tabs)
-                  chrome.tabs.update(tabs[0].id, {
-                    'active': true
-                  })
-                })
-                clearTimeout(windowsOnCreatedTimeount)
-              })
+          chrome.tabs.query({
+            windowId: window.id
+          }, tabs => {
+            tabs.forEach(tab => {
+              tab.url == getPreventCloseTabUrl() && chrome.tabs.remove(tab.id)
+            })
+            chrome.tabs.create({
+              windowId: window.id,
+              url: getPreventCloseTabUrl(),
+              pinned: true
+            }, (obj) => {
+              clearTimeout(windowsOnCreatedTimeount)
             })
           })
         } catch (error) {
@@ -199,6 +193,33 @@ chrome.commands.onCommand.addListener(function (command) {
     case "openNotepad": {
       chrome.tabs.create({
         url: "data:text/html, <html contenteditable>"
+      })
+      break
+    }
+
+    case "keepSameDomain": {
+      getCurrentTab(currentTab => {
+        var preventCloseTabUrl = getPreventCloseTabUrl()
+        if (currentTab[0].url == preventCloseTabUrl) return
+        var currentDomain = (new URL(currentTab[0].url)).hostname
+        try {
+          isPreventClose(value => {
+            getTabs(tabs => {
+              var idToRemove = []
+              tabs.forEach(tab => {
+                var domain = (new URL(tab.url)).hostname
+                if (domain != currentDomain &&
+                  ((value && tab.url != preventCloseTabUrl) ||
+                    !value)) {
+                  idToRemove.push(tab.id)
+                }
+              })
+              idToRemove.length > 0 && chrome.tabs.remove(idToRemove)
+            })
+          })
+        } catch (error) {
+          console.error(error)
+        }
       })
       break
     }
