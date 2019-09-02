@@ -4,7 +4,7 @@
         "description": "The title of the application, displayed in the web store."
     },
     "appDesc": {
-        "message": "A keyboard short-cut customization tool with many features of operate tab",
+        "message": "A keyboard short-cut customization tool of Chrome",
         "description": ""
     },
     "togglePin": {
