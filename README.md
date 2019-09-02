@@ -1,12 +1,12 @@
 ### Lazy Chrome
 
-A extension for super speed up your sufing experience
 Lazy Chrome is a mouse terminator
+A keyboard short-cut customization tool with many features of operate tab
 
 Super speed up your common operations with your custom shortcut keys
 duplicate, pin or paste URL and open in a new tab!
 ****************
-
+Lazy Chrome是一個快速鍵自訂工具，內含許多功能可讓您以自訂的快速鍵迅速操作分頁
 效率加倍
 滑鼠再見
 
