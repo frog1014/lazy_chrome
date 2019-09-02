@@ -30,7 +30,7 @@ duplicate, pin or paste URL and open in a new tab!
 - 將分頁獨立至新視窗
 - 分頁靜音
 - 將其他分頁靜音
-- 防關閉視窗分頁
+- 只保留相同網域的分頁
 ***************************
 click the app icon to config your short cuts
 the default actions:
@@ -44,4 +44,4 @@ the default actions:
 - open notepad in Chrome
 - mute current tab
 - mute the other tabs
-- prevent window close tab
+- only keep the same domain tabs

@@ -26,6 +26,12 @@ function getStorageData(key, callback) {
     });
 }
 
+function isPreventClose(callback) {
+    return chrome.storage.sync.get(isPreventCloseTabTag, result => {
+        callback(result[isPreventCloseTabTag])
+    });
+}
+
 function getCurrentTab(callback) {
     return chrome.tabs.query({
         active: true,

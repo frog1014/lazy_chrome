@@ -4,13 +4,20 @@
             return "Would you really like to close your browser?";
         }
 
+
+
         if (lastTabId > -1) {
             getTabById(lastTabId, isFind => {
                 isFind && activeTab(lastTabId);
                 !isFind && elseHandler();
             })
-        } else
+        } else {
             (lastTabId == -1) && elseHandler()
+        }
+
+        document.querySelector('#prevent_clost_tab_splash').innerHTML = getI18nMsg("prevent_clost_tab_splash")
+        document.querySelector('.splash-container').classList.remove('splash-container-inactive')
+        document.querySelector('.home-menu').classList.remove('home-menu-inactive')
     }
 
     var root = document.querySelectorAll('#root')
@@ -37,7 +44,7 @@
     }
 
     document.querySelector('#app_name').innerHTML = getI18nMsg("appName")
-    document.querySelector('#prevent_clost_tab_splash').innerHTML = getI18nMsg("prevent_clost_tab_splash")
+    document.querySelector('#prevent_clost_tab_splash').innerHTML = getI18nMsg("prevent_clost_tab_splash_inactive")
     document.querySelector('#prevent_clost_tab_splash2').innerHTML = getI18nMsg("prevent_clost_tab_splash2")
     document.querySelector('#prevent_clost_tab_splash3').innerHTML = getI18nMsg("prevent_clost_tab_splash3", ['<br/>'])
     document.querySelector('#prevent_clost_tab_splash4').innerHTML = getI18nMsg("prevent_clost_tab_splash4")
