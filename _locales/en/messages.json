@@ -4,7 +4,7 @@
         "description": "The title of the application, displayed in the web store."
     },
     "appDesc": {
-        "message": "Toggle pin tab, duplicate tab, mute tab and more in custom keyboard shortcuts",
+        "message": "Toggle pin tab, duplicate tab, mute tab and more in your custom keyboard shortcuts",
         "description": ""
     },
     "togglePin": {
