@@ -207,11 +207,13 @@ chrome.commands.onCommand.addListener(function (command) {
             getTabs(tabs => {
               var idToRemove = []
               tabs.forEach(tab => {
-                var domain = (new URL(tab.url)).hostname
-                if (domain != currentDomain &&
-                  ((value && tab.url != preventCloseTabUrl) ||
-                    !value)) {
-                  idToRemove.push(tab.id)
+                if (tab.pinned == false) {
+                  var domain = (new URL(tab.url)).hostname
+                  if (domain != currentDomain &&
+                    ((value && tab.url != preventCloseTabUrl) ||
+                      !value)) {
+                    idToRemove.push(tab.id)
+                  }
                 }
               })
               idToRemove.length > 0 && chrome.tabs.remove(idToRemove)
