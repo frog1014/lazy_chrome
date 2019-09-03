@@ -8,15 +8,15 @@
         "description": ""
     },
     "togglePin": {
-        "message": "Toggle pin the active tab",
+        "message": "Toggle pin the current tab",
         "description": ""
     },
     "duplicate": {
-        "message": "Duplicate active tab to a new",
+        "message": "Duplicate current tab",
         "description": ""
     },
     "newTabWithUrl": {
-        "message": "Open a new tab with pasted url",
+        "message": "Paste URL in a new tab",
         "description": ""
     },
     "openNotepad": {
@@ -28,7 +28,7 @@
         "description": ""
     },
     "independent": {
-        "message": "Move this tab to a new window",
+        "message": "Move current tab to a new window",
         "description": ""
     },
     "toggleMute": {
@@ -74,7 +74,7 @@
         "description": ""
     },
     "newQueryWithPasted": {
-        "message": "Seach in a new tab with pasted content",
+        "message": "Paste and search in a new tab",
         "description": ""
     },
     "features": {
