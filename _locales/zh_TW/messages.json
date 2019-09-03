@@ -4,7 +4,7 @@
     "description": "The title of the application, displayed in the web store."
   },
   "appDesc": {
-    "message": "讓您使用自定義的鍵盤快捷鍵中切換分頁，複製分頁，分頁靜音，只留下相同網域的分頁等操作",
+    "message": "讓您自定鍵盤快速鍵執行釘選分頁，複製分頁，分頁靜音，只留下相同網域的分頁等操作",
     "description": ""
   },
   "togglePin": {
