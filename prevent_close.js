@@ -1,10 +1,9 @@
 (function () {
     function a() {
+        console.log('lastTabId', lastTabId)
         window.onbeforeunload = function () {
             return "Would you really like to close your browser?";
         }
-
-
 
         if (lastTabId > -1) {
             getTabById(lastTabId, isFind => {
@@ -37,9 +36,13 @@
     })
 
     function elseHandler() {
-        return getTabs(tabs => {
-            tabs.length > 1 && activeTab(tabs[tabs.length - 1].id);
-            tabs.length <= 1 && createTab()
+        return chrome.tabs.query({
+            currentWindow: true,
+            pinned: false
+        }, tabs => {
+            console.log('tabs', tabs);
+            tabs.length > 0 && activeTab(tabs[tabs.length - 1].id);
+            (tabs.length < 1 || (tabs.length == 1 && tabs[0].url == getPreventCloseTabUrl())) && createTab()
         })
     }
 

@@ -1,5 +1,7 @@
-const isPreventCloseTabTag = 'isPreventCloseTab'
-
+const IS_PREVENT_CLOSE_TAB_TAG = 'isPreventCloseTab'
+const NEW_TAB_URL = 'chrome://newtab/'
+const CONTENTEDITABLE_URL = 'data:text/html, <html contenteditable>'
+const EXTENSIONS_URL = 'chrome://extensions/shortcuts'
 
 function getPasted() {
     let bg = chrome.extension.getBackgroundPage(); // get the background page
@@ -27,8 +29,8 @@ function getStorageData(key, callback) {
 }
 
 function isPreventClose(callback) {
-    return chrome.storage.sync.get(isPreventCloseTabTag, result => {
-        callback(result[isPreventCloseTabTag])
+    return chrome.storage.sync.get(IS_PREVENT_CLOSE_TAB_TAG, result => {
+        callback(result[IS_PREVENT_CLOSE_TAB_TAG])
     });
 }
 
@@ -50,13 +52,8 @@ function getI18nMsg(key, ...vars) {
 }
 
 function getTabById(id, callback) {
-    return chrome.tabs.query({
-        currentWindow: true
-    }, tabs => {
-        var target = tabs.find(tab => {
-            return tab.id == id
-        })
-        callback(target)
+    return getTabs(tabs => {
+        callback(tabs.find(tab => tab.id == id))
     })
 }
 
@@ -68,7 +65,7 @@ function activeTab(id) {
 
 function createTab(url) {
     return chrome.tabs.create({
-        url: url || 'chrome://newTab/',
+        url: url || NEW_TAB_URL,
     })
 }
 

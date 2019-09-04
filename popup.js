@@ -5,26 +5,24 @@
     btnGoShortcutSetting.innerHTML = getI18nMsg("go_shortcut_setting")
     btnGoShortcutSetting.addEventListener('click', event => {
         chrome.tabs.create({
-            url: "chrome://extensions/shortcuts"
+            url: EXTENSIONS_URL
         })
     })
 
     var checkPreventCloseTab = document.querySelector('#check-prevent-close-tab')
-    getStorageData(isPreventCloseTabTag, value => {
-        console.log('isPreventCloseTabTag', value)
+    getStorageData(IS_PREVENT_CLOSE_TAB_TAG, value => {
+        console.log(IS_PREVENT_CLOSE_TAB_TAG, value)
         checkPreventCloseTab.checked = value
     })
 
     checkPreventCloseTab.addEventListener('change', e => {
         setStorageData({
-            [isPreventCloseTabTag]: e.target.checked
+            [IS_PREVENT_CLOSE_TAB_TAG]: e.target.checked
         }, () => {
             console.log('ok')
             e.target.checked && getTabs(tabs => {
                 var targetUrl = getPreventCloseTabUrl()
-                var findPreventCloseTab = tabs.find(tab => {
-                    return tab.url == targetUrl
-                });
+                var findPreventCloseTab = tabs.find(tab => tab.url == targetUrl);
                 !findPreventCloseTab && chrome.tabs.create({
                     url: targetUrl,
                     pinned: true

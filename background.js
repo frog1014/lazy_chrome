@@ -3,10 +3,11 @@
 // found in the LICENSE file.
 
 'use strict';
-chrome.browserAction.onClicked.addListener(function (tab) {
-  chrome.tabs.create({
-    url: "chrome://extensions/shortcuts"
-  })
+chrome.browserAction.onClicked.addListener(tab => {
+  console.log('browserAction', tab)
+  // chrome.tabs.create({
+  //   url: "chrome://extensions/shortcuts"
+  // })
 });
 
 var curTabID = 0;
@@ -40,6 +41,7 @@ chrome.windows.onRemoved.addListener(windowId => {
   console.log('windows.onRemoved', windowId)
   clearTimeout(windowsOnCreatedTimeount)
 })
+
 chrome.windows.onCreated.addListener(window => {
   console.log('windows.onCreated', window)
   isPreventClose(value => {
@@ -70,11 +72,12 @@ chrome.windows.onCreated.addListener(window => {
 })
 
 chrome.runtime.onInstalled.addListener(function () {
-  chrome.storage.sync.set({
-    color: '#3aa757'
-  }, function () {
-    console.log("The color is green.");
-  });
+  console.log('onInstalled')
+  // chrome.storage.sync.set({
+  //   color: '#3aa757'
+  // }, function () {
+  //   console.log("The color is green.");
+  // });
 
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     chrome.declarativeContent.onPageChanged.addRules([{
@@ -90,12 +93,11 @@ chrome.runtime.onInstalled.addListener(function () {
 
 
 
-chrome.commands.onCommand.addListener(function (command) {
-  console.log(command)
+chrome.commands.onCommand.addListener(command => {
+  console.log('onCommand', command)
   switch (command) {
     case "toggle-pin": {
-      getCurrentTab(function (tabs) {
-        // Toggle the pinned status
+      getCurrentTab(tabs => {
         var current = tabs[0]
         chrome.tabs.update(current.id, {
           'pinned': !current.pinned
@@ -105,8 +107,7 @@ chrome.commands.onCommand.addListener(function (command) {
     }
 
     case "toggle-mute": {
-      getCurrentTab(function (tabs) {
-        // Toggle the muted status
+      getCurrentTab(tabs => {
         var current = tabs[0]
         console.log(current)
         chrome.tabs.update(current.id, {
@@ -120,8 +121,7 @@ chrome.commands.onCommand.addListener(function (command) {
       chrome.tabs.query({
         currentWindow: true,
         audible: true
-      }, function (tabs) {
-        console.log(tabs)
+      }, tabs => {
         getCurrentTab(current => {
           tabs.forEach(element => {
             chrome.tabs.update(element.id, {
@@ -134,7 +134,7 @@ chrome.commands.onCommand.addListener(function (command) {
     }
 
     case "duplicate": {
-      getCurrentTab(function (tabs) {
+      getCurrentTab(tabs => {
         var current = tabs[0]
         chrome.tabs.duplicate(current.id);
       });
@@ -142,7 +142,7 @@ chrome.commands.onCommand.addListener(function (command) {
     }
 
     case "independent": {
-      getCurrentTab(function (tabs) {
+      getCurrentTab(tabs => {
         var current = tabs[0]
         chrome.windows.create({
           focused: true
@@ -180,7 +180,7 @@ chrome.commands.onCommand.addListener(function (command) {
     case "newQueryWithSelected": {
       chrome.tabs.executeScript({
         code: "window.getSelection().toString();"
-      }, function (selection) {
+      }, selection => {
         var clipboardContents = selection[0]
         chrome.tabs.create({
           url: "https://www.google.com/search?q=" + (clipboardContents || "")
@@ -204,16 +204,17 @@ chrome.commands.onCommand.addListener(function (command) {
         var currentDomain = (new URL(currentTab[0].url)).hostname
         try {
           isPreventClose(value => {
-            getTabs(tabs => {
+            chrome.tabs.query({
+              currentWindow: true,
+              pinned: false
+            }, tabs => {
               var idToRemove = []
               tabs.forEach(tab => {
-                if (tab.pinned == false) {
-                  var domain = (new URL(tab.url)).hostname
-                  if (domain != currentDomain &&
-                    ((value && tab.url != preventCloseTabUrl) ||
-                      !value)) {
-                    idToRemove.push(tab.id)
-                  }
+                var domain = (new URL(tab.url)).hostname
+                if (domain != currentDomain &&
+                  ((value && tab.url != preventCloseTabUrl) ||
+                    !value)) {
+                  idToRemove.push(tab.id)
                 }
               })
               idToRemove.length > 0 && chrome.tabs.remove(idToRemove)
