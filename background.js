@@ -15,18 +15,13 @@ var windowsTemp = []
 
 chrome.tabs.onActivated.addListener(info => {
   console.log('onActivated', info)
-  var isFind = false
   var target = {}
-  windowsTemp.forEach(element => {
-    if (element.windowId == info.windowId) {
-      element.lastId = element.tabId
-      element.tabId = info.tabId
-      isFind = true
-      target = element
-    }
-  })
-
-  if (!isFind) {
+  var targetWindow = windowsTemp.find(element => element.windowId == info.windowId)
+  if (targetWindow) {
+    targetWindow.lastId = targetWindow.tabId
+    targetWindow.tabId = info.tabId
+    target = targetWindow
+  } else {
     windowsTemp.push(info)
     target = info
   }
@@ -145,13 +140,14 @@ chrome.commands.onCommand.addListener(command => {
       getCurrentTab(tabs => {
         var current = tabs[0]
         chrome.windows.create({
-          focused: true
-        }, function (newWin) {
+          focused: true,
+          type: 'normal'
+        }, newWin => {
           chrome.tabs.move(current.id, {
             windowId: newWin.id,
             index: -1
-          }, function () {
-            getCurrentTab(function (tabs) {
+          }, _ => {
+            getCurrentTab(tabs => {
               chrome.tabs.remove(tabs[0].id);
             })
           });

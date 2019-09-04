@@ -22,8 +22,7 @@
             console.log('ok')
             e.target.checked && getTabs(tabs => {
                 var targetUrl = getPreventCloseTabUrl()
-                var findPreventCloseTab = tabs.find(tab => tab.url == targetUrl);
-                !findPreventCloseTab && chrome.tabs.create({
+                !tabs.find(tab => tab.url == targetUrl) && chrome.tabs.create({
                     url: targetUrl,
                     pinned: true
                 })
