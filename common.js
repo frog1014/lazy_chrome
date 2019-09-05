@@ -3,6 +3,10 @@ const NEW_TAB_URL = 'chrome://newtab/'
 const CONTENTEDITABLE_URL = 'data:text/html, <html contenteditable>'
 const EXTENSIONS_URL = 'chrome://extensions/shortcuts'
 
+Object.prototype.let = function (callback) {
+    return callback.apply(this, [this])
+  }
+
 function getPasted() {
     let bg = chrome.extension.getBackgroundPage(); // get the background page
     bg.document.body.innerHTML = ""; // clear the background page

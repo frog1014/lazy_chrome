@@ -39,6 +39,14 @@
         "message": "Only keep the same domain tabs",
         "description": ""
     },
+    "killSameDomain": {
+        "message": "Close the same domain tabs",
+        "description": ""
+    },
+    "killOtherSameDomain": {
+        "message": "Close tabs from the same domain other than current tab",
+        "description": ""
+    },
     "toShutUp": {
         "message": "Make other tab be muted",
         "description": ""

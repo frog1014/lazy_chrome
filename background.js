@@ -53,7 +53,7 @@ chrome.windows.onCreated.addListener(window => {
               windowId: window.id,
               url: getPreventCloseTabUrl(),
               pinned: true
-            }, (obj) => {
+            }, _ => {
               clearTimeout(windowsOnCreatedTimeount)
             })
           })
@@ -193,6 +193,68 @@ chrome.commands.onCommand.addListener(command => {
       break
     }
 
+    case "killSameDomain": {
+      getCurrentTab(currentTab => {
+        var preventCloseTabUrl = getPreventCloseTabUrl()
+        if (currentTab[0].url == preventCloseTabUrl) return
+        var currentDomain = (new URL(currentTab[0].url)).hostname
+        try {
+          isPreventClose(value => {
+            chrome.tabs.query({
+              currentWindow: true,
+              pinned: false
+            }, tabs => {
+              [].let(it => {
+                tabs.forEach(tab => {
+                  var domain = (new URL(tab.url)).hostname
+                  if (!(domain != currentDomain &&
+                      ((value && tab.url != preventCloseTabUrl) ||
+                        !value))) {
+                    it.push(tab.id)
+                  }
+                })
+                it.length > 0 && chrome.tabs.remove(it)
+              })
+            })
+          })
+        } catch (error) {
+          console.error(error)
+        }
+      })
+      break
+    }
+
+    case "killOtherSameDomain": {
+      getCurrentTab(currentTab => {
+        var preventCloseTabUrl = getPreventCloseTabUrl()
+        if (currentTab[0].url == preventCloseTabUrl) return
+        var currentDomain = (new URL(currentTab[0].url)).hostname
+        try {
+          isPreventClose(value => {
+            chrome.tabs.query({
+              currentWindow: true,
+              pinned: false
+            }, tabs => {
+              [].let(it => {
+                tabs.forEach(tab => {
+                  var domain = (new URL(tab.url)).hostname
+                  if (tab.id != currentTab[0].id &&
+                    !(domain != currentDomain &&
+                      ((value && tab.url != preventCloseTabUrl) ||
+                        !value))) {
+                    it.push(tab.id)
+                  }
+                })
+                it.length > 0 && chrome.tabs.remove(it)
+              })
+            })
+          })
+        } catch (error) {
+          console.error(error)
+        }
+      })
+      break
+    }
     case "keepSameDomain": {
       getCurrentTab(currentTab => {
         var preventCloseTabUrl = getPreventCloseTabUrl()
@@ -204,16 +266,17 @@ chrome.commands.onCommand.addListener(command => {
               currentWindow: true,
               pinned: false
             }, tabs => {
-              var idToRemove = []
-              tabs.forEach(tab => {
-                var domain = (new URL(tab.url)).hostname
-                if (domain != currentDomain &&
-                  ((value && tab.url != preventCloseTabUrl) ||
-                    !value)) {
-                  idToRemove.push(tab.id)
-                }
+              [].let(it => {
+                tabs.forEach(tab => {
+                  var domain = (new URL(tab.url)).hostname
+                  if (domain != currentDomain &&
+                    ((value && tab.url != preventCloseTabUrl) ||
+                      !value)) {
+                    it.push(tab.id)
+                  }
+                })
+                it.length > 0 && chrome.tabs.remove(it)
               })
-              idToRemove.length > 0 && chrome.tabs.remove(idToRemove)
             })
           })
         } catch (error) {
