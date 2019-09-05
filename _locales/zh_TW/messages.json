@@ -51,6 +51,14 @@
     "message": "只保留相同網域的分頁",
     "description": ""
   },
+  "killSameDomain": {
+    "message": "關閉相同網域的分頁",
+    "description": ""
+  },
+  "killOtherSameDomain": {
+    "message": "關閉其他相同網域的分頁",
+    "description": ""
+  },
   "prevent_clost_tab_splash_inactive": {
     "message": "防關閉分頁<br/>未啟用",
     "description": ""

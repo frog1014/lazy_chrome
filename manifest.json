@@ -44,6 +44,12 @@
     "keepSameDomain": {
       "description": "__MSG_keepSameDomain__"
     },
+    "killSameDomain": {
+      "description": "__MSG_killSameDomain__"
+    },
+    "killOtherSameDomain": {
+      "description": "__MSG_killOtherSameDomain__"
+    },
     "newQueryWithSelected": {
       "description": "__MSG_newQueryWithSelected__"
     },
