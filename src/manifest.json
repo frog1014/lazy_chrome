@@ -15,7 +15,6 @@
   "background": {
     "scripts": [
       "background.js",
-      "common.js"
     ],
     "persistent": false
   },
