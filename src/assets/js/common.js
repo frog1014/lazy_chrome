@@ -1,3 +1,4 @@
+import './global'
 export const IS_PREVENT_CLOSE_TAB_TAG = 'isPreventCloseTab'
 export const NEW_TAB_URL = 'chrome://newtab/'
 export const CONTENTEDITABLE_URL = 'data:text/html, <html contenteditable>'

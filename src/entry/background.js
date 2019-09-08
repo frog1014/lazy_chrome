@@ -7,9 +7,6 @@ import Commands from "../assets/js/commands.js"
 // found in the LICENSE file.
 
 'use strict';
-Object.prototype.let = function (callback) {
-  return callback.apply(this, [this])
-}
 
 chrome.browserAction.onClicked.addListener(tab => {
   console.log('browserAction', tab)
