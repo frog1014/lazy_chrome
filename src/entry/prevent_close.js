@@ -19,9 +19,11 @@ import {
             lastTabId == TAB_ID_NONE && Common.findLastTabElseHandler()
         }
 
-        document.querySelector('#prevent_clost_tab_splash').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash")
-        document.querySelector('.splash-container').classList.remove('splash-container-inactive')
-        document.querySelector('.home-menu').classList.remove('home-menu-inactive')
+        document.let(it => {
+            it.querySelector('#prevent_clost_tab_splash').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash")
+            it.querySelector('.splash-container').classList.remove('splash-container-inactive')
+            it.querySelector('.home-menu').classList.remove('home-menu-inactive')
+        })
     }
 
     var root = document.querySelectorAll('#root')
@@ -40,15 +42,17 @@ import {
         }
     })
 
-    document.querySelector('#app_name').innerHTML = Common.getI18nMsg("appName")
-    document.querySelector('#prevent_clost_tab_splash').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash_inactive")
-    document.querySelector('#prevent_clost_tab_splash2').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash2")
-    document.querySelector('#prevent_clost_tab_splash3').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash3", ['<br/>'])
-    document.querySelector('#prevent_clost_tab_splash4').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash4")
-    document.querySelector('#prevent_clost_tab_splash1').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash1")
-    document.onkeypress = function (e) {
-        e = e || window.event;
-        console.log('onkeypress', e)
-        a()
-    };
+    document.let(it => {
+        it.querySelector('#app_name').innerHTML = Common.getI18nMsg("appName")
+        it.querySelector('#prevent_clost_tab_splash').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash_inactive")
+        it.querySelector('#prevent_clost_tab_splash2').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash2")
+        it.querySelector('#prevent_clost_tab_splash3').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash3", ['<br/>'])
+        it.querySelector('#prevent_clost_tab_splash4').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash4")
+        it.querySelector('#prevent_clost_tab_splash1').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash1")
+        it.onkeypress = function (e) {
+            e = e || window.event;
+            console.log('onkeypress', e)
+            a()
+        };
+    })
 })(window)
