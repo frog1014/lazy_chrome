@@ -23,3 +23,5 @@ the default actions:
 - mute the other tabs
 - prevent window close
 - only keep the same domain tabs
+- close the same domain tabs
+- close tabs from the same domain other than current tab
