@@ -1,11 +1,7 @@
 import {
-    IS_PREVENT_CLOSE_TAB_TAG,
-    NEW_TAB_URL,
-    CONTENTEDITABLE_URL,
-    EXTENSIONS_URL,
     TAB_ID_NONE,
     Common
-} from "./common.js"
+} from "../assets/js/common.js"
 
 (function () {
     function a() {

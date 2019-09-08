@@ -53,7 +53,7 @@ export class Common {
     }
 
     static getTabById(id, callback) {
-        return getTabs(tabs => {
+        return Common.getTabs(tabs => {
             callback(tabs.find(tab => tab.id == id))
         })
     }
@@ -82,8 +82,8 @@ export class Common {
                 currentWindow: true
             }, param), tabs => {
                 console.log('tabs', tabs);
-                tabs.length > 0 && activeTab(tabs[tabs.length - 1].id);
-                (tabs.length < 1 || (tabs.length == 1 && tabs[0].url == getPreventCloseTabUrl())) && createTab()
+                tabs.length > 0 && Common.activeTab(tabs[tabs.length - 1].id);
+                (tabs.length < 1 || (tabs.length == 1 && tabs[0].url == Common.getPreventCloseTabUrl())) && Common.createTab()
             })
     }
 }
