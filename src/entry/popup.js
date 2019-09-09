@@ -3,6 +3,7 @@ import {
     EXTENSIONS_URL,
     Common
 } from "../assets/js/common.js"
+import '../assets/css/popup.css'
 
 (function () {
 

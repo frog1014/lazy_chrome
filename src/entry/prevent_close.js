@@ -1,7 +1,8 @@
 import {
     TAB_ID_NONE,
     Common
-} from "../assets/js/common.js"
+} from '../assets/js/common.js'
+import '../assets/css/tab.css'
 
 (function () {
     function a() {

@@ -4,6 +4,8 @@ const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const devMode = process.env.NODE_ENV !== 'production'
+
 
 module.exports = {
     mode: 'production',
@@ -22,10 +24,6 @@ module.exports = {
         new CopyWebpackPlugin([{
                 from: 'src/assets/images',
                 to: 'images'
-            },
-            {
-                from: 'src/assets/css',
-                to: 'css'
             },
             {
                 from: 'src/_locales',
@@ -52,6 +50,12 @@ module.exports = {
         }),
     ],
     module: {
-        rules: []
+        rules: [{
+            test: /\.css$/,
+            use: [
+                'style-loader',
+                'css-loader'
+            ]
+        }]
     }
 };
