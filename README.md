@@ -9,7 +9,7 @@ duplicate, pin or paste URL and open in a new tab!
 [Lazy Chrome - Chrome 線上應用程式商店](https://chrome.google.com/webstore/detail/lazy-chrome/boijmdgjfcoancndoiclnglhjakeopch "Lazy Chrome - Chrome 線上應用程式商店")
 
 ## Features
-click the app icon to config your short cuts
+click the app icon to config your shortcuts
 the default actions:
 
 - pin: alt + 1
