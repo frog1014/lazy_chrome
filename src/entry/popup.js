@@ -8,24 +8,24 @@ import '../assets/css/popup.css'
 (function () {
 
     document.querySelector('#popup_splash_1').innerHTML = Common.getI18nMsg("appDesc")
-    var btnGoShortcutSetting = document.querySelector('#go_shortcut_setting')
-    btnGoShortcutSetting.innerHTML = Common.getI18nMsg("go_shortcut_setting")
-    btnGoShortcutSetting.addEventListener('click', event => {
-        chrome.tabs.create({
-            url: EXTENSIONS_URL
+    document.querySelector('#go_shortcut_setting').applyy(_ => {
+        _.innerHTML = '<i class="fa fa-cog"></i> ' + Common.getI18nMsg("go_shortcut_setting")
+        _.addEventListener('click', event => {
+            chrome.tabs.create({
+                url: EXTENSIONS_URL
+            })
         })
     })
 
     var checkPreventCloseTab = document.querySelector('#check-prevent-close-tab')
     Common.getStorageData(IS_PREVENT_CLOSE_TAB_TAG, value => {
-        console.log(IS_PREVENT_CLOSE_TAB_TAG, value)
         checkPreventCloseTab.checked = value
     })
 
     checkPreventCloseTab.addEventListener('change', e => {
         Common.setStorageData({
             [IS_PREVENT_CLOSE_TAB_TAG]: e.target.checked
-        }, () => {
+        }, _ => {
             console.log('ok')
             e.target.checked && Common.getTabs(tabs => {
                 var targetUrl = Common.getPreventCloseTabUrl();
@@ -37,7 +37,16 @@ import '../assets/css/popup.css'
         })
     })
 
-    document.querySelector('#popup_splash_prevent_close_tab').innerHTML = Common.getI18nMsg("popup_splash_prevent_close_tab")
-    document.querySelector('#popup_splash_prevent_close_tab').setAttribute('data-tip', Common.getI18nMsg("popup_splash_prevent_close_tab_toolip"))
-    document.querySelector('#features').innerHTML = Common.getI18nMsg("features", ['<br/>'])
+    document.querySelector('#popup_splash_prevent_close_tab').applyy(_ => {
+        _.innerHTML = Common.getI18nMsg("popup_splash_prevent_close_tab")
+        _.setAttribute('data-tip', Common.getI18nMsg("popup_splash_prevent_close_tab_toolip"))
+    })
+
+    Common.getI18nMsg("features")
+        .let(it => '<ul>' + it.split(',').map(element => '<li>' + element.trim() + '</li>').join('') + '</ul>')
+        .let(it => Common.getI18nMsg("feature_head") + it + Common.getI18nMsg("features2", ['<br/>']))
+        .let(it => {
+            document.querySelector('#features').innerHTML = it
+        })
+
 })(window)

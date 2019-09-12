@@ -39,7 +39,8 @@ label {
 }
 
 .l-box-lrg {
-    padding: 2em;
+    width: 120%;
+    padding: 2em 8em 1em 2em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -78,55 +79,15 @@ label {
     border-radius: 5px;
 }
 
+#go_shortcut_setting {
+    width: 100%;
+}
+
 a.pure-button-primary {
     background: white;
     color: #007F3E;
     border-radius: 5px;
     font-size: 120%;
-}
-
-
-/*
- * -- MENU STYLES --
- * I want to customize how my .pure-menu looks at the top of the page
- */
-
-.home-menu {
-    padding: 0.5em;
-    text-align: center;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.10);
-}
-
-.home-menu {
-    background: #004823;
-}
-
-.pure-menu.pure-menu-fixed {
-    /* Fixed menus normally have a border at the bottom. */
-    border-bottom: none;
-    /* I need a higher z-index here because of the scroll-over effect. */
-    z-index: 4;
-}
-
-.home-menu .pure-menu-heading {
-    color: white;
-    font-weight: 400;
-    font-size: 120%;
-}
-
-.home-menu .pure-menu-selected a {
-    color: white;
-}
-
-.home-menu a {
-    color: #6FBEF3;
-}
-
-.home-menu li a:hover,
-.home-menu li a:focus {
-    background: none;
-    border: none;
-    color: #AECFE5;
 }
 
 
@@ -166,8 +127,8 @@ a.pure-button-primary {
     font-size: 20px;
     font-weight: bold;
     color: white;
-    border: 0px solid white;
-    padding: 1em 1.2em;
+    /* border: 0px solid white; */
+    padding: 0em 0em 1em 0em;
     font-weight: 100;
     border-radius: 5px;
     line-height: 1em;

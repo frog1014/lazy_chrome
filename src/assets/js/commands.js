@@ -2,6 +2,20 @@ import {
     Common
 } from "./common.js"
 
+function newTabWithStr(str) {
+    try {
+        if (!str) return
+        var href = (new URL(str)).href
+        chrome.tabs.create({
+            url: (href || "https://www.google.com/search?q=" + (str || "")) || "https://www.google.com/"
+        })
+    } catch (error) {
+        console.error(error)
+        chrome.tabs.create({
+            url: "https://www.google.com/search?q=" + (str || "")
+        })
+    }
+}
 export default class Commands {
     static duplicate() {
         Common.getCurrentTab(tabs => {
@@ -63,10 +77,8 @@ export default class Commands {
             code: "window.getSelection().toString();"
         }, selection => {
             if (selection) {
-                var clipboardContents = selection[0]
-                chrome.tabs.create({
-                    url: "https://www.google.com/search?q=" + (clipboardContents || "")
-                })
+                let clipboardContents = selection[0]
+                newTabWithStr(clipboardContents)
             } else {
                 alert('Not support on this page')
             }
@@ -78,13 +90,12 @@ export default class Commands {
             url: "https://www.google.com/search?q=" + (clipboardContents || "")
         })
     }
+
     static newTabWithUrl() {
-        var clipboardContents = Common.getPasted()
-        var isUrl = clipboardContents.indexOf("://") > -1
-        chrome.tabs.create({
-            url: (isUrl ? clipboardContents : "https://www.google.com/search?q=" + (clipboardContents || "")) || "https://www.google.com/"
-        })
+        let clipboardContents = Common.getPasted()
+        newTabWithStr(clipboardContents)
     }
+
     static keepSameDomain() {
         Common.getCurrentTab(currentTab => {
             var preventCloseTabUrl = Common.getPreventCloseTabUrl()
