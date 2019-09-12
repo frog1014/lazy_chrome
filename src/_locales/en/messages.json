@@ -16,7 +16,7 @@
         "description": ""
     },
     "newTabWithUrl": {
-        "message": "Paste URL in a new tab",
+        "message": "Open copied URL in a new tab",
         "description": ""
     },
     "openNotepad": {
@@ -24,7 +24,7 @@
         "description": ""
     },
     "newQueryWithSelected": {
-        "message": "Seach with selected text",
+        "message": "Seach for selected text or URL in a new tab",
         "description": ""
     },
     "independent": {
@@ -48,7 +48,7 @@
         "description": ""
     },
     "toShutUp": {
-        "message": "Make other tab be muted",
+        "message": "Mute other tabs",
         "description": ""
     },
     "prevent_clost_tab_splash": {
@@ -58,7 +58,7 @@
     "prevent_clost_tab_splash_inactive": {
         "message": "Prevent browser close tab<br/>Inactive",
         "description": ""
-      },
+    },
     "prevent_clost_tab_splash1": {
         "message": "Just leave this tab open and your browser won't be closed automatically",
         "description": ""
@@ -82,11 +82,15 @@
         "description": ""
     },
     "newQueryWithPasted": {
-        "message": "Paste and search in a new tab",
+        "message": "Search for copied text in a new tab",
         "description": ""
     },
-    "features": {
-        "message": "The default actions:$br$pin: alt + 1$br$duplicate: alt + 3$br$paste and open: ctrl + shift + v$br$paste and search by Google: ctrl + shift + v$br$search with selected text$br$make a tab be independent$br$open notepad in Chrome$br$mute current tab$br$mute the other tabs$br$only keep the same domain tabs$br$",
+    "feature_head": {
+        "message": "Support commands(default shortcut)",
+        "description": ""
+    },
+    "features2": {
+        "message": "For more commands, please go to the keyboard shortcut settings page",
         "description": "",
         "placeholders": {
             "br": {
@@ -94,6 +98,10 @@
                 "example": "<br/>"
             }
         }
+    },
+    "features": {
+        "message": "pin: alt + 1,duplicate: alt + 3,open copied text: ctrl + shift + v,search for copied text: ctrl + shift + v,search for selected text,move a tab to a new window,open notepad in Chrome,mute current tab,mute other tabs,only keep the same domain tabs",
+        "description": ""
     },
     "popup_splash_prevent_close_tab": {
         "message": "Enabale the prevent close tab (help?)",
@@ -104,7 +112,7 @@
         "description": ""
     },
     "go_shortcut_setting": {
-        "message": "Set short cut(Please scroll to Lazy Chrome section)",
+        "message": "Go to set shortcuts<br/>(Please scroll to Lazy Chrome section)",
         "description": ""
     }
 

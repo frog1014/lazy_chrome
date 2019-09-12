@@ -16,7 +16,7 @@
     "description": ""
   },
   "newTabWithUrl": {
-    "message": "貼上並開啟至新分頁",
+    "message": "開啟複製的網址至新分頁",
     "description": ""
   },
   "openNotepad": {
@@ -24,7 +24,7 @@
     "description": ""
   },
   "newQueryWithSelected": {
-    "message": "搜尋選取的文字",
+    "message": "搜尋選取的文字(網址)於新分頁",
     "description": ""
   },
   "independent": {
@@ -40,7 +40,7 @@
     "description": ""
   },
   "newQueryWithPasted": {
-    "message": "貼上並搜尋",
+    "message": "搜尋複製的文字於新分頁",
     "description": ""
   },
   "prevent_clost_tab_splash": {
@@ -80,7 +80,7 @@
     "description": ""
   },
   "go_shortcut_setting": {
-    "message": "設定快速鍵(請捲動至Lazy Chrome區塊)",
+    "message": "前往設定快速鍵<br/>(請捲動至Lazy Chrome區塊)",
     "description": ""
   },
   "popup_splash_prevent_close_tab": {
@@ -91,8 +91,16 @@
     "message": "在每次開啟新視窗時自動開啟防關閉視窗",
     "description": ""
   },
+  "feature_head": {
+    "message": "支援動作(預設快速鍵)",
+    "description": ""
+  },
   "features": {
-    "message": "支援動作(預設快速鍵):$br$$br$釘選分頁: Alt + 1$br$複製分頁: Alt + 3$br$貼上網址並開啟於新分頁: Ctrl + Shift + V$br$開啟記事本:$br$貼上文字並搜尋: Ctrl + Shift + Q$br$選取文字並搜尋$br$將分頁獨立至新視窗$br$分頁靜音$br$將其他分頁靜音$br$只保留相同網域的分頁$br$",
+    "message": "釘選分頁: Alt + 1, 複製分頁: Alt + 3, 貼上網址並開啟於新分頁: Ctrl + Shift + V, 開啟記事本, 貼上文字並搜尋: Ctrl + Shift + Q, 搜尋選取文字(網址)於新分頁, 將分頁獨立至新視窗, 分頁靜音, 將其他分頁靜音, 只保留相同網域的分頁",
+    "description": ""
+  },
+  "features2": {
+    "message": "更多支援的動作請前往鍵盤快速鍵設定頁面$br$",
     "description": "",
     "placeholders": {
       "br": {

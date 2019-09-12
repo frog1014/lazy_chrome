@@ -1,7 +1,7 @@
 ### Lazy Chrome
 
 Lazy Chrome is a mouse terminator
-A keyboard short-cut customization tool with many features of operate tab
+A keyboard shortcuts customization tool of supported features
 
 Super speed up your common operations with your custom shortcut keys
 duplicate, pin or paste URL and open in a new tab!
@@ -14,14 +14,13 @@ the default actions:
 
 - pin: alt + 1
 - duplicate: alt + 3
-- paste and open: ctrl + shift + v
-- paste and search by Google: ctrl + shift + v
-- search with selected text
-- make a tab be independent
+- open copied text: ctrl + shift + v
+- search for copied text: ctrl + shift + v
+- search for selected text
+- move a tab to a new window
 - open notepad in Chrome
 - mute current tab
-- mute the other tabs
-- prevent window close
+- mute other tabs
 - only keep the same domain tabs
 - close the same domain tabs
 - close tabs from the same domain other than current tab
