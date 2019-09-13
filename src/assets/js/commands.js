@@ -1,18 +1,23 @@
 import {
-    Common
+    Common,
+    GOOGLE_SEARCH_URL
 } from "./common.js"
 
 function newTabWithStr(str) {
     try {
         if (!str) return
         var href = (new URL(str)).href
+        const newLocal = (href || GOOGLE_SEARCH_URL + (encodeURIComponent(str) || "")) || 'https://www.google.com/'
+        console.log('newLocal', newLocal)
         chrome.tabs.create({
-            url: (href || "https://www.google.com/search?q=" + (str || "")) || "https://www.google.com/"
+            url: newLocal
         })
     } catch (error) {
         console.error(error)
+        const newLocal = (encodeURIComponent(str) || "")
+        console.log('newLocal', newLocal)
         chrome.tabs.create({
-            url: "https://www.google.com/search?q=" + (str || "")
+            url: GOOGLE_SEARCH_URL + newLocal
         })
     }
 }
@@ -69,12 +74,12 @@ export default class Commands {
     }
     static openNotepad() {
         chrome.tabs.create({
-            url: "data:text/html, <html contenteditable>"
+            url: 'data:text/html, <html contenteditable>'
         })
     }
     static newQueryWithSelected() {
         chrome.tabs.executeScript({
-            code: "window.getSelection().toString();"
+            code: 'window.getSelection().toString();'
         }, selection => {
             if (selection) {
                 let clipboardContents = selection[0]
@@ -87,7 +92,7 @@ export default class Commands {
     static newQueryWithPasted() {
         var clipboardContents = Common.getPasted()
         chrome.tabs.create({
-            url: "https://www.google.com/search?q=" + (clipboardContents || "")
+            url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || '')
         })
     }
 
