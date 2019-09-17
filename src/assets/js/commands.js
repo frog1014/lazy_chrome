@@ -5,13 +5,16 @@ import {
 
 function newTabWithStr(str) {
     try {
-        if (!str) return
-        const newUrl = (new URL(str))
-        if (newUrl.host.length == 0 || newUrl.hostname.length == 0) throw ('invalid URL')
-        var href = newUrl.href
-        const newLocal = (href || GOOGLE_SEARCH_URL + (encodeURIComponent(str) || "")) || 'https://www.google.com/'
-        chrome.tabs.create({
-            url: newLocal
+        if (!str) return;
+
+        (new URL(str)).let(it => {
+            if (it.host.length == 0 || it.hostname.length == 0) throw ('invalid URL');
+
+            ((it.href || GOOGLE_SEARCH_URL + (encodeURIComponent(str) || "")) || 'https://www.google.com/').let(newUrl => {
+                chrome.tabs.create({
+                    url: newUrl
+                })
+            })
         })
     } catch (error) {
         console.error(error)
