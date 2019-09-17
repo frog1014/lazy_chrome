@@ -6,16 +6,16 @@ import {
 function newTabWithStr(str) {
     try {
         if (!str) return
-        var href = (new URL(str)).href
+        const newUrl = (new URL(str))
+        if (newUrl.host.length == 0 || newUrl.hostname.length == 0) throw ('invalid URL')
+        var href = newUrl.href
         const newLocal = (href || GOOGLE_SEARCH_URL + (encodeURIComponent(str) || "")) || 'https://www.google.com/'
-        console.log('newLocal', newLocal)
         chrome.tabs.create({
             url: newLocal
         })
     } catch (error) {
         console.error(error)
         const newLocal = (encodeURIComponent(str) || "")
-        console.log('newLocal', newLocal)
         chrome.tabs.create({
             url: GOOGLE_SEARCH_URL + newLocal
         })
