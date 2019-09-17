@@ -19,20 +19,19 @@ var windowsHistory = []
 
 chrome.tabs.onActivated.addListener(info => {
   console.log('onActivated', info)
-  var target = {}
-  var targetWindow = windowsHistory.find(element => element.windowId == info.windowId)
-  if (targetWindow) {
-    targetWindow.lastId = targetWindow.tabId
-    targetWindow.tabId = info.tabId
-    target = targetWindow
-  } else {
-    windowsHistory.push(info)
-    target = info
-  }
+  console.log('windowsHistory', windowsHistory);
+  (windowsHistory.find(element => element.windowId == info.windowId) || false).let(it => {
+    if (it) {
+      it.lastId = it.tabId
+      it.tabId = info.tabId
+    } else {
+      windowsHistory.push(info)
+    }
 
-  chrome.runtime.sendMessage({
-    activatedObj: target
-  });
+    chrome.runtime.sendMessage({
+      activatedObj: it || info
+    });
+  })
 })
 
 var windowsOnCreatedTimeount
@@ -131,7 +130,6 @@ chrome.commands.onCommand.addListener(command => {
 
     case "newQueryWithSelected": {
       Commands.newQueryWithSelected()
-
       break
     }
 
