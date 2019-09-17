@@ -7,15 +7,15 @@ function newTabWithStr(str) {
     try {
         if (!str) return;
 
-        (new URL(str)).let(it => {
+        new URL(str).let(it => {
             if (it.host.length == 0 || it.hostname.length == 0) throw ('invalid URL');
 
             ((it.href || GOOGLE_SEARCH_URL + (encodeURIComponent(str) || "")) || 'https://www.google.com/').let(newUrl => {
                 chrome.tabs.create({
                     url: newUrl
                 })
-            })
-        })
+            });
+        });
     } catch (error) {
         console.error(error)
         const newLocal = (encodeURIComponent(str) || "")

@@ -1,12 +1,19 @@
-function toBoolean(obj) {
-    return obj instanceof Boolean ? obj.valueOf() : obj
+function getPrimitiveVal(obj) {
+    if (
+        obj instanceof Boolean ||
+        obj instanceof Number ||
+        obj instanceof String
+    )
+        return obj.valueOf()
+    else
+        return obj
 }
 
 Object.prototype.let = function (callback) {
-    return callback.apply(this, [toBoolean(this)])
+    return callback.apply(this, [getPrimitiveVal(this)])
 }
 
 Object.prototype.applyy = function (callback) {
-    callback.apply(this, [toBoolean(this)])
+    callback.apply(this, [getPrimitiveVal(this)])
     return this
 }
