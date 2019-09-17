@@ -24,3 +24,4 @@ the default actions:
 - only keep the same domain tabs
 - close the same domain tabs
 - close tabs from the same domain other than current tab
+- prevent close tab (for preventing the window from closing without user's confirm)

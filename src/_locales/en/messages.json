@@ -108,7 +108,7 @@
         "description": ""
     },
     "popup_splash_prevent_close_tab_toolip": {
-        "message": "A prevent close tab will be created automatically when a Chrome window created",
+        "message": "A tab for preventing the window from closing without user's confirm will be created automatically on the new window",
         "description": ""
     },
     "go_shortcut_setting": {

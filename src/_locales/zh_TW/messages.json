@@ -88,7 +88,7 @@
     "description": ""
   },
   "popup_splash_prevent_close_tab_toolip": {
-    "message": "在每次開啟新視窗時自動開啟防關閉視窗",
+    "message": "在關閉瀏覽器視窗時，您將可以再次確認是否關閉。在每次開啟新視窗時將自動開啟防關閉分頁",
     "description": ""
   },
   "feature_head": {
