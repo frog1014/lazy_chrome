@@ -69,6 +69,12 @@ export default class Api {
         })
     }
 
+    static activeWindow(id, callback) {
+        return chrome.windows.update(id, {
+            focused: true
+        }, callback)
+    }
+
     static activeTab(id) {
         return chrome.tabs.update(id, {
             'active': true
