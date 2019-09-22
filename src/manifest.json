@@ -64,9 +64,6 @@
     "previousTabInSameWindow": {
       "description": "__MSG_previousTabInSameWindow__"
     },
-    "previousTabLastWindow": {
-      "description": "__MSG_previousTabLastWindow__"
-    },
     "newQueryWithPasted": {
       "suggested_key": {
         "default": "Ctrl+Shift+Q"

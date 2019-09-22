@@ -1,5 +1,6 @@
 import {
     GOOGLE_SEARCH_URL,
+    WINDOW_ID_NONE,
     TAB_ID_NONE
 } from "./common.js"
 import Api from "./api"
@@ -34,20 +35,24 @@ export default class Commands {
     }
 
     static previousTabLastWindow(windowsHistory = []) {
-        Api.getCurrentWindow(window => {
-            var previousWindow
-            for (let i = windowsHistory.length - 1; i >= (windowsHistory.length - 1); i--) {
-                (windowsHistory[i] || false).let(e => {
-                    if (e && e.windowId !== window.id)
-                        previousWindow = e;
-                })
-                if (previousWindow) break;
-            }
-            console.log('previousWindow', previousWindow)
-            previousWindow && Api.getWindow(previousWindow.windowId, window => {
-                window && previousWindow.lastId != TAB_ID_NONE && Api.activeTab(previousWindow.lastId)
-            })
-        })
+        // Api.getCurrentWindow(window => {
+        //     console.log("getCurrentWindow", window);
+        //     var previousWindow
+        //     for (let i = windowsHistory.length - 1; i >= 0; i--) {
+        //         (windowsHistory[i] || false).let(e => {
+        //             if (e && e.windowId != window.id)
+        //                 previousWindow = e;
+        //         })
+        //         if (previousWindow) break;
+        //     }
+        //     console.log('previousWindow', previousWindow)
+        //     previousWindow && previousWindow.windowId != WINDOW_ID_NONE &&
+        //         Api.activeWindow(previousWindow.windowId, window => {
+        //             window && previousWindow.lastId != TAB_ID_NONE && Api.activeTab(previousWindow.lastId)
+        //         });
+
+        //     // !previousTabInSameWindow && previousTabInSameWindow(windowsHistory)
+        // })
     }
 
     static previousTabInSameWindow(windowsHistory = []) {
