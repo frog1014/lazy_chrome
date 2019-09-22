@@ -40,7 +40,7 @@
         "description": ""
     },
     "previousTabLastWindow": {
-        "message": "Go back to the previous tab of last window",
+        "message": "Toggle 2 most recently used tabs (MRU)",
         "description": ""
     },
     "keepSameDomain": {
