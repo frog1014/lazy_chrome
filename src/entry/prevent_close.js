@@ -1,27 +1,27 @@
 import {
     TAB_ID_NONE,
-    Common
 } from '../assets/js/common.js'
 import '../assets/css/tab.css'
+import Api from "../assets/js/api"
 
 (function () {
     function a() {
-        console.log('lastTabId', lastTabId)
+        console.log('lastTabId in a()', lastTabId)
         window.onbeforeunload = function () {
             return "Would you really like to close your browser?";
         }
 
         if (lastTabId > TAB_ID_NONE) {
-            Common.getTabById(lastTabId, isFind => {
-                isFind && Common.activeTab(lastTabId);
-                !isFind && Common.findLastTabElseHandler();
+            Api.getTabById(lastTabId, isFind => {
+                isFind && Api.activeTab(lastTabId);
+                !isFind && Api.findLastTabElseHandler();
             })
         } else {
-            lastTabId == TAB_ID_NONE && Common.findLastTabElseHandler()
+            lastTabId == TAB_ID_NONE && Api.findLastTabElseHandler()
         }
 
         document.let(it => {
-            it.querySelector('#prevent_clost_tab_splash').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash")
+            it.querySelector('#prevent_clost_tab_splash').innerHTML = Api.getI18nMsg("prevent_clost_tab_splash")
             it.querySelector('.splash-container').classList.remove('splash-container-inactive')
             it.querySelector('.home-menu').classList.remove('home-menu-inactive')
         })
@@ -35,21 +35,22 @@ import '../assets/css/tab.css'
     var lastTabId = TAB_ID_NONE
     chrome.runtime.onMessage.addListener((msg, sender, res) => {
         console.log('onMessage', msg)
-        if (msg.activatedObj) {
-            chrome.windows.getCurrent({}, window => {
-                if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId)
-                    lastTabId = msg.activatedObj.lastId
-            })
-        }
+        msg && msg.activatedObj && Api.getCurrentWindow(window => {
+            console.log('window', window);
+            if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId){
+                lastTabId = msg.activatedObj.lastId
+                console.log('lastTabId', lastTabId)
+            }
+        })
     })
 
     document.let(it => {
-        it.querySelector('#app_name').innerHTML = Common.getI18nMsg("appName")
-        it.querySelector('#prevent_clost_tab_splash').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash_inactive")
-        it.querySelector('#prevent_clost_tab_splash2').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash2")
-        it.querySelector('#prevent_clost_tab_splash3').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash3", ['<br/>'])
-        it.querySelector('#prevent_clost_tab_splash4').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash4")
-        it.querySelector('#prevent_clost_tab_splash1').innerHTML = Common.getI18nMsg("prevent_clost_tab_splash1")
+        it.querySelector('#app_name').innerHTML = Api.getI18nMsg("appName")
+        it.querySelector('#prevent_clost_tab_splash').innerHTML = Api.getI18nMsg("prevent_clost_tab_splash_inactive")
+        it.querySelector('#prevent_clost_tab_splash2').innerHTML = Api.getI18nMsg("prevent_clost_tab_splash2")
+        it.querySelector('#prevent_clost_tab_splash3').innerHTML = Api.getI18nMsg("prevent_clost_tab_splash3", ['<br/>'])
+        it.querySelector('#prevent_clost_tab_splash4').innerHTML = Api.getI18nMsg("prevent_clost_tab_splash4")
+        it.querySelector('#prevent_clost_tab_splash1').innerHTML = Api.getI18nMsg("prevent_clost_tab_splash1")
         it.onkeypress = function (e) {
             e = e || window.event;
             console.log('onkeypress', e)

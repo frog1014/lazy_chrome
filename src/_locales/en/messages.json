@@ -35,6 +35,14 @@
         "message": "Toggle current tab muted",
         "description": ""
     },
+    "previousTabInSameWindow": {
+        "message": "Go back to the previous tab of current window",
+        "description": ""
+    },
+    "previousTabLastWindow": {
+        "message": "Go back to the previous tab of last window",
+        "description": ""
+    },
     "keepSameDomain": {
         "message": "Only keep the same domain tabs",
         "description": ""

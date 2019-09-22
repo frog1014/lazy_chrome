@@ -25,3 +25,5 @@ the default actions:
 - close the same domain tabs
 - close tabs from the same domain other than current tab
 - prevent close tab (for preventing the window from closing without user's confirm)
+- go back to the previous tab of current window
+- go back to the previous tab of last window

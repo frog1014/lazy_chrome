@@ -108,5 +108,13 @@
         "example": "<br/>"
       }
     }
+  },
+  "previousTabInSameWindow": {
+    "message": "回到先前使用的分頁(目前視窗)",
+    "description": ""
+  },
+  "previousTabLastWindow": {
+    "message": "回到先前使用的分頁(跨視窗)",
+    "description": ""
   }
 }

@@ -1,7 +1,8 @@
-import {
-  Common
-} from "../assets/js/common.js"
+import Api from "../assets/js/api"
 import Commands from "../assets/js/commands.js"
+import {
+  WINDOW_ID_NONE,
+} from "../assets/js/common"
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -18,18 +19,17 @@ chrome.browserAction.onClicked.addListener(tab => {
 var windowsHistory = []
 
 chrome.tabs.onActivated.addListener(info => {
-  console.log('onActivated', info)
-  console.log('windowsHistory', windowsHistory);
-  (windowsHistory.find(element => element.windowId == info.windowId) || false).let(it => {
+  console.log('onActivated', info);
+  (windowsHistory.find(e => e.windowId == info.windowId) || false).let(it => {
     if (it) {
-      it.lastId = it.tabId
-      it.tabId = info.tabId
-    } else {
-      windowsHistory.push(info)
+      info.lastId = it.tabId
+      it.windowId = WINDOW_ID_NONE
     }
-
+    windowsHistory.push(info)
+    windowsHistory = windowsHistory.filter(e => e.windowId != WINDOW_ID_NONE);
+    console.log('windowsHistory', windowsHistory);
     chrome.runtime.sendMessage({
-      activatedObj: it || info
+      activatedObj: info
     });
   })
 })
@@ -42,7 +42,7 @@ chrome.windows.onRemoved.addListener(windowId => {
 
 chrome.windows.onCreated.addListener(window => {
   console.log('windows.onCreated', window)
-  Common.isPreventClose(value => {
+  Api.isPreventClose(value => {
     if (value && window.type == 'normal') {
       windowsOnCreatedTimeount = setTimeout(() => {
         try {
@@ -50,11 +50,11 @@ chrome.windows.onCreated.addListener(window => {
             windowId: window.id
           }, tabs => {
             tabs.forEach(tab => {
-              tab.url == Common.getPreventCloseTabUrl() && chrome.tabs.remove(tab.id)
+              tab.url == Api.getPreventCloseTabUrl() && chrome.tabs.remove(tab.id)
             })
             chrome.tabs.create({
               windowId: window.id,
-              url: Common.getPreventCloseTabUrl(),
+              url: Api.getPreventCloseTabUrl(),
               pinned: true
             }, _ => {
               clearTimeout(windowsOnCreatedTimeount)
@@ -100,6 +100,16 @@ chrome.commands.onCommand.addListener(command => {
 
     case "toggle-mute": {
       Commands.toggleMute()
+      break
+    }
+
+    case "previousTabInSameWindow": {
+      Commands.previousTabInSameWindow(windowsHistory)
+      break
+    }
+
+    case "previousTabLastWindow": {
+      Commands.previousTabLastWindow(windowsHistory)
       break
     }
 
