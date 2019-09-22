@@ -39,7 +39,6 @@ import Api from "../assets/js/api"
             console.log('window', window);
             if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId){
                 lastTabId = msg.activatedObj.lastId
-                console.log('lastTabId', lastTabId)
             }
         })
     })
