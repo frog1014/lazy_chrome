@@ -1,7 +1,8 @@
 import {
-    Common,
-    GOOGLE_SEARCH_URL
+    GOOGLE_SEARCH_URL,
+    TAB_ID_NONE
 } from "./common.js"
+import Api from "./api"
 
 function newTabWithStr(str) {
     try {
@@ -26,10 +27,35 @@ function newTabWithStr(str) {
 }
 export default class Commands {
     static duplicate() {
-        Common.getCurrentTab(tabs => {
+        Api.getCurrentTab(tabs => {
             var current = tabs[0]
             chrome.tabs.duplicate(current.id);
         });
+    }
+
+    static previousTabLastWindow(windowsHistory = []) {
+        Api.getCurrentWindow(window => {
+            var previousWindow
+            for (let i = windowsHistory.length - 1; i >= (windowsHistory.length - 1); i--) {
+                (windowsHistory[i] || false).let(e => {
+                    if (e && e.windowId !== window.id)
+                        previousWindow = e;
+                })
+                if (previousWindow) break;
+            }
+            console.log('previousWindow', previousWindow)
+            previousWindow && Api.getWindow(previousWindow.windowId, window => {
+                window && previousWindow.lastId != TAB_ID_NONE && Api.activeTab(previousWindow.lastId)
+            })
+        })
+    }
+
+    static previousTabInSameWindow(windowsHistory = []) {
+        Api.getCurrentWindow(window => {
+            (windowsHistory.find(e => e.windowId == window.id) || false).let(it =>
+                it && it.lastId != TAB_ID_NONE && Api.activeTab(it.lastId)
+            )
+        })
     }
 
     static toShutUp() {
@@ -37,7 +63,7 @@ export default class Commands {
             currentWindow: true,
             audible: true
         }, tabs => {
-            Common.getCurrentTab(current => {
+            Api.getCurrentTab(current => {
                 tabs.forEach(element => {
                     chrome.tabs.update(element.id, {
                         'muted': element.id == current[0].id ? current[0].mutedInfo.muted : true
@@ -48,7 +74,7 @@ export default class Commands {
     }
 
     static toggleMute() {
-        Common.getCurrentTab(tabs => {
+        Api.getCurrentTab(tabs => {
             var current = tabs[0]
             console.log(current)
             chrome.tabs.update(current.id, {
@@ -58,7 +84,7 @@ export default class Commands {
     }
 
     static independent() {
-        Common.getCurrentTab(tabs => {
+        Api.getCurrentTab(tabs => {
             var current = tabs[0]
             chrome.windows.create({
                 focused: true,
@@ -68,7 +94,7 @@ export default class Commands {
                     windowId: newWin.id,
                     index: -1
                 }, _ => {
-                    Common.getCurrentTab(tabs => {
+                    Api.getCurrentTab(tabs => {
                         chrome.tabs.remove(tabs[0].id);
                     })
                 });
@@ -93,24 +119,24 @@ export default class Commands {
         });
     }
     static newQueryWithPasted() {
-        var clipboardContents = Common.getPasted()
+        var clipboardContents = Api.getPasted()
         chrome.tabs.create({
             url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || '')
         })
     }
 
     static newTabWithUrl() {
-        let clipboardContents = Common.getPasted()
+        let clipboardContents = Api.getPasted()
         newTabWithStr(clipboardContents)
     }
 
     static keepSameDomain() {
-        Common.getCurrentTab(currentTab => {
-            var preventCloseTabUrl = Common.getPreventCloseTabUrl()
+        Api.getCurrentTab(currentTab => {
+            var preventCloseTabUrl = Api.getPreventCloseTabUrl()
             if (currentTab[0].url == preventCloseTabUrl) return
             var currentDomain = (new URL(currentTab[0].url)).hostname
             try {
-                Common.isPreventClose(value => {
+                Api.isPreventClose(value => {
                     chrome.tabs.query({
                         currentWindow: true,
                         pinned: false
@@ -134,12 +160,12 @@ export default class Commands {
         })
     }
     static killOtherSameDomain() {
-        Common.getCurrentTab(currentTab => {
-            var preventCloseTabUrl = Common.getPreventCloseTabUrl()
+        Api.getCurrentTab(currentTab => {
+            var preventCloseTabUrl = Api.getPreventCloseTabUrl()
             if (currentTab[0].url == preventCloseTabUrl) return
             var currentDomain = (new URL(currentTab[0].url)).hostname
             try {
-                Common.isPreventClose(value => {
+                Api.isPreventClose(value => {
                     chrome.tabs.query({
                         currentWindow: true,
                         pinned: false
@@ -164,12 +190,12 @@ export default class Commands {
         })
     }
     static killSameDomain() {
-        Common.getCurrentTab(currentTab => {
-            var preventCloseTabUrl = Common.getPreventCloseTabUrl()
+        Api.getCurrentTab(currentTab => {
+            var preventCloseTabUrl = Api.getPreventCloseTabUrl()
             if (currentTab[0].url == preventCloseTabUrl) return
             var currentDomain = (new URL(currentTab[0].url)).hostname
             try {
-                Common.isPreventClose(value => {
+                Api.isPreventClose(value => {
                     chrome.tabs.query({
                         currentWindow: true,
                         pinned: false
@@ -193,7 +219,7 @@ export default class Commands {
         })
     }
     static togglePin() {
-        Common.getCurrentTab(tabs => {
+        Api.getCurrentTab(tabs => {
             var current = tabs[0]
             chrome.tabs.update(current.id, {
                 'pinned': !current.pinned
