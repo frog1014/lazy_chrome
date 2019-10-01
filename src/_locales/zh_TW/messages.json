@@ -15,8 +15,20 @@
     "message": "複製分頁",
     "description": ""
   },
+  "copySuccessful": {
+    "message": "網址已複製",
+    "description": ""
+  },
+  "copyFailed": {
+    "message": "網址複製失敗",
+    "description": ""
+  },
   "newTabWithUrl": {
     "message": "開啟複製的網址至新分頁",
+    "description": ""
+  },
+  "copyUrl": {
+    "message": "複製此分頁的網址",
     "description": ""
   },
   "openNotepad": {
