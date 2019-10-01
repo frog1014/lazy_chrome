@@ -24,6 +24,7 @@ the default actions:
 - only keep the same domain tabs
 - close the same domain tabs
 - close tabs from the same domain other than current tab
+- copy the URL of the current tab
 - prevent close tab (for preventing the window from closing without user's confirm)
 - go back to the previous tab(toggle 2 most recently used tabs (MRU))
 <!-- - go back to the previous tab of last window -->
