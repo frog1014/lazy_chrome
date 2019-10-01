@@ -133,22 +133,14 @@ export default class Commands {
     static copyUrl() {
         Api.getCurrentTab(tab => {
             (tab[0].url || false).let(url => {
-                if (url) {
-                    ({
-                        type: 'basic',
-                        iconUrl: 'images/lazy_chrome48.png?raw=true',
-                        'message': url
-                    }).let(it => {
-                        let titleKey = 'copySuccessful'
-                        if (Api.copyInjected(url)) {
-                            titleKey = 'copySuccessful'
-                        } else {
-                            titleKey = 'copyFailed'
-                        }
-                        it['title'] = Api.getI18nMsg(titleKey)
-                        Api.createNotifications('copyInjected', it)
-                    })
-                }
+                url && ({
+                    type: 'basic',
+                    iconUrl: 'images/lazy_chrome48.png?raw=true',
+                    'message': url
+                }).let(it => {
+                    it['title'] = (Api.copyInjected(url) ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
+                    Api.createNotifications('copyInjected', it)
+                })
             })
         })
     }
