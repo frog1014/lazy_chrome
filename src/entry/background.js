@@ -148,6 +148,11 @@ chrome.commands.onCommand.addListener(command => {
       break
     }
 
+    case "copyUrl": {
+      Commands.copyUrl()
+      break
+    }
+
     case "killSameDomain": {
       Commands.killSameDomain()
       break

@@ -9,6 +9,7 @@
     "activeTab",
     "clipboardWrite",
     "clipboardRead",
+    "notifications",
     "declarativeContent",
     "storage"
   ],
@@ -54,6 +55,9 @@
     },
     "independent": {
       "description": "__MSG_independent__"
+    },
+    "copyUrl": {
+      "description": "__MSG_copyUrl__"
     },
     "toggle-mute": {
       "description": "__MSG_toggleMute__"

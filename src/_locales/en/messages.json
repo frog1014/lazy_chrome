@@ -85,6 +85,18 @@
             }
         }
     },
+    "copyUrl": {
+        "message": "Copy the URL of the current tab",
+        "description": ""
+    },
+    "copySuccessful": {
+        "message": "Copy URL successful",
+        "description": ""
+    },
+    "copyFailed": {
+        "message": "Copy URL failed",
+        "description": ""
+    },
     "prevent_clost_tab_splash4": {
         "message": "How to disable/enable: You will find the option by clicking the extension icon",
         "description": ""

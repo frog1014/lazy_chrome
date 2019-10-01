@@ -19,6 +19,19 @@ export default class Api {
         return helperdiv.value || "";
     }
 
+    static copyInjected(str) {
+        let bg = chrome.extension.getBackgroundPage(); // get the background page
+        bg.document.body.innerHTML = ''; // clear the background page
+
+        // add a DIV, contentEditable=true, to accept the paste action
+        bg.document.createElement("input").let(it => {
+            document.body.appendChild(it);
+            it.value = str
+            it.select();
+        })
+        return bg.document.execCommand("Copy");
+    }
+
     static setStorageData(map, callback) {
         return chrome.storage.sync.set(map, callback);
     }
@@ -84,6 +97,13 @@ export default class Api {
     static createTab(url) {
         return chrome.tabs.create({
             url: url || NEW_TAB_URL,
+        })
+    }
+
+    static createNotifications(id = '', notificationOptions = {}, callback) {
+        Object.assign({}, notificationOptions).let(it => {
+            console.log(it)
+            return chrome.notifications.create(id + (+new Date), it, callback)
         })
     }
 
