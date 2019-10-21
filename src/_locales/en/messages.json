@@ -106,7 +106,7 @@
         "description": ""
     },
     "bookmark_title_simplifier_tooltip": {
-        "message": "After dragging and adding a bookmark, the part after the symbol '-' in the title will be automatically removed",
+        "message": "After dragging and adding a bookmark, the part after the last symbol '-' in the title will be automatically removed",
         "description": ""
     },
     "prevent_clost_tab_splash4": {

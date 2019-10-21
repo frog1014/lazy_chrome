@@ -108,7 +108,7 @@
     "description": ""
   },
   "bookmark_title_simplifier_tooltip": {
-    "message": "在拖曳並加入書籤後，會自動將標題內的符號'-'後的部分移除",
+    "message": "在拖曳並加入書籤後，會自動將標題內的最後一個符號'-'後的部分移除",
     "description": ""
   },
   "popup_splash_prevent_close_tab_tooltip": {
