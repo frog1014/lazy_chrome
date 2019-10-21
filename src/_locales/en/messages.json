@@ -15,6 +15,10 @@
         "message": "Duplicate current tab",
         "description": ""
     },
+    "bookmarkRename": {
+        "message": "Bookmark title was simplified",
+        "description": ""
+    },
     "newTabWithUrl": {
         "message": "Open copied URL in a new tab",
         "description": ""
@@ -97,6 +101,14 @@
         "message": "Copy URL failed",
         "description": ""
     },
+    "bookmark_title_simplifier": {
+        "message": "Enable bookmark title simplifier (help?)",
+        "description": ""
+    },
+    "bookmark_title_simplifier_tooltip": {
+        "message": "After dragging and adding a bookmark, the part after the symbol '-' in the title will be automatically removed",
+        "description": ""
+    },
     "prevent_clost_tab_splash4": {
         "message": "How to disable/enable: You will find the option by clicking the extension icon",
         "description": ""
@@ -127,7 +139,7 @@
         "message": "Enabale the prevent close tab (help?)",
         "description": ""
     },
-    "popup_splash_prevent_close_tab_toolip": {
+    "popup_splash_prevent_close_tab_tooltip": {
         "message": "A tab for preventing the window from closing without user's confirm will be created automatically on the new window",
         "description": ""
     },

@@ -136,6 +136,7 @@ a.pure-button-primary {
 
 /* This is the subheading that appears on the blue section */
 #popup_splash_prevent_close_tab,
+#bookmark_title_simplifier_tooltip,
 .splash-subhead {
     color: white;
     letter-spacing: 0.05em;
