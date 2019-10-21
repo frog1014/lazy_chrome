@@ -1,5 +1,6 @@
 import {
     IS_PREVENT_CLOSE_TAB_TAG,
+    IS_BOOKMARK_TITLE_SIMPLIFIER_TAG,
     NEW_TAB_URL,
 } from "./common"
 export default class Api {
@@ -44,6 +45,12 @@ export default class Api {
     static isPreventClose(callback) {
         return chrome.storage.sync.get(IS_PREVENT_CLOSE_TAB_TAG, result => {
             callback(result[IS_PREVENT_CLOSE_TAB_TAG])
+        });
+    }
+
+    static isBookmarkTitleSimplifier(callback) {
+        return chrome.storage.sync.get(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG, result => {
+            callback(result[IS_BOOKMARK_TITLE_SIMPLIFIER_TAG])
         });
     }
 
@@ -92,6 +99,12 @@ export default class Api {
         return chrome.tabs.update(id, {
             'active': true
         })
+    }
+
+    static renameBookmark(id, title, callback) {
+        return chrome.bookmarks.update(id, {
+            title
+        }, callback)
     }
 
     static createTab(url) {

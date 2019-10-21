@@ -9,6 +9,7 @@
     "activeTab",
     "clipboardWrite",
     "clipboardRead",
+    "bookmarks",
     "notifications",
     "declarativeContent",
     "storage"

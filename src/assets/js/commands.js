@@ -1,6 +1,5 @@
 import {
     GOOGLE_SEARCH_URL,
-    WINDOW_ID_NONE,
     TAB_ID_NONE
 } from "./common.js"
 import Api from "./api"

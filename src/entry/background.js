@@ -168,3 +168,26 @@ chrome.commands.onCommand.addListener(command => {
     }
   }
 });
+
+
+chrome.bookmarks.onCreated.addListener((id, bookmarks) => {
+  console.log('bookmarks', bookmarks)
+  Api.isBookmarkTitleSimplifier(value => {
+    if (value && bookmarks.id) {
+      let newTitle = bookmarks.title.split('-')[0].trim()
+      let timtout = setTimeout(() => {
+        Api.renameBookmark(bookmarks.id, newTitle, () => {
+          ({
+            type: 'basic',
+            iconUrl: 'images/lazy_chrome48.png?raw=true',
+            'message': newTitle
+          }).let(it => {
+            it['title'] = "bookmarkRename".let(Api.getI18nMsg)
+            Api.createNotifications('bookmarkRename', it)
+          })
+          clearTimeout(timtout);
+        })
+      }, 333)
+    }
+  })
+})

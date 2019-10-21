@@ -95,11 +95,23 @@
     "message": "前往設定快速鍵<br/>(請捲動至Lazy Chrome區塊)",
     "description": ""
   },
+  "bookmarkRename": {
+    "message": "書籤名稱已簡化",
+    "description": ""
+},
   "popup_splash_prevent_close_tab": {
     "message": "啟用防關閉視窗 (說明)",
     "description": ""
   },
-  "popup_splash_prevent_close_tab_toolip": {
+  "bookmark_title_simplifier": {
+    "message": "啟用簡化書籤標題 (說明)",
+    "description": ""
+  },
+  "bookmark_title_simplifier_tooltip": {
+    "message": "在拖曳並加入書籤後，會自動將標題內的符號'-'後的部分移除",
+    "description": ""
+  },
+  "popup_splash_prevent_close_tab_tooltip": {
     "message": "在關閉瀏覽器視窗時，您將可以再次確認是否關閉。在每次開啟新視窗時將自動開啟防關閉分頁",
     "description": ""
   },
