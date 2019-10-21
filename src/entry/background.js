@@ -173,10 +173,10 @@ chrome.commands.onCommand.addListener(command => {
 chrome.bookmarks.onCreated.addListener((id, bookmarks) => {
   console.log('bookmarks', bookmarks)
   Api.isBookmarkTitleSimplifier(value => {
-    if (value && bookmarks.id && bookmarks.title.indexOf('-') > -1) {
-      let newTitle = bookmarks.title.split('-').let(it => {
-        it[it.length - 1] = false
-        return it.filter(e => e).join('-').trim()
+    if (value && bookmarks.id && bookmarks.title.indexOf(' - ') > -1) {
+      let newTitle = bookmarks.title.split(' - ').let(it => {
+        it[it.length - 1] = false;
+        return it.filter(e => e).join(' - ').trim()
       }) || bookmarks.title
 
       let timtout = setTimeout(() => {
