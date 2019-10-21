@@ -27,4 +27,5 @@ the default actions:
 - copy the URL of the current tab
 - prevent close tab (for preventing the window from closing without user's confirm)
 - go back to the previous tab(toggle 2 most recently used tabs (MRU))
+- simplify title of a bookmark created by dragging
 <!-- - go back to the previous tab of last window -->
