@@ -1,22 +1,26 @@
 {
   "appName": {
-    "message": "Lazy Chrome",
+    "message": "Lazy Mobile01",
     "description": "The title of the application, displayed in the web store."
   },
   "appDesc": {
-    "message": "讓您自定鍵盤快速鍵執行釘選分頁，複製分頁，分頁靜音，只留下相同網域的分頁等操作",
+    "message": "讓您自定鍵盤快速鍵切換上下頁、第一頁或最後一頁",
     "description": ""
   },
-  "togglePin": {
-    "message": "釘選(固定)分頁",
+  "nextPage": {
+    "message": "下一頁",
     "description": ""
   },
-  "duplicate": {
-    "message": "複製分頁",
+  "lastPage": {
+    "message": "最後一頁",
     "description": ""
   },
-  "copySuccessful": {
-    "message": "網址已複製",
+  "previousPage": {
+    "message": "上一頁",
+    "description": ""
+  },
+  "firstPage": {
+    "message": "第一頁",
     "description": ""
   },
   "copyFailed": {

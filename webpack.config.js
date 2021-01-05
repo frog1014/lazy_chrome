@@ -12,7 +12,8 @@ module.exports = {
     devtool: "source-map",
     entry: {
         background: './src/entry/background.js',
-        preventClose: './src/entry/prevent_close.js',
+        // preventClose: './src/entry/prevent_close.js',
+        contentScripts: './src/entry/content_scripts.js',
         popup: './src/entry/popup.js'
     },
     output: {
@@ -41,13 +42,13 @@ module.exports = {
             hash: true,
             chunks: ['popup']
         }),
-        new HtmlWebpackPlugin({
-            filename: 'prevent_close.html',
-            template: './src/view/prevent_close.html',
-            inject: true,
-            hash: true,
-            chunks: ['preventClose']
-        }),
+        // new HtmlWebpackPlugin({
+        //     filename: 'prevent_close.html',
+        //     template: './src/view/prevent_close.html',
+        //     inject: true,
+        //     hash: true,
+        //     chunks: ['preventClose']
+        // }),
     ],
     module: {
         rules: [{

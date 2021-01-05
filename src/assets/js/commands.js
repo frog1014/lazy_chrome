@@ -1,5 +1,6 @@
 import {
     GOOGLE_SEARCH_URL,
+    COMMAND_KEY,
     TAB_ID_NONE
 } from "./common.js"
 import Api from "./api"
@@ -25,6 +26,7 @@ function newTabWithStr(str) {
         })
     }
 }
+
 export default class Commands {
     static duplicate() {
         Api.getCurrentTab(tabs => {
@@ -83,6 +85,16 @@ export default class Commands {
             console.log(current)
             chrome.tabs.update(current.id, {
                 'muted': !current.mutedInfo.muted
+            });
+        });
+    }
+
+    static nextPage() {
+        Api.getCurrentTab(tabs => {
+            var current = tabs[0]
+            console.log('current', current)
+            chrome.tabs.sendMessage(current.id, {
+                [COMMAND_KEY]: 'nextPage'
             });
         });
     }

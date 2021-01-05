@@ -1,18 +1,14 @@
 {
-  "name": "Lazy Chrome",
-  "short_name": "Mouse Terminator",
-  "version": "0.2.5",
-  "default_locale": "en",
+  "name": "Lazy Mobile01",
+  "short_name": "Mouse Terminator for Mobile01",
+  "version": "0.0.1",
+  "default_locale": "zh_TW",
   "description": "__MSG_appDesc__",
   "permissions": [
     "tabs",
     "activeTab",
-    "clipboardWrite",
-    "clipboardRead",
-    "bookmarks",
-    "notifications",
     "declarativeContent",
-    "storage"
+    "https://www.mobile01.com/"
   ],
   "background": {
     "scripts": [
@@ -20,76 +16,55 @@
     ],
     "persistent": false
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.mobile01.com/topicdetail.php*"
+      ],
+      "js": ["contentScripts.js"],
+      "css": []
+    }
+  ],
   "commands": {
-    "toggle-pin": {
+    "nextPage": {
       "suggested_key": {
-        "default": "Alt+1"
+        "default": "Ctrl+Shift+C"
       },
-      "description": "__MSG_togglePin__"
+      "description": "__MSG_nextPage__"
     },
-    "duplicate": {
-      "suggested_key": {
-        "default": "Alt+3"
-      },
-      "description": "__MSG_duplicate__"
-    },
-    "newTabWithUrl": {
+    "lastPage": {
       "suggested_key": {
         "default": "Ctrl+Shift+V"
       },
-      "description": "__MSG_newTabWithUrl__"
+      "description": "__MSG_lastPage__"
     },
-    "openNotepad": {
-      "description": "__MSG_openNotepad__"
-    },
-    "keepSameDomain": {
-      "description": "__MSG_keepSameDomain__"
-    },
-    "killSameDomain": {
-      "description": "__MSG_killSameDomain__"
-    },
-    "killOtherSameDomain": {
-      "description": "__MSG_killOtherSameDomain__"
-    },
-    "newQueryWithSelected": {
-      "description": "__MSG_newQueryWithSelected__"
-    },
-    "independent": {
-      "description": "__MSG_independent__"
-    },
-    "copyUrl": {
-      "description": "__MSG_copyUrl__"
-    },
-    "toggle-mute": {
-      "description": "__MSG_toggleMute__"
-    },
-    "toShutUp": {
-      "description": "__MSG_toShutUp__"
-    },
-    "previousTabInSameWindow": {
-      "description": "__MSG_previousTabInSameWindow__"
-    },
-    "newQueryWithPasted": {
+    "previousPage": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Q"
+        "default": "Ctrl+Shift+X"
       },
-      "description": "__MSG_newQueryWithPasted__"
+      "description": "__MSG_previousPage__"
+    },
+    "firstPage": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Z"
+      },
+      "description": "__MSG_firstPage__"
     }
   },
-  "browser_action": {
+  "page_action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "images/lazy_chrome16.png",
-      "32": "images/lazy_chrome32.png",
-      "48": "images/lazy_chrome48.png",
-      "128": "images/lazy_chrome128.png"
+      "16": "images/launcher16.png",
+      "32": "images/launcher32.png",
+      "48": "images/launcher48.png",
+      "128": "images/launcher128.png"
     }
   },
   "icons": {
-    "16": "images/lazy_chrome16.png",
-    "32": "images/lazy_chrome32.png",
-    "48": "images/lazy_chrome48.png",
-    "128": "images/lazy_chrome128.png"
+    "16": "images/launcher16.png",
+    "32": "images/launcher32.png",
+    "48": "images/launcher48.png",
+    "128": "images/launcher128.png"
   },
   "manifest_version": 2
 }
