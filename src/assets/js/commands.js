@@ -1,7 +1,7 @@
 import {
-    GOOGLE_SEARCH_URL,
+    // GOOGLE_SEARCH_URL,
     COMMAND_KEY,
-    TAB_ID_NONE
+    // TAB_ID_NONE
 } from "./common.js"
 import Api from "./api"
 
@@ -27,6 +27,15 @@ function newTabWithStr(str) {
     }
 }
 
+function sendPageCommand(command) {
+    Api.getCurrentTab(tabs => {
+        var current = tabs[0]
+        console.log('current', current)
+        chrome.tabs.sendMessage(current.id, {
+            [COMMAND_KEY]: command
+        });
+    });
+}
 export default class Commands {
     static duplicate() {
         Api.getCurrentTab(tabs => {
@@ -89,14 +98,20 @@ export default class Commands {
         });
     }
 
+    
+
     static nextPage() {
-        Api.getCurrentTab(tabs => {
-            var current = tabs[0]
-            console.log('current', current)
-            chrome.tabs.sendMessage(current.id, {
-                [COMMAND_KEY]: 'nextPage'
-            });
-        });
+        sendPageCommand('next');
+    }
+
+    static previousPage() {
+        sendPageCommand('previousPage')
+    }
+    static lastPage() {
+        sendPageCommand('lastPage')
+    }
+    static firstPage() {
+        sendPageCommand('firstPage')
     }
 
     static independent() {

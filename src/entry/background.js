@@ -49,6 +49,18 @@ chrome.commands.onCommand.addListener(command => {
       Commands.nextPage()
       break
     }
+    case "previousPage": {
+      Commands.previousPage()
+      break
+    }
+    case "firstPage": {
+      Commands.firstPage()
+      break
+    }
+    case "lastPage": {
+      Commands.lastPage()
+      break
+    }
     case "toggle-pin": {
       Commands.togglePin()
       break
