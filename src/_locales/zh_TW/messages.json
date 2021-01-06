@@ -19,6 +19,10 @@
     "message": "上一頁",
     "description": ""
   },
+  "listPage": {
+    "message": "回列表頁",
+    "description": ""
+  },
   "firstPage": {
     "message": "第一頁",
     "description": ""

@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.mobile01.com/topicdetail.php*"
+        "https://www.mobile01.com/*"
       ],
       "js": ["contentScripts.js"],
       "css": []
@@ -28,13 +28,13 @@
   "commands": {
     "nextPage": {
       "suggested_key": {
-        "default": "Ctrl+Shift+C"
+        "default": "Ctrl+Right"
       },
       "description": "__MSG_nextPage__"
     },
     "lastPage": {
       "suggested_key": {
-        "default": "Ctrl+Shift+V"
+        "default": "Ctrl+Left"
       },
       "description": "__MSG_lastPage__"
     },
@@ -43,6 +43,9 @@
         "default": "Ctrl+Shift+X"
       },
       "description": "__MSG_previousPage__"
+    },
+    "listPage": {
+      "description": "__MSG_listPage__"
     },
     "firstPage": {
       "suggested_key": {

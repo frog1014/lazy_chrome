@@ -98,20 +98,26 @@ export default class Commands {
         });
     }
 
-    
+
 
     static nextPage() {
-        sendPageCommand('next');
+        sendPageCommand('nextPage');
     }
 
     static previousPage() {
         sendPageCommand('previousPage')
     }
+
     static lastPage() {
         sendPageCommand('lastPage')
     }
+
     static firstPage() {
         sendPageCommand('firstPage')
+    }
+
+    static listPage() {
+        sendPageCommand('listPage')
     }
 
     static independent() {

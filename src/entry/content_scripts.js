@@ -1,6 +1,8 @@
 import {
     COMMAND_KEY
 } from "../assets/js/common"
+import Api from "../assets/js/api"
+
 (function () {
     console.log("content_script")
     chrome.runtime.onMessage.addListener((msg, sender, res) => {
@@ -18,6 +20,9 @@ import {
                     break;
                 case "lastPage":
                     lastPage()
+                    break;
+                case "listPage":
+                    listPage()
                     break;
 
                 default:
@@ -64,6 +69,24 @@ import {
                 it[it.length - 1].click()
             }
         })
+    }
+
+    function getReturnPage() {
+        let ListReturnURL = undefined;
+        if (window.sessionStorage) {
+            ListReturnURL = window.sessionStorage.getItem('ListReturnURL');
+        }
+
+        console.log('ListReturnURL', ListReturnURL);
+        return ListReturnURL || ((new URL(document.location)).searchParams.get('f') || false).let(it => 'topiclist.php?f=' + it)
+    }
+
+    function returnList() {
+        window.location.href = getReturnPage();
+    }
+
+    function listPage() {
+        (document.querySelector('.c-icon--oBack') || false).let(it => it && returnList())
     }
 
 })(window)

@@ -1,6 +1,7 @@
 import {
     IS_PREVENT_CLOSE_TAB_TAG,
     IS_BOOKMARK_TITLE_SIMPLIFIER_TAG,
+    LIST_RETURN_URL,
     NEW_TAB_URL,
 } from "./common"
 export default class Api {
@@ -45,6 +46,13 @@ export default class Api {
     static isPreventClose(callback) {
         return chrome.storage.sync.get(IS_PREVENT_CLOSE_TAB_TAG, result => {
             callback(result[IS_PREVENT_CLOSE_TAB_TAG])
+        });
+    }
+
+    static getListReturnURL(callback) {
+        return chrome.storage.sync.get(LIST_RETURN_URL, result => {
+            console.log(result)
+            callback(result[LIST_RETURN_URL])
         });
     }
 

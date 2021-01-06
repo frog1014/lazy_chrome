@@ -25,16 +25,16 @@ chrome.runtime.onInstalled.addListener(function () {
   //   console.log("The color is green.");
   // });
 
-  // chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-  //   chrome.declarativeContent.onPageChanged.addRules([{
-  //     conditions: [new chrome.declarativeContent.PageStateMatcher({
-  //       pageUrl: {
-  //         hostEquals: 'developer.chrome.com'
-  //       },
-  //     })],
-  //     actions: [new chrome.declarativeContent.ShowPageAction()]
-  //   }]);
-  // });
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+    chrome.declarativeContent.onPageChanged.addRules([{
+      conditions: [new chrome.declarativeContent.PageStateMatcher({
+        pageUrl: {
+          hostEquals: 'www.mobile01.com'
+        },
+      })],
+      actions: [new chrome.declarativeContent.ShowPageAction()]
+    }]);
+  });
 });
 
 
@@ -47,6 +47,10 @@ chrome.commands.onCommand.addListener(command => {
   switch (command) {
     case "nextPage": {
       Commands.nextPage()
+      break
+    }
+    case "listPage": {
+      Commands.listPage()
       break
     }
     case "previousPage": {
