@@ -100,8 +100,14 @@
     "description": ""
   },
   "go_shortcut_setting": {
-    "message": "前往設定快速鍵<br/>(請捲動至Lazy Chrome區塊)",
-    "description": ""
+    "message": "前往設定快速鍵<br/>(請捲動至$name$區塊)",
+    "description": "",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": ""
+      }
+    }
   },
   "bookmarkRename": {
     "message": "書籤名稱已簡化",
@@ -124,7 +130,7 @@
     "description": ""
   },
   "feature_head": {
-    "message": "支援動作(預設快速鍵)",
+    "message": "支援動作(目前設定)",
     "description": ""
   },
   "features": {
