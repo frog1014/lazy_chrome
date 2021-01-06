@@ -37,6 +37,19 @@ import Api from "../assets/js/api"
             console.log('querySelector', it)
             if (it) {
                 it.click()
+            } else {
+                (document.querySelector('ul.l-pagination') || false).let(it => {
+                    if (it) {
+                        for (let key = 0; key < it.children.length; key++) {
+                            if (it.children[key].classList.contains('is-active')) {
+                                (it.children[key + 1] || false).let(it => {
+                                    it && (it.querySelector('a') || false).let(it => it && it.click())
+                                })
+                                return
+                            }
+                        }
+                    }
+                })
             }
         })
     }
@@ -47,6 +60,19 @@ import Api from "../assets/js/api"
             console.log('querySelector', it)
             if (it) {
                 it.click()
+            } else {
+                (document.querySelector('ul.l-pagination') || false).let(it => {
+                    if (it) {
+                        for (let key = 0; key < it.children.length; key++) {
+                            if (it.children[key].classList.contains('is-active')) {
+                                (it.children[key - 1] || false).let(it => {
+                                    it && (it.querySelector('a') || false).let(it => it && it.click())
+                                })
+                                return
+                            }
+                        }
+                    }
+                })
             }
         })
     }
