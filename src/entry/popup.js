@@ -63,11 +63,17 @@ import Api from "../assets/js/api"
         _.setAttribute('data-tip', Api.getI18nMsg("bookmark_title_simplifier_tooltip"))
     })
 
-    Api.getI18nMsg("features")
-        .let(it => '<ul>' + it.split(',').map(element => '<li>' + element.trim() + '</li>').join('') + '</ul>')
-        .let(it => Api.getI18nMsg("feature_head") + it + Api.getI18nMsg("features2", ['<br/>']))
-        .let(it => {
-            document.querySelector('#features').innerHTML = it
-        })
+    chrome.commands.getAll(function (res) {
+        console.log('getAll', res)
+        res && res.length > 0 && res.let(it => {
+            ('<ul>' + it.filter(element => (element.description.length + element.shortcut.length) > 0).map(element => '<li>' + element.description + ': ' + element.shortcut + '</li>').join('') + '</ul>')
+                .let(it => Api.getI18nMsg("feature_head") + it
+                    //  + Api.getI18nMsg("features2", ['<br/>'])
+                )
+                .let(it => {
+                    document.querySelector('#features').innerHTML = it
+                })
+        });
+    })
 
 })(window)
