@@ -34,22 +34,22 @@ export default class Api {
     }
 
     static setStorageData(map, callback) {
-        return chrome.storage.sync.set(map, callback);
+        return chrome.storage.local.set(map, callback);
     }
     static getStorageData(key, callback) {
-        return chrome.storage.sync.get(key, result => {
+        return chrome.storage.local.get(key, result => {
             callback(result[key])
         });
     }
 
     static isPreventClose(callback) {
-        return chrome.storage.sync.get(IS_PREVENT_CLOSE_TAB_TAG, result => {
+        return chrome.storage.local.get(IS_PREVENT_CLOSE_TAB_TAG, result => {
             callback(result[IS_PREVENT_CLOSE_TAB_TAG])
         });
     }
 
     static isBookmarkTitleSimplifier(callback) {
-        return chrome.storage.sync.get(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG, result => {
+        return chrome.storage.local.get(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG, result => {
             callback(result[IS_BOOKMARK_TITLE_SIMPLIFIER_TAG])
         });
     }
@@ -122,6 +122,22 @@ export default class Api {
 
     static getPreventCloseTabUrl() {
         return chrome.runtime.getURL("prevent_close.html") || ""
+    }
+
+    static async startAlarm(name, durationInMills) {
+        await chrome.alarms.create(name, { when: Date().now + durationInMills });
+    }
+
+    static async clearAlarm(name, callback) {
+        await chrome.alarms.clear(name, callback)
+    }
+
+    static onAlarm(name, callback) {
+        chrome.alarms.onAlarm.addListener((alarm) => {
+            if (alarm.name == name) {
+                callback()
+            }
+        });
     }
 
     static findLastTabElseHandler(param = {

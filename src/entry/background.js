@@ -9,12 +9,12 @@ import {
 
 'use strict';
 
-chrome.browserAction.onClicked.addListener(tab => {
-  console.log('browserAction', tab)
-  // chrome.tabs.create({
-  //   url: "chrome://extensions/shortcuts"
-  // })
-});
+// chrome.browserAction.onClicked.addListener(tab => {
+//   console.log('browserAction', tab)
+//   // chrome.tabs.create({
+//   //   url: "chrome://extensions/shortcuts"
+//   // })
+// });
 
 var windowsHistory = []
 
@@ -34,17 +34,17 @@ chrome.tabs.onActivated.addListener(info => {
   })
 })
 
-var windowsOnCreatedTimeount
+let windowsOnCreatedAlarm = "windowsOnCreatedAlarm"
 chrome.windows.onRemoved.addListener(windowId => {
   console.log('windows.onRemoved', windowId)
-  clearTimeout(windowsOnCreatedTimeount)
+  clearAlarm();
 })
 
 chrome.windows.onCreated.addListener(window => {
   console.log('windows.onCreated', window)
   Api.isPreventClose(value => {
     if (value && window.type == 'normal') {
-      windowsOnCreatedTimeount = setTimeout(() => {
+      Api.onAlarm(windowsOnCreatedAlarm, () => {
         try {
           chrome.tabs.query({
             windowId: window.id
@@ -57,25 +57,22 @@ chrome.windows.onCreated.addListener(window => {
               url: Api.getPreventCloseTabUrl(),
               pinned: true
             }, _ => {
-              clearTimeout(windowsOnCreatedTimeount)
+              clearAlarm();
             })
           })
         } catch (error) {
           console.error('windows.onCreated', error)
-          clearTimeout(windowsOnCreatedTimeount)
+          clearAlarm();
         }
-      }, 666)
+      })
+
+      Api.startAlarm(windowsOnCreatedAlarm, 666)
     }
   })
 })
 
 chrome.runtime.onInstalled.addListener(function () {
   console.log('onInstalled')
-  // chrome.storage.sync.set({
-  //   color: '#3aa757'
-  // }, function () {
-  //   console.log("The color is green.");
-  // });
 
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     chrome.declarativeContent.onPageChanged.addRules([{
@@ -179,7 +176,9 @@ chrome.bookmarks.onCreated.addListener((id, bookmarks) => {
         return it.filter(e => e).join(' - ').trim()
       }) || bookmarks.title
 
-      let timtout = setTimeout(() => {
+      const alarm = "chrome.bookmarks.onCreated";
+
+      Api.onAlarm(alarm, () => {
         Api.renameBookmark(bookmarks.id, newTitle, () => {
           ({
             type: 'basic',
@@ -189,9 +188,15 @@ chrome.bookmarks.onCreated.addListener((id, bookmarks) => {
             it['title'] = "bookmarkRename".let(Api.getI18nMsg)
             Api.createNotifications('bookmarkRename', it)
           })
-          clearTimeout(timtout);
+          Api.clearAlarm(alarm);
         })
-      }, 333)
+      })
+
+      Api.startAlarm(alarm, 333)
     }
   })
 })
+
+function clearAlarm() {
+  Api.clearAlarm(windowsOnCreatedAlarm);
+}
