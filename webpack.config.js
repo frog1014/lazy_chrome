@@ -13,7 +13,8 @@ module.exports = {
     entry: {
         background: './src/entry/background.js',
         preventClose: './src/entry/prevent_close.js',
-        popup: './src/entry/popup.js'
+        popup: './src/entry/popup.js',
+        offscreen: './src/entry/offscreen.js'
     },
     output: {
         filename: '[name].js',
@@ -40,6 +41,13 @@ module.exports = {
             inject: true,
             hash: true,
             chunks: ['popup']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'offscreen.html',
+            template: './src/view/offscreen.html',
+            inject: true,
+            hash: true,
+            chunks: ['offscreen']
         }),
         new HtmlWebpackPlugin({
             filename: 'prevent_close.html',
