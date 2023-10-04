@@ -6,18 +6,29 @@ import {
 export default class Api {
 
     static getPasted(callback) {
-        chrome.runtime.onMessage.addListener((msg) => {
+        let listener = (msg) => {
             if (msg.target !== 'offscreen-paste-done') {
                 return;
             }
-            callback( msg.data)
-        })
+            callback(msg.data)
+            chrome.runtime.onMessage.removeListener(listener)
+        }
 
-        addFromPasteToClipboard()
+        chrome.runtime.onMessage.addListener(listener)
+        return addFromPasteToClipboard()
     }
 
-    static async copyInjected(str) {
-        return await addToClipboard(str)
+    static copyInjected(str,callback) {
+        let listener = (msg) => {
+            if (msg.target !== 'offscreen-copy-done') {
+                return;
+            }
+            callback(msg.data)
+            chrome.runtime.onMessage.removeListener(listener)
+        }
+
+        chrome.runtime.onMessage.addListener(listener)
+        return addToClipboard(str)
     }
 
     static setStorageData(map, callback) {

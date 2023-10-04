@@ -139,17 +139,12 @@ export default class Commands {
                     iconUrl: 'images/lazy_chrome48.png?raw=true',
                     'message': url
                 }).let(it => {
-                    chrome.runtime.onMessage.addListener((msg) => {
-                        if (msg.target !== 'offscreen-copy-done') {
-                            return;
-                        }
-
-                        console.log(msg)
-                        it['title'] = (msg.data ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
+                    let callback = (result) => {
+                        it['title'] = (result ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
                         Api.createNotifications('copyInjected', it)
-                    })
+                    }
 
-                    Api.copyInjected(url)
+                    Api.copyInjected(url, callback)
                 })
             })
         })
