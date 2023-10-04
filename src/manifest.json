@@ -10,6 +10,7 @@
     "clipboardWrite",
     "clipboardRead",
     "bookmarks",
+    "alarms",
     "notifications",
     "declarativeContent",
     "storage"
