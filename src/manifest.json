@@ -1,7 +1,7 @@
 {
   "name": "Lazy Chrome",
   "short_name": "Mouse Terminator",
-  "version": "0.2.6",
+  "version": "0.3",
   "default_locale": "en",
   "description": "__MSG_appDesc__",
   "permissions": [
@@ -15,10 +15,8 @@
     "storage"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": false
+    "service_worker": "background.js",
+    "type": "module"
   },
   "commands": {
     "toggle-pin": {
@@ -76,7 +74,7 @@
       "description": "__MSG_newQueryWithPasted__"
     }
   },
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_icon": {
       "16": "images/lazy_chrome16.png",
@@ -91,5 +89,5 @@
     "48": "images/lazy_chrome48.png",
     "128": "images/lazy_chrome128.png"
   },
-  "manifest_version": 2
+  "manifest_version": 3
 }
