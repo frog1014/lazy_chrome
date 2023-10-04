@@ -5,19 +5,15 @@ import {
 } from "./common"
 export default class Api {
 
-    static getPasted() {
-        let bg = chrome.extension.getBackgroundPage(); // get the background page
-        bg.document.body.innerHTML = ""; // clear the background page
+    static getPasted(callback) {
+        chrome.runtime.onMessage.addListener((msg) => {
+            if (msg.target !== 'offscreen-paste-done') {
+                return;
+            }
+            callback( msg.data)
+        })
 
-        // add a DIV, contentEditable=true, to accept the paste action
-        var helperdiv = bg.document.createElement("input");
-        document.body.appendChild(helperdiv);
-        helperdiv.focus();
-        // trigger the paste action
-        bg.document.execCommand("Paste");
-
-        // read the clipboard contents from the helperdiv
-        return helperdiv.value || "";
+        addFromPasteToClipboard()
     }
 
     static async copyInjected(str) {
@@ -149,8 +145,16 @@ export default class Api {
     }
 }
 
+const offScreenFile = 'offscreen.html';
+async function addFromPasteToClipboard() {
+    await setupOffscreenDocument(offScreenFile);;
+    chrome.runtime.sendMessage({
+        type: 'copy-paste-data-to-clipboard',
+        target: 'offscreen-doc',
+    });
+}
 async function addToClipboard(value) {
-    await setupOffscreenDocument('offscreen.html');;
+    await setupOffscreenDocument(offScreenFile);;
     // Now that we have an offscreen document, we can dispatch the
     // message.
     chrome.runtime.sendMessage({

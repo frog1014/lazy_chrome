@@ -126,10 +126,9 @@ export default class Commands {
         })
     }
     static newQueryWithPasted() {
-        var clipboardContents = Api.getPasted()
-        chrome.tabs.create({
+        Api.getPasted((clipboardContents) => chrome.tabs.create({
             url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || '')
-        })
+        }))
     }
 
     static copyUrl() {
@@ -141,7 +140,7 @@ export default class Commands {
                     'message': url
                 }).let(it => {
                     chrome.runtime.onMessage.addListener((msg) => {
-                        if (msg.target !== 'offscreen-done') {
+                        if (msg.target !== 'offscreen-copy-done') {
                             return;
                         }
 
@@ -157,8 +156,7 @@ export default class Commands {
     }
 
     static newTabWithUrl() {
-        let clipboardContents = Api.getPasted()
-        newTabWithStr(clipboardContents)
+        Api.getPasted((clipboardContents) => newTabWithStr(clipboardContents))
     }
 
     static keepSameDomain() {

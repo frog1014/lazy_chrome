@@ -37,6 +37,9 @@ async function handleMessages(message) {
     case 'copy-data-to-clipboard':
       handleClipboardWrite(message.data);
       break;
+    case 'copy-paste-data-to-clipboard':
+      handleClipboardRead();
+      break;
     default:
       console.warn(`Unexpected message type received: '${message.type}'.`);
   }
@@ -70,8 +73,25 @@ async function handleClipboardWrite(data) {
 
     await chrome.runtime.sendMessage({
       type: 'copy-data-to-clipboard',
-      target: 'offscreen-done',
+      target: 'offscreen-copy-done',
       data: document.execCommand('copy')
+    })
+  } finally {
+    // Job's done! Close the offscreen document.
+    window.close();
+    chrome.offscreen.closeDocument()
+  }
+}
+async function handleClipboardRead() {
+  try {
+    textEl.value=''
+    textEl.focus();
+    document.execCommand('paste')
+    
+    await chrome.runtime.sendMessage({
+      type: 'copy-paste-data-to-clipboard',
+      target: 'offscreen-paste-done',
+      data: textEl.value
     })
   } finally {
     // Job's done! Close the offscreen document.
