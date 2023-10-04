@@ -17,7 +17,6 @@ import {
 // });
 
 var windowsHistory = []
-
 chrome.tabs.onActivated.addListener(info => {
   console.log('onActivated', info);
   (windowsHistory.find(e => e.windowId == info.windowId) || false).let(it => {
@@ -34,7 +33,7 @@ chrome.tabs.onActivated.addListener(info => {
   })
 })
 
-let windowsOnCreatedAlarm = "windowsOnCreatedAlarm"
+const windowsOnCreatedAlarm = "windowsOnCreatedAlarm"
 chrome.windows.onRemoved.addListener(windowId => {
   console.log('windows.onRemoved', windowId)
   clearAlarm();

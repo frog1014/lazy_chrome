@@ -20,17 +20,8 @@ export default class Api {
         return helperdiv.value || "";
     }
 
-    static copyInjected(str) {
-        let bg = chrome.extension.getBackgroundPage(); // get the background page
-        bg.document.body.innerHTML = ''; // clear the background page
-
-        // add a DIV, contentEditable=true, to accept the paste action
-        bg.document.createElement("input").let(it => {
-            document.body.appendChild(it);
-            it.value = str
-            it.select();
-        })
-        return bg.document.execCommand("Copy");
+    static async copyInjected(str) {
+        return await addToClipboard(str)
     }
 
     static setStorageData(map, callback) {
@@ -116,7 +107,7 @@ export default class Api {
     static createNotifications(id = '', notificationOptions = {}, callback) {
         Object.assign({}, notificationOptions).let(it => {
             console.log(it)
-            return chrome.notifications.create(id + (+new Date), it, callback)
+            return chrome.notifications.create(id + Api.getNow(), it, callback)
         })
     }
 
@@ -125,7 +116,11 @@ export default class Api {
     }
 
     static async startAlarm(name, durationInMills) {
-        await chrome.alarms.create(name, { when: Date().now + durationInMills });
+        await chrome.alarms.create(name, { when: Api.getNow() + durationInMills });
+    }
+
+    static getNow() {
+        return +new Date;
     }
 
     static async clearAlarm(name, callback) {
@@ -151,5 +146,44 @@ export default class Api {
                 tabs.length > 0 && Api.activeTab(tabs[tabs.length - 1].id);
                 (tabs.length < 1 || (tabs.length == 1 && tabs[0].url == Api.getPreventCloseTabUrl())) && Api.createTab()
             })
+    }
+}
+
+async function addToClipboard(value) {
+    await setupOffscreenDocument('offscreen.html');;
+    // Now that we have an offscreen document, we can dispatch the
+    // message.
+    chrome.runtime.sendMessage({
+        type: 'copy-data-to-clipboard',
+        target: 'offscreen-doc',
+        data: value
+    });
+}
+
+let creating; // A global promise to avoid concurrency issues
+async function setupOffscreenDocument(path) {
+    // Check all windows controlled by the service worker to see if one 
+    // of them is the offscreen document with the given path
+    const offscreenUrl = chrome.runtime.getURL(path);
+    const existingContexts = await chrome.runtime.getContexts({
+        contextTypes: ['OFFSCREEN_DOCUMENT'],
+        documentUrls: [offscreenUrl]
+    });
+
+    if (existingContexts.length > 0) {
+        return;
+    }
+
+    // create offscreen document
+    if (creating) {
+        await creating;
+    } else {
+        creating = chrome.offscreen.createDocument({
+            url: path,
+            reasons: ['CLIPBOARD'],
+            justification: 'Write text to the clipboard.',
+        });
+        await creating;
+        creating = null;
     }
 }

@@ -10,9 +10,11 @@
     "clipboardWrite",
     "clipboardRead",
     "bookmarks",
+    "scripting",
     "alarms",
     "notifications",
     "declarativeContent",
+    "offscreen",
     "storage"
   ],
   "background": {

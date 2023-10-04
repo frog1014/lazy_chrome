@@ -111,16 +111,19 @@ export default class Commands {
         })
     }
     static newQueryWithSelected() {
-        chrome.tabs.executeScript({
-            code: 'window.getSelection().toString();'
-        }, selection => {
-            if (selection) {
-                let clipboardContents = selection[0]
-                newTabWithStr(clipboardContents)
-            } else {
-                alert('Not support on this page')
-            }
-        });
+        Api.getCurrentTab((tabs) => {
+            chrome.scripting.executeScript({
+                target: { tabId: tabs[0].id },
+                func: () => window.getSelection().toString()
+            }).then((result) => {
+                if (result) {
+                    let clipboardContents = result[0].result
+                    newTabWithStr(clipboardContents)
+                } else {
+                    alert('Not support on this page')
+                }
+            });
+        })
     }
     static newQueryWithPasted() {
         var clipboardContents = Api.getPasted()
@@ -137,8 +140,17 @@ export default class Commands {
                     iconUrl: 'images/lazy_chrome48.png?raw=true',
                     'message': url
                 }).let(it => {
-                    it['title'] = (Api.copyInjected(url) ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
-                    Api.createNotifications('copyInjected', it)
+                    chrome.runtime.onMessage.addListener((msg) => {
+                        if (msg.target !== 'offscreen-done') {
+                            return;
+                        }
+
+                        console.log(msg)
+                        it['title'] = (msg.data ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
+                        Api.createNotifications('copyInjected', it)
+                    })
+
+                    Api.copyInjected(url)
                 })
             })
         })
@@ -223,8 +235,8 @@ export default class Commands {
                             tabs.forEach(tab => {
                                 var domain = (new URL(tab.url)).hostname
                                 if (!(domain != currentDomain &&
-                                        ((value && tab.url != preventCloseTabUrl) ||
-                                            !value))) {
+                                    ((value && tab.url != preventCloseTabUrl) ||
+                                        !value))) {
                                     it.push(tab.id)
                                 }
                             })
