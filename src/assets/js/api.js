@@ -23,6 +23,17 @@ export default class Api {
         return addFromPasteToClipboard()
     }
 
+    static async chromeCommandsGetAll() {
+        return await chrome.commands.getAll()
+    }
+
+    static async createTab(param) {
+        let finalParam = param || {
+            url: NEW_TAB_URL,
+        }
+        return await chrome.tabs.create(finalParam)
+    }
+
     static copyInjected(str, callback) {
         let listener = (msg) => {
             console.log(msg)
@@ -75,6 +86,9 @@ export default class Api {
     static getWindow(id, callback, param = {}) {
         return chrome.windows.get(id, param, callback)
     }
+    static offscreenCloseDocument() {
+        chrome.offscreen.closeDocument()
+    }
 
     static getTabs(callback) {
         return chrome.tabs.query({
@@ -107,6 +121,9 @@ export default class Api {
     static runtimeOnMessageAddListener(listener) {
         chrome.runtime.onMessage.addListener(listener)
     }
+    static async chromeRuntimeSendMessage(msg) {
+        await chrome.runtime.sendMessage(msg)
+    }
     static runtimeOnMessageRemoveListener(listener) {
         chrome.runtime.onMessage.removeListener(listener)
     }
@@ -114,12 +131,6 @@ export default class Api {
         return chrome.bookmarks.update(id, {
             title
         }, callback)
-    }
-
-    static createTab(url) {
-        return chrome.tabs.create({
-            url: url || NEW_TAB_URL,
-        })
     }
 
     static createNotifications(id = '', notificationOptions = {}, callback) {
@@ -170,7 +181,7 @@ export default class Api {
 const offScreenFile = 'offscreen.html';
 async function addFromPasteToClipboard() {
     await setupOffscreenDocument(offScreenFile)
-    chrome.runtime.sendMessage({
+    Api.chromeRuntimeSendMessage({
         type: COPY_PASTE_DATA_TO_CLIPBOARD_MSG_TYPE,
         target: 'offscreen-doc',
     });
@@ -179,7 +190,7 @@ async function addToClipboard(value) {
     await setupOffscreenDocument(offScreenFile)
     // Now that we have an offscreen document, we can dispatch the
     // message.
-    chrome.runtime.sendMessage({
+    Api.chromeRuntimeSendMessage({
         type: COPY_DATA_TO_CLIPBOARD_MSG_TYPE,
         target: 'offscreen-doc',
         data: value

@@ -25,7 +25,7 @@ chrome.tabs.onActivated.addListener(info => {
     windowsHistory.push(info)
     windowsHistory = windowsHistory.filter(e => e.windowId != WINDOW_ID_NONE);
     console.log('windowsHistory', windowsHistory);
-    chrome.runtime.sendMessage({
+    Api.chromeRuntimeSendMessage({
       activatedObj: info,
       type: ACTIVATED_OBJ_MSG_TYPE,
       target: ACTIVATED_OBJ_MSG_TARGET
@@ -47,17 +47,16 @@ chrome.windows.onCreated.addListener(window => {
         try {
           chrome.tabs.query({
             windowId: window.id
-          }, tabs => {
+          }, async tabs => {
             tabs.forEach(tab => {
               tab.url == Api.getPreventCloseTabUrl() && chrome.tabs.remove(tab.id)
             })
-            chrome.tabs.create({
+            await Api.createTab({
               windowId: window.id,
               url: Api.getPreventCloseTabUrl(),
               pinned: true
-            }, _ => {
-              clearAlarm();
             })
+            clearAlarm();
           })
         } catch (error) {
           console.error('windows.onCreated', error)

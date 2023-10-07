@@ -14,7 +14,7 @@ function newTabWithStr(str) {
             if (it.host.length == 0 || it.hostname.length == 0) throw ('invalid URL');
 
             ((it.href || GOOGLE_SEARCH_URL + (encodeURIComponent(str) || "")) || 'https://www.google.com/').let(newUrl => {
-                chrome.tabs.create({
+                Api.createTab({
                     url: newUrl
                 })
             });
@@ -22,7 +22,7 @@ function newTabWithStr(str) {
     } catch (error) {
         console.error(error)
         const newLocal = (encodeURIComponent(str) || "")
-        chrome.tabs.create({
+        Api.createTab({
             url: GOOGLE_SEARCH_URL + newLocal
         })
     }

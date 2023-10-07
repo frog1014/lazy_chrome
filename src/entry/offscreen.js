@@ -79,7 +79,7 @@ async function handleClipboardWrite(data) {
     textEl.value = data;
     textEl.select();
 
-    await chrome.runtime.sendMessage({
+    await Api.chromeRuntimeSendMessage({
       type: COPY_DATA_TO_CLIPBOARD_MSG_TYPE,
       target: OFFSCREEN_COPY_DONE_MSG_TARGET,
       data: document.execCommand('copy')
@@ -87,7 +87,7 @@ async function handleClipboardWrite(data) {
   } finally {
     // Job's done! Close the offscreen document.
     window.close();
-    chrome.offscreen.closeDocument()
+    Api.offscreenCloseDocument()
   }
 }
 async function handleClipboardRead() {
@@ -96,7 +96,7 @@ async function handleClipboardRead() {
     textEl.focus();
     document.execCommand('paste')
 
-    await chrome.runtime.sendMessage({
+    await Api.chromeRuntimeSendMessage({
       type: COPY_PASTE_DATA_TO_CLIPBOARD_MSG_TYPE,
       target: OFFSCREEN_PASTE_DONE_MSG_TARGET,
       data: textEl.value
@@ -104,6 +104,6 @@ async function handleClipboardRead() {
   } finally {
     // Job's done! Close the offscreen document.
     window.close();
-    chrome.offscreen.closeDocument()
+    Api.offscreenCloseDocument()
   }
 }
