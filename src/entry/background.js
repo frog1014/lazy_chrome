@@ -1,22 +1,20 @@
 import Api from "../assets/js/api"
-import Commands from "../assets/js/commands.js"
+import Commands from "../assets/js/commands"
+import {
+  ACTIVATED_OBJ_MSG_TYPE,
+  ACTIVATED_OBJ_MSG_TARGET,
+} from "../assets/js/common"
 import {
   WINDOW_ID_NONE,
-} from "../assets/js/common"
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+} from "../assets/js/common_api"
 
 'use strict';
 
-// chrome.browserAction.onClicked.addListener(tab => {
-//   console.log('browserAction', tab)
-//   // chrome.tabs.create({
-//   //   url: "chrome://extensions/shortcuts"
-//   // })
-// });
-
 var windowsHistory = []
+chrome.runtime.onMessage.addListener((res) => {
+  console.log('backgroundJs', res)
+})
+
 chrome.tabs.onActivated.addListener(info => {
   console.log('onActivated', info);
   (windowsHistory.find(e => e.windowId == info.windowId) || false).let(it => {
@@ -28,7 +26,9 @@ chrome.tabs.onActivated.addListener(info => {
     windowsHistory = windowsHistory.filter(e => e.windowId != WINDOW_ID_NONE);
     console.log('windowsHistory', windowsHistory);
     chrome.runtime.sendMessage({
-      activatedObj: info
+      activatedObj: info,
+      type: ACTIVATED_OBJ_MSG_TYPE,
+      target: ACTIVATED_OBJ_MSG_TARGET
     });
   })
 })

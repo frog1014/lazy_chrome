@@ -1,7 +1,9 @@
 import {
     GOOGLE_SEARCH_URL,
-    TAB_ID_NONE
 } from "./common.js"
+import {
+    TAB_ID_NONE
+} from "./common_api.js"
 import Api from "./api"
 
 function newTabWithStr(str) {

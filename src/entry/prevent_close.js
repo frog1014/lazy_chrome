@@ -1,6 +1,10 @@
 import {
+    ACTIVATED_OBJ_MSG_TYPE,
+    ACTIVATED_OBJ_MSG_TARGET,
+} from '../assets/js/common'
+import {
     TAB_ID_NONE,
-} from '../assets/js/common.js'
+} from '../assets/js/common_api'
 import '../assets/css/tab.css'
 import Api from "../assets/js/api"
 
@@ -11,6 +15,7 @@ import Api from "../assets/js/api"
             return "Would you really like to close your browser?";
         }
 
+        // when clicking on the page, return to last tab user watches
         if (lastTabId > TAB_ID_NONE) {
             Api.getTabById(lastTabId, isFind => {
                 isFind && Api.activeTab(lastTabId);
@@ -35,9 +40,9 @@ import Api from "../assets/js/api"
     var lastTabId = TAB_ID_NONE
     chrome.runtime.onMessage.addListener((msg, sender, res) => {
         console.log('onMessage', msg)
-        msg && msg.activatedObj && Api.getCurrentWindow(window => {
+        msg.type == ACTIVATED_OBJ_MSG_TYPE && msg.target == ACTIVATED_OBJ_MSG_TARGET && msg && msg.activatedObj && Api.getCurrentWindow(window => {
             console.log('window', window);
-            if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId){
+            if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId) {
                 lastTabId = msg.activatedObj.lastId
             }
         })

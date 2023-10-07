@@ -1,13 +1,18 @@
 import {
     IS_PREVENT_CLOSE_TAB_TAG,
     IS_BOOKMARK_TITLE_SIMPLIFIER_TAG,
+    COPY_PASTE_DATA_TO_CLIPBOARD_MSG_TYPE,
+    COPY_DATA_TO_CLIPBOARD_MSG_TYPE,
+    OFFSCREEN_PASTE_DONE_MSG_TARGET,
+    OFFSCREEN_COPY_DONE_MSG_TARGET,
     NEW_TAB_URL,
 } from "./common"
 export default class Api {
 
     static getPasted(callback) {
         let listener = (msg) => {
-            if (msg.target !== 'offscreen-paste-done') {
+            console.log(msg)
+            if (msg.target !== OFFSCREEN_PASTE_DONE_MSG_TARGET) {
                 return;
             }
             callback(msg.data)
@@ -18,9 +23,10 @@ export default class Api {
         return addFromPasteToClipboard()
     }
 
-    static copyInjected(str,callback) {
+    static copyInjected(str, callback) {
         let listener = (msg) => {
-            if (msg.target !== 'offscreen-copy-done') {
+            console.log(msg)
+            if (msg.target !== OFFSCREEN_COPY_DONE_MSG_TARGET) {
                 return;
             }
             callback(msg.data)
@@ -31,13 +37,12 @@ export default class Api {
         return addToClipboard(str)
     }
 
-    static setStorageData(map, callback) {
-        return chrome.storage.local.set(map, callback);
+    static async setStorageData(map) {
+        return await chrome.storage.local.set(map);
     }
-    static getStorageData(key, callback) {
-        return chrome.storage.local.get(key, result => {
-            callback(result[key])
-        });
+    static async getStorageData(key) {
+        let result = await chrome.storage.local.get(key)
+        return result[key]
     }
 
     static isPreventClose(callback) {
@@ -158,18 +163,18 @@ export default class Api {
 
 const offScreenFile = 'offscreen.html';
 async function addFromPasteToClipboard() {
-    await setupOffscreenDocument(offScreenFile);;
+    await setupOffscreenDocument(offScreenFile)
     chrome.runtime.sendMessage({
-        type: 'copy-paste-data-to-clipboard',
+        type: COPY_PASTE_DATA_TO_CLIPBOARD_MSG_TYPE,
         target: 'offscreen-doc',
     });
 }
 async function addToClipboard(value) {
-    await setupOffscreenDocument(offScreenFile);;
+    await setupOffscreenDocument(offScreenFile)
     // Now that we have an offscreen document, we can dispatch the
     // message.
     chrome.runtime.sendMessage({
-        type: 'copy-data-to-clipboard',
+        type: COPY_DATA_TO_CLIPBOARD_MSG_TYPE,
         target: 'offscreen-doc',
         data: value
     });

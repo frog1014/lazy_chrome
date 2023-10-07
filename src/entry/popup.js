@@ -18,38 +18,33 @@ import Api from "../assets/js/api"
         })
     })
 
-    document.querySelector('#check-prevent-close-tab').let(it => {
-        Api.getStorageData(IS_PREVENT_CLOSE_TAB_TAG, value => {
-            it.checked = value
-        })
+    document.querySelector('#check-prevent-close-tab').let(async it => {
+        it.checked = await Api.getStorageData(IS_PREVENT_CLOSE_TAB_TAG)
 
-        it.addEventListener('change', e => {
-            Api.setStorageData({
+        it.addEventListener('change', async e => {
+            await Api.setStorageData({
                 [IS_PREVENT_CLOSE_TAB_TAG]: e.target.checked
-            }, _ => {
-                console.log('ok')
-                e.target.checked && Api.getTabs(tabs => {
-                    var targetUrl = Api.getPreventCloseTabUrl();
-                    !tabs.find(tab => tab.url == targetUrl) && chrome.tabs.create({
-                        url: targetUrl,
-                        pinned: true
-                    })
+            })
+
+            console.log('ok')
+            e.target.checked && Api.getTabs(tabs => {
+                var targetUrl = Api.getPreventCloseTabUrl();
+                !tabs.find(tab => tab.url == targetUrl) && chrome.tabs.create({
+                    url: targetUrl,
+                    pinned: true
                 })
             })
         })
     })
 
-    document.querySelector('#check-bookmark-title-simplifier').let(it => {
-        Api.getStorageData(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG, value => {
-            it.checked = value
-        })
+    document.querySelector('#check-bookmark-title-simplifier').let(async it => {
+        it.checked = await Api.getStorageData(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG)
 
-        it.addEventListener('change', e => {
-            Api.setStorageData({
+        it.addEventListener('change', async e => {
+            await Api.setStorageData({
                 [IS_BOOKMARK_TITLE_SIMPLIFIER_TAG]: e.target.checked
-            }, _ => {
-                console.log('ok')
             })
+            console.log('ok')
         })
     })
 
@@ -65,7 +60,7 @@ import Api from "../assets/js/api"
 
     chrome.commands.getAll(function (res) {
         console.log('getAll', res)
-        res && res.length > 0 && res.let(it => {
+        res && res.length > 0 && res.filter(e => e.name != '_execute_action').let(it => {
             ('<ul>' + it.filter(element => (element.description.length + element.shortcut.length) > 0).map(element => '<li>' + element.description + ': ' + element.shortcut + '</li>').join('') + '</ul>')
                 .let(it => Api.getI18nMsg("feature_head") + it
                     //  + Api.getI18nMsg("features2", ['<br/>'])
