@@ -81,8 +81,8 @@ export default class Api {
         return chrome.windows.getLastFocused(param, callback)
     }
 
-    static getCurrentWindow(callback, param = {}) {
-        return chrome.windows.getCurrent(param, callback)
+    static async getCurrentWindow(param = {}) {
+        return await chrome.windows.getCurrent(param)
     }
 
     static async getWindow(id, param = {}) {
@@ -112,12 +112,15 @@ export default class Api {
         }, callback)
     }
 
-    static activeTab(id) {
-        return chrome.tabs.update(id, {
+    static async activeTab(id) {
+        return await Api.updateTabs(id, {
             'active': true
         })
     }
 
+    static async updateTabs(id, param) {
+        return await chrome.tabs.update(id, param)
+    }
     static runtimeOnMessageAddListener(listener) {
         chrome.runtime.onMessage.addListener(listener)
     }

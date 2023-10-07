@@ -40,12 +40,15 @@ import Api from "../assets/js/api"
     var lastTabId = TAB_ID_NONE
     Api.runtimeOnMessageAddListener((msg, sender, res) => {
         console.log('onMessage', msg)
-        msg.type == ACTIVATED_OBJ_MSG_TYPE && msg.target == ACTIVATED_OBJ_MSG_TARGET && msg && msg.activatedObj && Api.getCurrentWindow(window => {
-            console.log('window', window);
-            if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId) {
-                lastTabId = msg.activatedObj.lastId
-            }
-        })
+        msg.type == ACTIVATED_OBJ_MSG_TYPE &&
+            msg.target == ACTIVATED_OBJ_MSG_TARGET &&
+            msg.activatedObj &&
+            Api.getCurrentWindow(window).then(window => {
+                console.log('window', window);
+                if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId) {
+                    lastTabId = msg.activatedObj.lastId
+                }
+            })
     })
 
     document.let(it => {
