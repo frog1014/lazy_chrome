@@ -43,21 +43,20 @@ chrome.windows.onCreated.addListener(window => {
   console.log('windows.onCreated', window)
   Api.isPreventClose(value => {
     if (value && window.type == 'normal') {
-      Api.onAlarm(windowsOnCreatedAlarm, () => {
+      Api.onAlarm(windowsOnCreatedAlarm, async () => {
         try {
-          chrome.tabs.query({
+          let tabs = await Api.queryTabs({
             windowId: window.id
-          }, async tabs => {
-            tabs.forEach(tab => {
-              tab.url == Api.getPreventCloseTabUrl() && chrome.tabs.remove(tab.id)
-            })
-            await Api.createTab({
-              windowId: window.id,
-              url: Api.getPreventCloseTabUrl(),
-              pinned: true
-            })
-            clearAlarm();
           })
+          tabs.forEach(tab => {
+            tab.url == Api.getPreventCloseTabUrl() && chrome.tabs.remove(tab.id)
+          })
+          await Api.createTab({
+            windowId: window.id,
+            url: Api.getPreventCloseTabUrl(),
+            pinned: true
+          })
+          clearAlarm();
         } catch (error) {
           console.error('windows.onCreated', error)
           clearAlarm();
