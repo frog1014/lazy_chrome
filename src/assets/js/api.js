@@ -64,16 +64,12 @@ export default class Api {
         return result[key]
     }
 
-    static isPreventClose(callback) {
-        return chrome.storage.local.get(IS_PREVENT_CLOSE_TAB_TAG, result => {
-            callback(result[IS_PREVENT_CLOSE_TAB_TAG])
-        });
+    static async isPreventClose() {
+        return (await chrome.storage.local.get(IS_PREVENT_CLOSE_TAB_TAG)).let(result => result[IS_PREVENT_CLOSE_TAB_TAG]);
     }
 
-    static isBookmarkTitleSimplifier(callback) {
-        return chrome.storage.local.get(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG, result => {
-            callback(result[IS_BOOKMARK_TITLE_SIMPLIFIER_TAG])
-        });
+    static async isBookmarkTitleSimplifier() {
+        return (await chrome.storage.local.get(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG)).let(result => result[IS_BOOKMARK_TITLE_SIMPLIFIER_TAG]);
     }
 
     static async getCurrentTab() {
@@ -145,10 +141,10 @@ export default class Api {
     static runtimeOnMessageRemoveListener(listener) {
         chrome.runtime.onMessage.removeListener(listener)
     }
-    static renameBookmark(id, title, callback) {
-        return chrome.bookmarks.update(id, {
+    static async renameBookmark(id, title) {
+        return await chrome.bookmarks.update(id, {
             title
-        }, callback)
+        })
     }
 
     static createNotifications(id = '', notificationOptions = {}, callback) {
