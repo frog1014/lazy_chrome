@@ -25,11 +25,13 @@ chrome.tabs.onActivated.addListener(info => {
     windowsHistory.push(info)
     windowsHistory = windowsHistory.filter(e => e.windowId != WINDOW_ID_NONE);
     console.log('windowsHistory', windowsHistory);
-    Api.chromeRuntimeSendMessage({
-      activatedObj: info,
-      type: ACTIVATED_OBJ_MSG_TYPE,
-      target: ACTIVATED_OBJ_MSG_TARGET
-    });
+    Api.isPreventClosePageCreated().then(res => {
+      res && Api.chromeRuntimeSendMessage({
+        activatedObj: info,
+        type: ACTIVATED_OBJ_MSG_TYPE,
+        target: ACTIVATED_OBJ_MSG_TARGET
+      })
+    })
   })
 })
 

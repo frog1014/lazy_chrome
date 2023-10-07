@@ -42,6 +42,16 @@ export default class Api {
         return await chrome.windows.create(param)
     }
 
+    static async isPreventClosePageCreated() {
+        let tabs = await Api.queryTabs({
+            currentWindow: true,
+            pinned: false
+        });
+        var preventCloseTabUrl = Api.getPreventCloseTabUrl()
+
+        return await tabs.find(tab => tab.url == preventCloseTabUrl)
+    }
+
     static copyInjected(str, callback) {
         let listener = (msg) => {
             console.log(msg)
