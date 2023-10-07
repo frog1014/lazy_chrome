@@ -1,3 +1,9 @@
+import {
+  COPY_PASTE_DATA_TO_CLIPBOARD_MSG_TYPE,
+  COPY_DATA_TO_CLIPBOARD_MSG_TYPE,
+  OFFSCREEN_PASTE_DONE_MSG_TARGET,
+  OFFSCREEN_COPY_DONE_MSG_TARGET,
+} from "../assets/js/common"
 // Copyright 2023 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +40,10 @@ async function handleMessages(message) {
 
   // Dispatch the message to an appropriate handler.
   switch (message.type) {
-    case 'copy-data-to-clipboard':
+    case COPY_DATA_TO_CLIPBOARD_MSG_TYPE:
       handleClipboardWrite(message.data);
       break;
-    case 'copy-paste-data-to-clipboard':
+    case COPY_PASTE_DATA_TO_CLIPBOARD_MSG_TYPE:
       handleClipboardRead();
       break;
     default:
@@ -72,8 +78,8 @@ async function handleClipboardWrite(data) {
     textEl.select();
 
     await chrome.runtime.sendMessage({
-      type: 'copy-data-to-clipboard',
-      target: 'offscreen-copy-done',
+      type: COPY_DATA_TO_CLIPBOARD_MSG_TYPE,
+      target: OFFSCREEN_COPY_DONE_MSG_TARGET,
       data: document.execCommand('copy')
     })
   } finally {
@@ -84,13 +90,13 @@ async function handleClipboardWrite(data) {
 }
 async function handleClipboardRead() {
   try {
-    textEl.value=''
+    textEl.value = ''
     textEl.focus();
     document.execCommand('paste')
-    
+
     await chrome.runtime.sendMessage({
-      type: 'copy-paste-data-to-clipboard',
-      target: 'offscreen-paste-done',
+      type: COPY_PASTE_DATA_TO_CLIPBOARD_MSG_TYPE,
+      target: OFFSCREEN_PASTE_DONE_MSG_TARGET,
       data: textEl.value
     })
   } finally {
