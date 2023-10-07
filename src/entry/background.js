@@ -49,7 +49,7 @@ chrome.windows.onCreated.addListener(window => {
             windowId: window.id
           })
           tabs.forEach(tab => {
-            tab.url == Api.getPreventCloseTabUrl() && chrome.tabs.remove(tab.id)
+            tab.url == Api.getPreventCloseTabUrl() && Api.removeTabs(tab.id)
           })
           await Api.createTab({
             windowId: window.id,
