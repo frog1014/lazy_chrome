@@ -63,6 +63,9 @@
     "copyTitleAndUrl": {
       "description": "__MSG_copyTitleAndUrl__"
     },
+    "uniqueTabs": {
+      "description": "__MSG_uniqueTabs__"
+    },
     "toggle-mute": {
       "description": "__MSG_toggleMute__"
     },

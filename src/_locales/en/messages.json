@@ -125,6 +125,10 @@
         "message": "Support commands(current shortcut)",
         "description": ""
     },
+    "uniqueTabs": {
+        "message": "Unique tabs(remove duplicated tabs)",
+        "description": ""
+    },
     "features2": {
         "message": "For more commands, please go to the keyboard shortcut settings page",
         "description": "",
