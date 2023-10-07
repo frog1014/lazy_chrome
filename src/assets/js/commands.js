@@ -28,11 +28,8 @@ function newTabWithStr(str) {
     }
 }
 export default class Commands {
-    static duplicate() {
-        Api.getCurrentTab(tabs => {
-            var current = tabs[0]
-            chrome.tabs.duplicate(current.id);
-        });
+    static async duplicate() {
+        chrome.tabs.duplicate((await Api.getCurrentTab()).id);
     }
 
     static previousTabLastWindow(windowsHistory = []) {
@@ -68,64 +65,60 @@ export default class Commands {
         chrome.tabs.query({
             currentWindow: true,
             audible: true
-        }, tabs => {
-            Api.getCurrentTab(current => {
-                tabs.forEach(element => {
-                    chrome.tabs.update(element.id, {
-                        'muted': element.id == current[0].id ? current[0].mutedInfo.muted : true
-                    });
-                })
-            })
-        });
-    }
-
-    static toggleMute() {
-        Api.getCurrentTab(tabs => {
-            var current = tabs[0]
-            console.log(current)
-            chrome.tabs.update(current.id, {
-                'muted': !current.mutedInfo.muted
-            });
-        });
-    }
-
-    static independent() {
-        Api.getCurrentTab(tabs => {
-            var current = tabs[0]
-            chrome.windows.create({
-                focused: true,
-                type: 'normal'
-            }, newWin => {
-                chrome.tabs.move(current.id, {
-                    windowId: newWin.id,
-                    index: -1
-                }, _ => {
-                    Api.getCurrentTab(tabs => {
-                        chrome.tabs.remove(tabs[0].id);
-                    })
+        }, async tabs => {
+            let current = await Api.getCurrentTab()
+            tabs.forEach(element => {
+                chrome.tabs.update(element.id, {
+                    'muted': element.id == current.id ? current.mutedInfo.muted : true
                 });
             })
         });
     }
+
+    static async toggleMute() {
+        (await Api.getCurrentTab())
+            .let(current => {
+                console.log(current)
+                chrome.tabs.update(current.id, {
+                    'muted': !current.mutedInfo.muted
+                });
+            })
+    }
+
+    static async independent() {
+        var current = await Api.getCurrentTab()
+        console.log(current);
+
+        (await chrome.windows.create({
+            focused: true,
+            type: 'normal'
+        })).let(async newWin =>
+            await chrome.tabs.move(current.id, {
+                windowId: newWin.id,
+                index: -1
+            }))
+            .then(() => Api.getCurrentTab())
+            .then(tab => chrome.tabs.remove(tab.id))
+    }
+
     static openNotepad() {
         chrome.tabs.create({
             url: 'data:text/html, <html contenteditable>'
         })
     }
-    static newQueryWithSelected() {
-        Api.getCurrentTab((tabs) => {
-            chrome.scripting.executeScript({
-                target: { tabId: tabs[0].id },
-                func: () => window.getSelection().toString()
-            }).then((result) => {
-                if (result) {
-                    let clipboardContents = result[0].result
-                    newTabWithStr(clipboardContents)
-                } else {
-                    alert('Not support on this page')
-                }
-            });
-        })
+    static async newQueryWithSelected() {
+        let current = await Api.getCurrentTab()
+        chrome.scripting.executeScript({
+            target: { tabId: current.id },
+            func: () => window.getSelection().toString()
+        }).then((result) => {
+            if (result) {
+                let clipboardContents = result[0].result
+                newTabWithStr(clipboardContents)
+            } else {
+                alert('Not support on this page')
+            }
+        });
     }
     static newQueryWithPasted() {
         Api.getPasted((clipboardContents) => chrome.tabs.create({
@@ -133,21 +126,20 @@ export default class Commands {
         }))
     }
 
-    static copyUrl() {
-        Api.getCurrentTab(tab => {
-            (tab[0].url || false).let(url => {
-                url && ({
-                    type: 'basic',
-                    iconUrl: 'images/lazy_chrome48.png?raw=true',
-                    'message': url
-                }).let(it => {
-                    let callback = (result) => {
-                        it['title'] = (result ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
-                        Api.createNotifications('copyInjected', it)
-                    }
+    static async copyUrl() {
+        let current = await Api.getCurrentTab();
+        (current.url || false).let(url => {
+            url && ({
+                type: 'basic',
+                iconUrl: 'images/lazy_chrome48.png?raw=true',
+                'message': url
+            }).let(it => {
+                let callback = (result) => {
+                    it['title'] = (result ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
+                    Api.createNotifications('copyInjected', it)
+                }
 
-                    Api.copyInjected(url, callback)
-                })
+                Api.copyInjected(url, callback)
             })
         })
     }
@@ -156,97 +148,93 @@ export default class Commands {
         Api.getPasted((clipboardContents) => newTabWithStr(clipboardContents))
     }
 
-    static keepSameDomain() {
-        Api.getCurrentTab(currentTab => {
-            var preventCloseTabUrl = Api.getPreventCloseTabUrl()
-            if (currentTab[0].url == preventCloseTabUrl) return
-            var currentDomain = (new URL(currentTab[0].url)).hostname
-            try {
-                Api.isPreventClose(value => {
-                    chrome.tabs.query({
-                        currentWindow: true,
-                        pinned: false
-                    }, tabs => {
-                        [].let(it => {
-                            tabs.forEach(tab => {
-                                var domain = (new URL(tab.url)).hostname
-                                if (domain != currentDomain &&
-                                    ((value && tab.url != preventCloseTabUrl) ||
-                                        !value)) {
-                                    it.push(tab.id)
-                                }
-                            })
-                            it.length > 0 && chrome.tabs.remove(it)
+    static async keepSameDomain() {
+        let currentTab = await Api.getCurrentTab()
+        var preventCloseTabUrl = Api.getPreventCloseTabUrl()
+        if (currentTab.url == preventCloseTabUrl) return
+        var currentDomain = (new URL(currentTab.url)).hostname
+        try {
+            Api.isPreventClose(value => {
+                chrome.tabs.query({
+                    currentWindow: true,
+                    pinned: false
+                }, tabs => {
+                    [].let(it => {
+                        tabs.forEach(tab => {
+                            var domain = (new URL(tab.url)).hostname
+                            if (domain != currentDomain &&
+                                ((value && tab.url != preventCloseTabUrl) ||
+                                    !value)) {
+                                it.push(tab.id)
+                            }
                         })
+                        it.length > 0 && chrome.tabs.remove(it)
                     })
                 })
-            } catch (error) {
-                console.error(error)
-            }
-        })
+            })
+        } catch (error) {
+            console.error(error)
+        }
     }
-    static killOtherSameDomain() {
-        Api.getCurrentTab(currentTab => {
-            var preventCloseTabUrl = Api.getPreventCloseTabUrl()
-            if (currentTab[0].url == preventCloseTabUrl) return
-            var currentDomain = (new URL(currentTab[0].url)).hostname
-            try {
-                Api.isPreventClose(value => {
-                    chrome.tabs.query({
-                        currentWindow: true,
-                        pinned: false
-                    }, tabs => {
-                        [].let(it => {
-                            tabs.forEach(tab => {
-                                var domain = (new URL(tab.url)).hostname
-                                if (tab.id != currentTab[0].id &&
-                                    !(domain != currentDomain &&
-                                        ((value && tab.url != preventCloseTabUrl) ||
-                                            !value))) {
-                                    it.push(tab.id)
-                                }
-                            })
-                            it.length > 0 && chrome.tabs.remove(it)
-                        })
-                    })
-                })
-            } catch (error) {
-                console.error(error)
-            }
-        })
-    }
-    static killSameDomain() {
-        Api.getCurrentTab(currentTab => {
-            var preventCloseTabUrl = Api.getPreventCloseTabUrl()
-            if (currentTab[0].url == preventCloseTabUrl) return
-            var currentDomain = (new URL(currentTab[0].url)).hostname
-            try {
-                Api.isPreventClose(value => {
-                    chrome.tabs.query({
-                        currentWindow: true,
-                        pinned: false
-                    }, tabs => {
-                        [].let(it => {
-                            tabs.forEach(tab => {
-                                var domain = (new URL(tab.url)).hostname
-                                if (!(domain != currentDomain &&
+    static async killOtherSameDomain() {
+        let currentTab = await Api.getCurrentTab()
+        var preventCloseTabUrl = Api.getPreventCloseTabUrl()
+        if (currentTab.url == preventCloseTabUrl) return
+        var currentDomain = (new URL(currentTab.url)).hostname
+        try {
+            Api.isPreventClose(value => {
+                chrome.tabs.query({
+                    currentWindow: true,
+                    pinned: false
+                }, tabs => {
+                    [].let(it => {
+                        tabs.forEach(tab => {
+                            var domain = (new URL(tab.url)).hostname
+                            if (tab.id != currentTab.id &&
+                                !(domain != currentDomain &&
                                     ((value && tab.url != preventCloseTabUrl) ||
                                         !value))) {
-                                    it.push(tab.id)
-                                }
-                            })
-                            it.length > 0 && chrome.tabs.remove(it)
+                                it.push(tab.id)
+                            }
                         })
+                        it.length > 0 && chrome.tabs.remove(it)
                     })
                 })
-            } catch (error) {
-                console.error(error)
-            }
-        })
+            })
+        } catch (error) {
+            console.error(error)
+        }
     }
-    static togglePin() {
-        Api.getCurrentTab(tabs => {
-            var current = tabs[0]
+    static async killSameDomain() {
+        let currentTab = await Api.getCurrentTab()
+        var preventCloseTabUrl = Api.getPreventCloseTabUrl()
+        if (currentTab.url == preventCloseTabUrl) return
+        var currentDomain = (new URL(currentTab.url)).hostname
+        try {
+            Api.isPreventClose(value => {
+                chrome.tabs.query({
+                    currentWindow: true,
+                    pinned: false
+                }, tabs => {
+                    [].let(it => {
+                        tabs.forEach(tab => {
+                            var domain = (new URL(tab.url)).hostname
+                            if (!(domain != currentDomain &&
+                                ((value && tab.url != preventCloseTabUrl) ||
+                                    !value))) {
+                                it.push(tab.id)
+                            }
+                        })
+                        it.length > 0 && chrome.tabs.remove(it)
+                    })
+                })
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    static async togglePin() {
+        (await Api.getCurrentTab()).let(current => {
             chrome.tabs.update(current.id, {
                 'pinned': !current.pinned
             });
