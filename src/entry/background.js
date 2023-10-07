@@ -164,34 +164,30 @@ chrome.commands.onCommand.addListener(command => {
 });
 
 
-chrome.bookmarks.onCreated.addListener((id, bookmarks) => {
+chrome.bookmarks.onCreated.addListener(async (id, bookmarks) => {
   console.log('bookmarks', bookmarks)
-  Api.isBookmarkTitleSimplifier(value => {
-    if (value && bookmarks.id && bookmarks.title.indexOf(' - ') > -1) {
-      let newTitle = bookmarks.title.split(' - ').let(it => {
-        it[it.length - 1] = false;
-        return it.filter(e => e).join(' - ').trim()
-      }) || bookmarks.title
+  let value = await Api.isBookmarkTitleSimplifier()
+  if (value && bookmarks.id && bookmarks.title.indexOf(' - ') > -1) {
+    let newTitle = bookmarks.title.split(' - ').let(it => {
+      it[it.length - 1] = false;
+      return it.filter(e => e).join(' - ').trim()
+    }) || bookmarks.title
 
-      const alarm = "chrome.bookmarks.onCreated";
+    const alarm = "chrome.bookmarks.onCreated";
 
-      Api.onAlarm(alarm, () => {
-        Api.renameBookmark(bookmarks.id, newTitle, () => {
-          ({
-            type: 'basic',
-            iconUrl: 'images/lazy_chrome48.png?raw=true',
-            'message': newTitle
-          }).let(it => {
-            it['title'] = "bookmarkRename".let(Api.getI18nMsg)
-            Api.createNotifications('bookmarkRename', it)
-          })
-          Api.clearAlarm(alarm);
-        })
-      })
+    Api.onAlarm(alarm, async () => {
+      await Api.renameBookmark(bookmarks.id, newTitle);
+      ({
+        type: 'basic',
+        iconUrl: 'images/lazy_chrome48.png?raw=true',
+        'message': newTitle,
+        title: "bookmarkRename".let(Api.getI18nMsg)
+      }).let(it => Api.createNotifications('bookmarkRename', it))
+      Api.clearAlarm(alarm)
+    })
 
-      Api.startAlarm(alarm, 333)
-    }
-  })
+    Api.startAlarm(alarm, 333)
+  }
 })
 
 function clearAlarm() {
