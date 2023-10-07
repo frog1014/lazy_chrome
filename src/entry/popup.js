@@ -6,13 +6,13 @@ import {
 import '../assets/css/popup.css'
 import Api from "../assets/js/api"
 
-(function () {
+(async function () {
 
     document.querySelector('#popup_splash_1').innerHTML = Api.getI18nMsg("appDesc")
     document.querySelector('#go_shortcut_setting').applyy(_ => {
         _.innerHTML = '<i class="fa fa-cog"></i> ' + Api.getI18nMsg("go_shortcut_setting")
         _.addEventListener('click', event => {
-            chrome.tabs.create({
+            Api.createTab({
                 url: EXTENSIONS_URL
             })
         })
@@ -29,7 +29,7 @@ import Api from "../assets/js/api"
             console.log('ok')
             e.target.checked && Api.getTabs(tabs => {
                 var targetUrl = Api.getPreventCloseTabUrl();
-                !tabs.find(tab => tab.url == targetUrl) && chrome.tabs.create({
+                !tabs.find(tab => tab.url == targetUrl) && Api.createTab({
                     url: targetUrl,
                     pinned: true
                 })
@@ -58,17 +58,14 @@ import Api from "../assets/js/api"
         _.setAttribute('data-tip', Api.getI18nMsg("bookmark_title_simplifier_tooltip"))
     })
 
-    chrome.commands.getAll(function (res) {
-        console.log('getAll', res)
-        res && res.length > 0 && res.filter(e => e.name != '_execute_action').let(it => {
-            ('<ul>' + it.filter(element => (element.description.length + element.shortcut.length) > 0).map(element => '<li>' + element.description + ': ' + element.shortcut + '</li>').join('') + '</ul>')
-                .let(it => Api.getI18nMsg("feature_head") + it
-                    //  + Api.getI18nMsg("features2", ['<br/>'])
-                )
-                .let(it => {
-                    document.querySelector('#features').innerHTML = it
-                })
-        });
+    let res = await Api.chromeCommandsGetAll()
+    res && res.length > 0 && res.filter(e => e.name != '_execute_action').let(it => {
+        ('<ul>' + it.filter(element => (element.description.length + element.shortcut.length) > 0).map(element => '<li>' + element.description + ': ' + element.shortcut + '</li>').join('') + '</ul>')
+            .let(it => Api.getI18nMsg("feature_head") + it
+                //  + Api.getI18nMsg("features2", ['<br/>'])
+            )
+            .let(it => {
+                document.querySelector('#features').innerHTML = it
+            })
     })
-
 })(window)
