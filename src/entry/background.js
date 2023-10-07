@@ -151,6 +151,10 @@ chrome.commands.onCommand.addListener(command => {
       Commands.copyTitleAndUrl()
       break
     }
+    case "uniqueTabs": {
+      Commands.uniqueTabs()
+      break
+    }
 
     case "killSameDomain": {
       Commands.killSameDomain()

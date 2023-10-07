@@ -6,6 +6,7 @@ import {
 } from "./common_api.js"
 import Api from "./api"
 
+
 function newTabWithStr(str) {
     try {
         if (!str) return;
@@ -161,6 +162,31 @@ export default class Commands {
 
     static newTabWithUrl() {
         Api.getPasted((clipboardContents) => newTabWithStr(clipboardContents))
+    }
+
+
+    static async uniqueTabs() {
+        try {
+            let tabs = await Api.queryTabs({
+                currentWindow: true,
+                pinned: false
+            });
+            let toRemoveIds = []
+            let sorted = tabs.sort((a, b) => a.url > b.url ? 1 : -1)
+
+            for (let index = 0; index < sorted.length; index++) {
+                const element = sorted[index];
+                if (index > 0) {
+                    if (element.url == sorted[index - 1].url) {
+                        toRemoveIds.push(element.id)
+                    }
+                }
+            }
+
+            toRemoveIds.length > 0 && Api.removeTabs(toRemoveIds)
+        } catch (error) {
+            console.log('uniqueTabs', error)
+        }
     }
 
     static async keepSameDomain() {

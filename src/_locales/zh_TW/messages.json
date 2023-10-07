@@ -55,6 +55,10 @@
     "message": "其他分頁靜音",
     "description": ""
   },
+  "uniqueTabs": {
+    "message": "關閉重複的分頁",
+    "description": ""
+  },
   "newQueryWithPasted": {
     "message": "搜尋複製的文字於新分頁",
     "description": ""
