@@ -4,6 +4,8 @@ import {
   OFFSCREEN_PASTE_DONE_MSG_TARGET,
   OFFSCREEN_COPY_DONE_MSG_TARGET,
 } from "../assets/js/common"
+import Api from "../assets/js/api"
+
 // Copyright 2023 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +28,7 @@ import {
 // Registering this listener when the script is first executed ensures that the
 // offscreen document will be able to receive messages when the promise returned
 // by `offscreen.createDocument()` resolves.
-chrome.runtime.onMessage.addListener(handleMessages);
+Api.runtimeOnMessageAddListener(handleMessages);
 
 // This function performs basic filtering and error checking on messages before
 // dispatching the

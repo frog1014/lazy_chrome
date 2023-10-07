@@ -16,10 +16,10 @@ export default class Api {
                 return;
             }
             callback(msg.data)
-            chrome.runtime.onMessage.removeListener(listener)
+            Api.runtimeOnMessageRemoveListener(listener)
         }
 
-        chrome.runtime.onMessage.addListener(listener)
+        Api.runtimeOnMessageAddListener(listener)
         return addFromPasteToClipboard()
     }
 
@@ -30,10 +30,10 @@ export default class Api {
                 return;
             }
             callback(msg.data)
-            chrome.runtime.onMessage.removeListener(listener)
+            Api.runtimeOnMessageRemoveListener(listener)
         }
 
-        chrome.runtime.onMessage.addListener(listener)
+        Api.runtimeOnMessageAddListener(listener)
         return addToClipboard(str)
     }
 
@@ -104,6 +104,12 @@ export default class Api {
         })
     }
 
+    static runtimeOnMessageAddListener(listener) {
+        chrome.runtime.onMessage.addListener(listener)
+    }
+    static runtimeOnMessageRemoveListener(listener) {
+        chrome.runtime.onMessage.removeListener(listener)
+    }
     static renameBookmark(id, title, callback) {
         return chrome.bookmarks.update(id, {
             title
