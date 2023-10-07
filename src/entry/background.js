@@ -11,7 +11,7 @@ import {
 'use strict';
 
 var windowsHistory = []
-chrome.runtime.onMessage.addListener((res) => {
+Api.runtimeOnMessageAddListener((res) => {
   console.log('backgroundJs', res)
 })
 

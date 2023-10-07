@@ -38,7 +38,7 @@ import Api from "../assets/js/api"
     prevent_clost_tab_splash3[0].addEventListener('click', a)
 
     var lastTabId = TAB_ID_NONE
-    chrome.runtime.onMessage.addListener((msg, sender, res) => {
+    runtimeOnMessageAddListener((msg, sender, res) => {
         console.log('onMessage', msg)
         msg.type == ACTIVATED_OBJ_MSG_TYPE && msg.target == ACTIVATED_OBJ_MSG_TARGET && msg && msg.activatedObj && Api.getCurrentWindow(window => {
             console.log('window', window);
