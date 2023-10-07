@@ -141,6 +141,23 @@ export default class Commands {
             })
         })
     }
+    static async copyTitleAndUrl() {
+        let current = await Api.getCurrentTab();
+        (current || false).let(current => {
+            current && ({
+                type: 'basic',
+                iconUrl: 'images/lazy_chrome48.png?raw=true',
+                'message': current.title + " " + current.url
+            }).let(it => {
+                let callback = (result) => {
+                    it['title'] = (result ? 'copySuccessful' : 'copyFailed').let(Api.getI18nMsg)
+                    Api.createNotifications('copyInjected', it)
+                }
+
+                Api.copyInjected(it.message, callback)
+            })
+        })
+    }
 
     static newTabWithUrl() {
         Api.getPasted((clipboardContents) => newTabWithStr(clipboardContents))

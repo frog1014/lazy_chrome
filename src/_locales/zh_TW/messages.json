@@ -16,11 +16,11 @@
     "description": ""
   },
   "copySuccessful": {
-    "message": "網址已複製",
+    "message": "已複製",
     "description": ""
   },
   "copyFailed": {
-    "message": "網址複製失敗",
+    "message": "複製失敗",
     "description": ""
   },
   "newTabWithUrl": {
@@ -29,6 +29,10 @@
   },
   "copyUrl": {
     "message": "複製此分頁的網址",
+    "description": ""
+  },
+  "copyTitleAndUrl": {
+    "message": "複製此分頁的標題與網址",
     "description": ""
   },
   "openNotepad": {
@@ -98,7 +102,7 @@
   "bookmarkRename": {
     "message": "書籤名稱已簡化",
     "description": ""
-},
+  },
   "popup_splash_prevent_close_tab": {
     "message": "啟用防關閉視窗 (說明)",
     "description": ""

@@ -60,6 +60,9 @@
     "copyUrl": {
       "description": "__MSG_copyUrl__"
     },
+    "copyTitleAndUrl": {
+      "description": "__MSG_copyTitleAndUrl__"
+    },
     "toggle-mute": {
       "description": "__MSG_toggleMute__"
     },

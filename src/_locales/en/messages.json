@@ -93,12 +93,16 @@
         "message": "Copy the URL of the current tab",
         "description": ""
     },
+    "copyTitleAndUrl": {
+        "message": "Copy the title and URL of the current tab",
+        "description": ""
+    },
     "copySuccessful": {
-        "message": "Copy URL successful",
+        "message": "Copy successful",
         "description": ""
     },
     "copyFailed": {
-        "message": "Copy URL failed",
+        "message": "Copy failed",
         "description": ""
     },
     "bookmark_title_simplifier": {
@@ -147,5 +151,4 @@
         "message": "Go to set shortcuts<br/>(Please scroll to Lazy Chrome section)",
         "description": ""
     }
-
 }
