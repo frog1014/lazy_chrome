@@ -27,7 +27,7 @@ import Api from "../assets/js/api"
             })
 
             console.log('ok')
-            e.target.checked && Api.getTabs(tabs => {
+            e.target.checked && (await Api.getTabs()).let(tabs => {
                 var targetUrl = Api.getPreventCloseTabUrl();
                 !tabs.find(tab => tab.url == targetUrl) && Api.createTab({
                     url: targetUrl,

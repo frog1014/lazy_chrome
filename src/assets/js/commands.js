@@ -61,18 +61,16 @@ export default class Commands {
         })
     }
 
-    static toShutUp() {
-        chrome.tabs.query({
+    static async toShutUp() {
+        let current = await Api.getCurrentTab()
+        current && (await Api.queryTabs({
             currentWindow: true,
             audible: true
-        }, async tabs => {
-            let current = await Api.getCurrentTab()
-            tabs.forEach(element => {
-                chrome.tabs.update(element.id, {
-                    'muted': element.id == current.id ? current.mutedInfo.muted : true
-                });
-            })
-        });
+        })).forEach(element => {
+            chrome.tabs.update(element.id, {
+                'muted': element.id == current.id ? current.mutedInfo.muted : true
+            });
+        })
     }
 
     static async toggleMute() {
@@ -154,22 +152,22 @@ export default class Commands {
         if (currentTab.url == preventCloseTabUrl) return
         var currentDomain = (new URL(currentTab.url)).hostname
         try {
-            Api.isPreventClose(value => {
-                chrome.tabs.query({
+            Api.isPreventClose(async value => {
+                let tabs = await Api.queryTabs({
                     currentWindow: true,
                     pinned: false
-                }, tabs => {
-                    [].let(it => {
-                        tabs.forEach(tab => {
-                            var domain = (new URL(tab.url)).hostname
-                            if (domain != currentDomain &&
-                                ((value && tab.url != preventCloseTabUrl) ||
-                                    !value)) {
-                                it.push(tab.id)
-                            }
-                        })
-                        it.length > 0 && chrome.tabs.remove(it)
+                });
+
+                [].let(it => {
+                    tabs.forEach(tab => {
+                        var domain = (new URL(tab.url)).hostname
+                        if (domain != currentDomain &&
+                            ((value && tab.url != preventCloseTabUrl) ||
+                                !value)) {
+                            it.push(tab.id)
+                        }
                     })
+                    it.length > 0 && chrome.tabs.remove(it)
                 })
             })
         } catch (error) {
@@ -182,23 +180,22 @@ export default class Commands {
         if (currentTab.url == preventCloseTabUrl) return
         var currentDomain = (new URL(currentTab.url)).hostname
         try {
-            Api.isPreventClose(value => {
-                chrome.tabs.query({
+            Api.isPreventClose(async value => {
+                let tabs = await Api.queryTabs({
                     currentWindow: true,
                     pinned: false
-                }, tabs => {
-                    [].let(it => {
-                        tabs.forEach(tab => {
-                            var domain = (new URL(tab.url)).hostname
-                            if (tab.id != currentTab.id &&
-                                !(domain != currentDomain &&
-                                    ((value && tab.url != preventCloseTabUrl) ||
-                                        !value))) {
-                                it.push(tab.id)
-                            }
-                        })
-                        it.length > 0 && chrome.tabs.remove(it)
+                });
+                [].let(it => {
+                    tabs.forEach(tab => {
+                        var domain = (new URL(tab.url)).hostname
+                        if (tab.id != currentTab.id &&
+                            !(domain != currentDomain &&
+                                ((value && tab.url != preventCloseTabUrl) ||
+                                    !value))) {
+                            it.push(tab.id)
+                        }
                     })
+                    it.length > 0 && chrome.tabs.remove(it)
                 })
             })
         } catch (error) {
@@ -211,22 +208,21 @@ export default class Commands {
         if (currentTab.url == preventCloseTabUrl) return
         var currentDomain = (new URL(currentTab.url)).hostname
         try {
-            Api.isPreventClose(value => {
-                chrome.tabs.query({
+            Api.isPreventClose(async value => {
+                let tabs = await Api.queryTabs({
                     currentWindow: true,
                     pinned: false
-                }, tabs => {
-                    [].let(it => {
-                        tabs.forEach(tab => {
-                            var domain = (new URL(tab.url)).hostname
-                            if (!(domain != currentDomain &&
-                                ((value && tab.url != preventCloseTabUrl) ||
-                                    !value))) {
-                                it.push(tab.id)
-                            }
-                        })
-                        it.length > 0 && chrome.tabs.remove(it)
+                });
+                [].let(it => {
+                    tabs.forEach(tab => {
+                        var domain = (new URL(tab.url)).hostname
+                        if (!(domain != currentDomain &&
+                            ((value && tab.url != preventCloseTabUrl) ||
+                                !value))) {
+                            it.push(tab.id)
+                        }
                     })
+                    it.length > 0 && chrome.tabs.remove(it)
                 })
             })
         } catch (error) {

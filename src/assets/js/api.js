@@ -27,11 +27,13 @@ export default class Api {
         return await chrome.commands.getAll()
     }
 
-    static async createTab(param) {
-        let finalParam = param || {
-            url: NEW_TAB_URL,
-        }
-        return await chrome.tabs.create(finalParam)
+    static async createTab(param = {
+        url: NEW_TAB_URL,
+    }) {
+        return await chrome.tabs.create(param)
+    }
+    static async queryTabs(param = {}) {
+        return await chrome.tabs.query(param)
     }
 
     static copyInjected(str, callback) {
@@ -69,7 +71,7 @@ export default class Api {
     }
 
     static async getCurrentTab() {
-        return (await chrome.tabs.query({
+        return (await Api.queryTabs({
             active: true,
             currentWindow: true
         }))[0]
@@ -90,20 +92,18 @@ export default class Api {
         chrome.offscreen.closeDocument()
     }
 
-    static getTabs(callback) {
-        return chrome.tabs.query({
+    static async getTabs() {
+        return await Api.queryTabs({
             currentWindow: true
-        }, callback)
+        })
     }
 
     static getI18nMsg(key, ...vars) {
         return chrome.i18n.getMessage(key, vars) || ""
     }
 
-    static getTabById(id, callback) {
-        return Api.getTabs(tabs => {
-            callback(tabs.find(tab => tab.id == id))
-        })
+    static async getTabById(id) {
+        return await chrome.tabs.get(id)
     }
 
     static activeWindow(id, callback) {
@@ -167,10 +167,10 @@ export default class Api {
     static findLastTabElseHandler(param = {
         pinned: false
     }) {
-        return chrome.tabs.query(
+        Api.queryTabs(
             Object.assign({
                 currentWindow: true
-            }, param), tabs => {
+            }, param)).then(tabs => {
                 console.log('tabs', tabs);
                 tabs.length > 0 && Api.activeTab(tabs[tabs.length - 1].id);
                 (tabs.length < 1 || (tabs.length == 1 && tabs[0].url == Api.getPreventCloseTabUrl())) && Api.createTab()
