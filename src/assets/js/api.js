@@ -79,8 +79,8 @@ export default class Api {
         }))[0]
     }
 
-    static getLastFocused(callback, param = {}) {
-        return chrome.windows.getLastFocused(param, callback)
+    static async getLastFocused(param = {}) {
+        return await chrome.windows.getLastFocused(param)
     }
 
     static async getCurrentWindow(param = {}) {
@@ -114,10 +114,10 @@ export default class Api {
         return await chrome.tabs.duplicate(id)
     }
 
-    static activeWindow(id, callback) {
-        return chrome.windows.update(id, {
+    static async activeWindow(id) {
+        return await chrome.windows.update(id, {
             focused: true
-        }, callback)
+        })
     }
 
     static async activeTab(id) {
@@ -147,10 +147,10 @@ export default class Api {
         })
     }
 
-    static createNotifications(id = '', notificationOptions = {}, callback) {
-        Object.assign({}, notificationOptions).let(it => {
+    static async createNotifications(id = '', notificationOptions = {}) {
+        return await Object.assign({}, notificationOptions).let(async it => {
             console.log(it)
-            return chrome.notifications.create(id + Api.getNow(), it, callback)
+            return await chrome.notifications.create(id + Api.getNow(), it)
         })
     }
 
