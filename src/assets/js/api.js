@@ -68,11 +68,11 @@ export default class Api {
         });
     }
 
-    static getCurrentTab(callback) {
-        return chrome.tabs.query({
+    static async getCurrentTab() {
+        return (await chrome.tabs.query({
             active: true,
             currentWindow: true
-        }, callback)
+        }))[0]
     }
 
     static getLastFocused(callback, param = {}) {
@@ -83,8 +83,8 @@ export default class Api {
         return chrome.windows.getCurrent(param, callback)
     }
 
-    static getWindow(id, callback, param = {}) {
-        return chrome.windows.get(id, param, callback)
+    static async getWindow(id, param = {}) {
+        return await chrome.windows.get(id, param)
     }
     static offscreenCloseDocument() {
         chrome.offscreen.closeDocument()
