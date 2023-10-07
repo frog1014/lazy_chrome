@@ -54,7 +54,7 @@ export default class Commands {
     }
 
     static previousTabInSameWindow(windowsHistory = []) {
-        Api.getCurrentWindow(window => {
+        Api.getCurrentWindow().then(window => {
             (windowsHistory.find(e => e.windowId == window.id) || false).let(it =>
                 it && it.lastId != TAB_ID_NONE && Api.activeTab(it.lastId)
             )
@@ -67,7 +67,7 @@ export default class Commands {
             currentWindow: true,
             audible: true
         })).forEach(element => {
-            chrome.tabs.update(element.id, {
+            Api.updateTabs(element.id, {
                 'muted': element.id == current.id ? current.mutedInfo.muted : true
             });
         })
@@ -77,7 +77,7 @@ export default class Commands {
         (await Api.getCurrentTab())
             .let(current => {
                 console.log(current)
-                chrome.tabs.update(current.id, {
+                Api.updateTabs(current.id, {
                     'muted': !current.mutedInfo.muted
                 });
             })
@@ -229,9 +229,9 @@ export default class Commands {
             console.error(error)
         }
     }
-    static async togglePin() {
-        (await Api.getCurrentTab()).let(current => {
-            chrome.tabs.update(current.id, {
+    static togglePin() {
+        Api.getCurrentTab().then(current => {
+            Api.updateTabs(current.id, {
                 'pinned': !current.pinned
             });
         });
