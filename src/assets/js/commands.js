@@ -29,7 +29,7 @@ function newTabWithStr(str) {
 }
 export default class Commands {
     static async duplicate() {
-        chrome.tabs.duplicate((await Api.getCurrentTab()).id);
+        Api.duplicateTab((await Api.getCurrentTab()).id);
     }
 
     static previousTabLastWindow(windowsHistory = []) {
@@ -84,29 +84,29 @@ export default class Commands {
     }
 
     static async independent() {
-        var current = await Api.getCurrentTab()
-        console.log(current);
+        var tab = await Api.getCurrentTab()
+        console.log(tab);
 
-        (await chrome.windows.create({
+        tab && (await Api.createWindow({
             focused: true,
             type: 'normal'
         })).let(async newWin =>
-            await chrome.tabs.move(current.id, {
+            await Api.moveTab(tab.id, {
                 windowId: newWin.id,
                 index: -1
             }))
             .then(() => Api.getCurrentTab())
-            .then(tab => chrome.tabs.remove(tab.id))
+            .then(tab => Api.removeTabs(tab.id))
     }
 
     static openNotepad() {
-        chrome.tabs.create({
+        Api.createTab({
             url: 'data:text/html, <html contenteditable>'
         })
     }
     static async newQueryWithSelected() {
         let current = await Api.getCurrentTab()
-        chrome.scripting.executeScript({
+        Api.executeScript({
             target: { tabId: current.id },
             func: () => window.getSelection().toString()
         }).then((result) => {
@@ -119,7 +119,7 @@ export default class Commands {
         });
     }
     static newQueryWithPasted() {
-        Api.getPasted((clipboardContents) => chrome.tabs.create({
+        Api.getPasted((clipboardContents) => Api.createTab({
             url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || '')
         }))
     }
@@ -167,7 +167,7 @@ export default class Commands {
                             it.push(tab.id)
                         }
                     })
-                    it.length > 0 && chrome.tabs.remove(it)
+                    it.length > 0 && Api.removeTabs(it)
                 })
             })
         } catch (error) {
@@ -195,7 +195,7 @@ export default class Commands {
                             it.push(tab.id)
                         }
                     })
-                    it.length > 0 && chrome.tabs.remove(it)
+                    it.length > 0 && Api.removeTabs(it)
                 })
             })
         } catch (error) {
@@ -222,7 +222,7 @@ export default class Commands {
                             it.push(tab.id)
                         }
                     })
-                    it.length > 0 && chrome.tabs.remove(it)
+                    it.length > 0 && Api.removeTabs(it)
                 })
             })
         } catch (error) {

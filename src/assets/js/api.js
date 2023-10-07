@@ -35,6 +35,12 @@ export default class Api {
     static async queryTabs(param = {}) {
         return await chrome.tabs.query(param)
     }
+    static async executeScript(param = {}) {
+        return await chrome.scripting.executeScript(param)
+    }
+    static async createWindow(param = {}) {
+        return await chrome.windows.create(param)
+    }
 
     static copyInjected(str, callback) {
         let listener = (msg) => {
@@ -88,8 +94,11 @@ export default class Api {
     static async getWindow(id, param = {}) {
         return await chrome.windows.get(id, param)
     }
-    static offscreenCloseDocument() {
-        chrome.offscreen.closeDocument()
+    static async moveTab(id, param = {}) {
+        return await chrome.tabs.move(id, param)
+    }
+    static async offscreenCloseDocument() {
+        await chrome.offscreen.closeDocument()
     }
 
     static async getTabs() {
@@ -104,6 +113,9 @@ export default class Api {
 
     static async getTabById(id) {
         return await chrome.tabs.get(id)
+    }
+    static async duplicateTab(id) {
+        return await chrome.tabs.duplicate(id)
     }
 
     static activeWindow(id, callback) {
@@ -120,6 +132,9 @@ export default class Api {
 
     static async updateTabs(id, param) {
         return await chrome.tabs.update(id, param)
+    }
+    static async removeTabs(ids) {
+        return await chrome.tabs.remove(ids)
     }
     static runtimeOnMessageAddListener(listener) {
         chrome.runtime.onMessage.addListener(listener)
