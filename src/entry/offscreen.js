@@ -3,7 +3,7 @@ import {
   COPY_DATA_TO_CLIPBOARD_MSG_TYPE,
   OFFSCREEN_PASTE_DONE_MSG_TARGET,
   OFFSCREEN_COPY_DONE_MSG_TARGET,
-} from "../assets/js/common"
+} from "../assets/js/const"
 import Api from "../assets/js/api"
 
 // Copyright 2023 Google LLC

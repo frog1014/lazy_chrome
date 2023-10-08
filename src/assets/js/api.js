@@ -6,7 +6,8 @@ import {
     OFFSCREEN_PASTE_DONE_MSG_TARGET,
     OFFSCREEN_COPY_DONE_MSG_TARGET,
     NEW_TAB_URL,
-} from "./common"
+    IS_OPEN_TAB_ON_NEXT_TAG,
+} from "./const"
 export default class Api {
 
     static getPasted(callback) {
@@ -75,6 +76,10 @@ export default class Api {
 
     static async isPreventClose() {
         return (await Api.getStorageData(IS_PREVENT_CLOSE_TAB_TAG));
+    }
+
+    static async isOpenTabOnNext() {
+        return (await Api.getStorageData(IS_OPEN_TAB_ON_NEXT_TAG));
     }
 
     static async isBookmarkTitleSimplifier() {
@@ -198,6 +203,11 @@ export default class Api {
                 tabs.length > 0 && Api.activeTab(tabs[tabs.length - 1].id);
                 (tabs.length < 1 || (tabs.length == 1 && tabs[0].url == Api.getPreventCloseTabUrl())) && Api.createTab()
             })
+    }
+
+    static async getNextOrCurrentIndex(isNext) {
+        let tab = await Api.getCurrentTab()
+        return isNext ? tab.index + 1 : tab.index
     }
 }
 

@@ -1,6 +1,6 @@
 import {
     TAB_ID_NONE,
-} from '../assets/js/common_api'
+} from '../assets/js/const_api'
 import '../assets/css/tab.css'
 import Api from "../assets/js/api"
 
