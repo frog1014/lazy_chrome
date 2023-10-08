@@ -1,13 +1,13 @@
 import {
     GOOGLE_SEARCH_URL,
-} from "./common.js"
+} from "./const.js"
 import {
     TAB_ID_NONE
-} from "./common_api.js"
+} from "./const_api.js"
 import Api from "./api"
 
 
-function newTabWithStr(str) {
+function newTabWithStr(str, index) {
     try {
         if (!str) return;
 
@@ -16,7 +16,8 @@ function newTabWithStr(str) {
 
             ((it.href || GOOGLE_SEARCH_URL + (encodeURIComponent(str) || "")) || 'https://www.google.com/').let(newUrl => {
                 Api.createTab({
-                    url: newUrl
+                    url: newUrl,
+                    index
                 })
             });
         });
@@ -24,7 +25,8 @@ function newTabWithStr(str) {
         console.error(error)
         const newLocal = (encodeURIComponent(str) || "")
         Api.createTab({
-            url: GOOGLE_SEARCH_URL + newLocal
+            url: GOOGLE_SEARCH_URL + newLocal,
+            index
         })
     }
 }
@@ -112,21 +114,24 @@ export default class Commands {
     }
     static async newQueryWithSelected() {
         let current = await Api.getCurrentTab()
+        let index = current.index + 1
         Api.executeScript({
             target: { tabId: current.id },
             func: () => window.getSelection().toString()
         }).then((result) => {
             if (result) {
                 let clipboardContents = result[0].result
-                newTabWithStr(clipboardContents)
+                newTabWithStr(clipboardContents, index)
             } else {
                 alert('Not support on this page')
             }
         });
     }
-    static newQueryWithPasted() {
+    static async newQueryWithPasted() {
+        let index = await Api.getNextOrCurrentIndex(true)
         Api.getPasted((clipboardContents) => Api.createTab({
-            url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || '')
+            url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || ''),
+            index
         }))
     }
 
@@ -165,8 +170,9 @@ export default class Commands {
         })
     }
 
-    static newTabWithUrl() {
-        Api.getPasted(newTabWithStr)
+    static async newTabWithUrl() {
+        let index = await Api.getNextOrCurrentIndex(true)
+        Api.getPasted(content => newTabWithStr(content, index))
     }
 
 

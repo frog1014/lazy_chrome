@@ -10,7 +10,6 @@
     "clipboardWrite",
     "clipboardRead",
     "scripting",
-    "alarms",
     "notifications",
     "declarativeContent",
     "offscreen",

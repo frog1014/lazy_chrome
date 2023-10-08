@@ -2,7 +2,7 @@ import {
     IS_PREVENT_CLOSE_TAB_TAG,
     COMMAND_MSG_TYPE,
     EXTENSIONS_URL,
-} from "../assets/js/common"
+} from "../assets/js/const"
 import '../assets/css/popup.css'
 import Api from "../assets/js/api"
 

@@ -2,10 +2,10 @@ import Api from "../assets/js/api"
 import Commands from "../assets/js/commands"
 import {
   COMMAND_MSG_TYPE,
-} from "../assets/js/common"
+} from "../assets/js/const"
 import {
   WINDOW_ID_NONE,
-} from "../assets/js/common_api"
+} from "../assets/js/const_api"
 
 'use strict';
 
@@ -227,5 +227,5 @@ function dispatchCommand(command) {
 // })
 
 function clearAlarm() {
-  Api.clearAlarm(windowsOnCreatedAlarm);
+  // Api.clearAlarm(windowsOnCreatedAlarm);
 }
