@@ -42,26 +42,26 @@ import Api from "../assets/js/api"
         })
     })
 
-    document.querySelector('#check-bookmark-title-simplifier').let(async it => {
-        it.checked = await Api.getStorageData(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG)
+    // document.querySelector('#check-bookmark-title-simplifier').let(async it => {
+    //     it.checked = await Api.getStorageData(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG)
 
-        it.addEventListener('change', async e => {
-            await Api.setStorageData({
-                [IS_BOOKMARK_TITLE_SIMPLIFIER_TAG]: e.target.checked
-            })
-            console.log('ok')
-        })
-    })
+    //     it.addEventListener('change', async e => {
+    //         await Api.setStorageData({
+    //             [IS_BOOKMARK_TITLE_SIMPLIFIER_TAG]: e.target.checked
+    //         })
+    //         console.log('ok')
+    //     })
+    // })
 
     document.querySelector('#popup_splash_prevent_close_tab').applyy(_ => {
         _.innerHTML = Api.getI18nMsg("popup_splash_prevent_close_tab")
         _.setAttribute('data-tip', Api.getI18nMsg("popup_splash_prevent_close_tab_tooltip"))
     })
 
-    document.querySelector('#bookmark_title_simplifier_tooltip').applyy(_ => {
-        _.innerHTML = Api.getI18nMsg("bookmark_title_simplifier")
-        _.setAttribute('data-tip', Api.getI18nMsg("bookmark_title_simplifier_tooltip"))
-    })
+    // document.querySelector('#bookmark_title_simplifier_tooltip').applyy(_ => {
+    //     _.innerHTML = Api.getI18nMsg("bookmark_title_simplifier")
+    //     _.setAttribute('data-tip', Api.getI18nMsg("bookmark_title_simplifier_tooltip"))
+    // })
 
     let res = await Api.chromeCommandsGetAll()
     res && res.length > 0 && res.filter(e => e.name != '_execute_action').let(it => {
