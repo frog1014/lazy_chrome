@@ -56,9 +56,14 @@ export default class Commands {
 
     static previousTabInSameWindow(windowsHistory = []) {
         Api.getCurrentWindow().then(window => {
-            (windowsHistory.find(e => e.windowId == window.id) || false).let(it =>
-                it && it.lastId != TAB_ID_NONE && Api.activeTab(it.lastId)
-            )
+            (windowsHistory.find(e => e.windowId == window.id) || false).let(async it => {
+                try {
+                    if (it && it.lastId != TAB_ID_NONE)
+                        await Api.activeTab(it.lastId)
+                } catch (error) {
+                    console.error('activeTab', it.lastId)
+                }
+            })
         })
     }
 
@@ -161,7 +166,7 @@ export default class Commands {
     }
 
     static newTabWithUrl() {
-        Api.getPasted((clipboardContents) => newTabWithStr(clipboardContents))
+        Api.getPasted(newTabWithStr)
     }
 
 
