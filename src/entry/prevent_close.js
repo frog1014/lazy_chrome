@@ -26,16 +26,17 @@ import Api from "../assets/js/api"
         }
 
         // when clicking on the page, return to last tab user watches
-        if (lastTabId > TAB_ID_NONE) {
+        if (lastTabId != TAB_ID_NONE && lastTabId != thisTab.id) {
             try {
                 let tab = await Api.getTabById(lastTabId)
                 console.log('getTabById', tab)
                 tab && Api.activeTab(tab.id);
             } catch (error) {
+                console.log('getTabById', error)
                 Api.findLastTabElseHandler();
             }
         } else {
-            lastTabId == TAB_ID_NONE && Api.findLastTabElseHandler()
+            Api.findLastTabElseHandler()
         }
 
         document.let(it => {
