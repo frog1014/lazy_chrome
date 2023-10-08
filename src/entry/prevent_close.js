@@ -1,16 +1,26 @@
 import {
-    ACTIVATED_OBJ_MSG_TYPE,
-    ACTIVATED_OBJ_MSG_TARGET,
-} from '../assets/js/common'
-import {
     TAB_ID_NONE,
 } from '../assets/js/common_api'
 import '../assets/css/tab.css'
 import Api from "../assets/js/api"
 
-(function () {
-    async function a() {
-        console.log('lastTabId in a()', lastTabId)
+
+(async function () {
+    const thisTab = await Api.getCurrentTab()
+    let lastTabId = thisTab.openerTabId || TAB_ID_NONE;
+
+    chrome.tabs.onActivated.addListener(tab => {
+        console.log('prevent_close.js', tab);
+        console.log('thisTab', thisTab);
+
+        if (thisTab && tab && thisTab.windowId == tab.windowId && tab.tabId != thisTab.id) {
+            lastTabId = tab.tabId
+            console.log('lastTabId', lastTabId);
+        }
+    })
+
+    async function onKeyPress() {
+        console.log('lastTabId in onKeyPress()', lastTabId)
         window.onbeforeunload = function () {
             return "Would you really like to close your browser?";
         }
@@ -34,22 +44,8 @@ import Api from "../assets/js/api"
 
     var root = document.querySelectorAll('#root')
     var prevent_clost_tab_splash3 = document.querySelectorAll('#prevent_clost_tab_splash3')
-    root[0].addEventListener('click', a)
-    prevent_clost_tab_splash3[0].addEventListener('click', a)
-
-    var lastTabId = TAB_ID_NONE
-    Api.runtimeOnMessageAddListener((msg, sender, res) => {
-        console.log('onMessage', msg)
-        msg.type == ACTIVATED_OBJ_MSG_TYPE &&
-            msg.target == ACTIVATED_OBJ_MSG_TARGET &&
-            msg.activatedObj &&
-            Api.getCurrentWindow(window).then(window => {
-                console.log('window', window);
-                if (window.id == msg.activatedObj.windowId && msg.activatedObj.lastId) {
-                    lastTabId = msg.activatedObj.lastId
-                }
-            })
-    })
+    root[0].addEventListener('click', () => { onKeyPress() })
+    prevent_clost_tab_splash3[0].addEventListener('click', () => { onKeyPress() })
 
     document.let(it => {
         it.querySelector('#app_name').innerHTML = Api.getI18nMsg("appName")
@@ -61,7 +57,7 @@ import Api from "../assets/js/api"
         it.onkeypress = function (e) {
             e = e || window.event;
             console.log('onkeypress', e)
-            a()
+            onKeyPress()
         };
     })
 })(window)

@@ -1,78 +1,71 @@
 import Api from "../assets/js/api"
 import Commands from "../assets/js/commands"
 import {
-  ACTIVATED_OBJ_MSG_TYPE,
-  ACTIVATED_OBJ_MSG_TARGET,
-} from "../assets/js/common"
-import {
   WINDOW_ID_NONE,
 } from "../assets/js/common_api"
 
 'use strict';
 
-var windowsHistory = []
+const windowsOnCreatedAlarm = "windowsOnCreatedAlarm"
+let windowsHistory = []
+let windowId = WINDOW_ID_NONE
+
 Api.runtimeOnMessageAddListener((res) => {
   console.log('backgroundJs', res)
 })
 
 chrome.tabs.onActivated.addListener(info => {
-  console.log('onActivated', info);
-  (windowsHistory.find(e => e.windowId == info.windowId) || false).let(it => {
-    if (it) {
-      info.lastId = it.tabId
-      it.windowId = WINDOW_ID_NONE
+  (windowsHistory.find(e => e.windowId == info.windowId) || false).let(found => {
+    if (found) {
+      info.lastId = found.tabId
+      found.windowId = WINDOW_ID_NONE
     }
     windowsHistory.push(info)
-    windowsHistory = windowsHistory.filter(e => e.windowId != WINDOW_ID_NONE);
-    console.log('windowsHistory', windowsHistory);
-    Api.isPreventClosePageCreated().then(res => {
-      res && Api.chromeRuntimeSendMessage({
-        activatedObj: info,
-        type: ACTIVATED_OBJ_MSG_TYPE,
-        target: ACTIVATED_OBJ_MSG_TARGET
-      })
-    })
+    windowsHistory = windowsHistory.filter(e => e.windowId > WINDOW_ID_NONE);
   })
 })
 
-const windowsOnCreatedAlarm = "windowsOnCreatedAlarm"
 chrome.windows.onRemoved.addListener(windowId => {
   console.log('windows.onRemoved', windowId)
   clearAlarm();
 })
 
-chrome.windows.onCreated.addListener(window => {
+chrome.windows.onCreated.addListener(async window => {
   console.log('windows.onCreated', window)
-  Api.isPreventClose(value => {
-    if (value && window.type == 'normal') {
-      Api.onAlarm(windowsOnCreatedAlarm, async () => {
-        try {
-          let tabs = await Api.queryTabs({
-            windowId: window.id
-          })
-          tabs.forEach(tab => {
-            tab.url == Api.getPreventCloseTabUrl() && Api.removeTabs(tab.id)
-          })
-          await Api.createTab({
-            windowId: window.id,
-            url: Api.getPreventCloseTabUrl(),
-            pinned: true
-          })
-          clearAlarm();
-        } catch (error) {
-          console.error('windows.onCreated', error)
-          clearAlarm();
-        }
-      })
-
-      Api.startAlarm(windowsOnCreatedAlarm, 666)
-    }
-  })
+  windowId = window.id || WINDOW_ID_NONE
+  if (window.type == 'normal' && await Api.isPreventClose()) {
+    clearAlarm();
+    Api.startAlarm(windowsOnCreatedAlarm, 666)
+  }
 })
 
+async function onAlarm() {
+  Api.onAlarm(windowsOnCreatedAlarm, async () => {
+    console.log('windows.onCreated id', windowId)
+    try {
+      let tabs = await Api.queryTabs({
+        windowId: windowId
+      })
+      let preventCloseTabUrl = Api.getPreventCloseTabUrl()
+      tabs.forEach(tab => {
+        tab.url == preventCloseTabUrl && Api.removeTabs(tab.id)
+      })
+      await Api.createTab({
+        windowId: windowId,
+        url: preventCloseTabUrl,
+        pinned: true
+      })
+      clearAlarm();
+    } catch (error) {
+      console.error('windows.onCreated', error)
+      clearAlarm();
+    }
+  })
+}
 chrome.runtime.onInstalled.addListener(function () {
   console.log('onInstalled')
 
+  onAlarm()
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     chrome.declarativeContent.onPageChanged.addRules([{
       conditions: [new chrome.declarativeContent.PageStateMatcher({
@@ -84,7 +77,6 @@ chrome.runtime.onInstalled.addListener(function () {
     }]);
   });
 });
-
 
 chrome.commands.onCommand.addListener(command => {
   console.log('onCommand', command)

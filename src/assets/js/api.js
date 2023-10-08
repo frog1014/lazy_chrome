@@ -42,10 +42,9 @@ export default class Api {
         return await chrome.windows.create(param)
     }
 
-    static async isPreventClosePageCreated() {
+    static async isPreventClosePageCreated(windowId) {
         let tabs = await Api.queryTabs({
-            currentWindow: true,
-            pinned: false
+            windowId
         });
         var preventCloseTabUrl = Api.getPreventCloseTabUrl()
 
@@ -75,11 +74,11 @@ export default class Api {
     }
 
     static async isPreventClose() {
-        return (await chrome.storage.local.get(IS_PREVENT_CLOSE_TAB_TAG)).let(result => result[IS_PREVENT_CLOSE_TAB_TAG]);
+        return (await Api.getStorageData(IS_PREVENT_CLOSE_TAB_TAG));
     }
 
     static async isBookmarkTitleSimplifier() {
-        return (await chrome.storage.local.get(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG)).let(result => result[IS_BOOKMARK_TITLE_SIMPLIFIER_TAG]);
+        return (await Api.getStorageData(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG));
     }
 
     static async getCurrentTab() {
@@ -176,8 +175,8 @@ export default class Api {
         return +new Date;
     }
 
-    static async clearAlarm(name, callback) {
-        await chrome.alarms.clear(name, callback)
+    static async clearAlarm(name) {
+        await chrome.alarms.clear(name)
     }
 
     static onAlarm(name, callback) {

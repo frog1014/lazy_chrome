@@ -27,12 +27,17 @@ import Api from "../assets/js/api"
             })
 
             console.log('ok')
-            e.target.checked && (await Api.getTabs()).let(tabs => {
+
+            // todo handle in backrgound.js
+            e.target.checked && (await Api.getTabs()).let(async tabs => {
                 var targetUrl = Api.getPreventCloseTabUrl();
-                !tabs.find(tab => tab.url == targetUrl) && Api.createTab({
-                    url: targetUrl,
-                    pinned: true
-                })
+                !tabs.find(tab => tab.url == targetUrl) &&
+                    Api.getCurrentTab()
+                        .then(currentTab => Api.createTab({
+                            url: targetUrl,
+                            openerTabId: currentTab.id,
+                            pinned: true
+                        }))
             })
         })
     })

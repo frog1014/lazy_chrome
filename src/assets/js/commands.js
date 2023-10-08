@@ -169,7 +169,6 @@ export default class Commands {
         try {
             let tabs = await Api.queryTabs({
                 currentWindow: true,
-                pinned: false
             });
             let toRemoveIds = []
             let sorted = tabs.sort((a, b) => a.url > b.url ? 1 : -1)
