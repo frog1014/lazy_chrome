@@ -79,6 +79,12 @@ label {
     border-radius: 5px;
 }
 
+.command-button:hover{
+    background: white;
+    color: #007F3E;
+    border-radius: 5px;
+    cursor: pointer;
+}
 #go_shortcut_setting {
     width: 100%;
 }

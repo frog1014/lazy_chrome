@@ -1,6 +1,6 @@
 import {
     IS_PREVENT_CLOSE_TAB_TAG,
-    IS_BOOKMARK_TITLE_SIMPLIFIER_TAG,
+    COMMAND_MSG_TYPE,
     EXTENSIONS_URL,
 } from "../assets/js/common"
 import '../assets/css/popup.css'
@@ -53,6 +53,8 @@ import Api from "../assets/js/api"
     //     })
     // })
 
+
+
     document.querySelector('#popup_splash_prevent_close_tab').applyy(_ => {
         _.innerHTML = Api.getI18nMsg("popup_splash_prevent_close_tab")
         _.setAttribute('data-tip', Api.getI18nMsg("popup_splash_prevent_close_tab_tooltip"))
@@ -64,13 +66,26 @@ import Api from "../assets/js/api"
     // })
 
     let res = await Api.chromeCommandsGetAll()
+    console.log(res)
     res && res.length > 0 && res.filter(e => e.name != '_execute_action').let(it => {
-        ('<ul>' + it.filter(element => (element.description.length + element.shortcut.length) > 0).map(element => '<li>' + element.description + ': ' + element.shortcut + '</li>').join('') + '</ul>')
+        ('<ul>' + it.filter(element => (element.description.length + element.shortcut.length) > 0).map(element => '<li class="command-button" command="' + element.name + '">' + element.description + ': ' + element.shortcut + '</li>').join('') + '</ul>')
             .let(it => Api.getI18nMsg("feature_head") + it
                 //  + Api.getI18nMsg("features2", ['<br/>'])
             )
             .let(it => {
                 document.querySelector('#features').innerHTML = it
             })
+    })
+
+    document.querySelectorAll('li[command]').let(async res => {
+        res.forEach(element => {
+            let command = element.getAttribute('command')
+            element.addEventListener('click', async e => {
+                Api.chromeRuntimeSendMessage({
+                    type: COMMAND_MSG_TYPE,
+                    command
+                })
+            })
+        });
     })
 })(window)

@@ -1,6 +1,9 @@
 import Api from "../assets/js/api"
 import Commands from "../assets/js/commands"
 import {
+  COMMAND_MSG_TYPE,
+} from "../assets/js/common"
+import {
   WINDOW_ID_NONE,
 } from "../assets/js/common_api"
 
@@ -12,6 +15,14 @@ let windowId = WINDOW_ID_NONE
 
 Api.runtimeOnMessageAddListener((res) => {
   console.log('backgroundJs', res)
+  switch (res.type) {
+    case COMMAND_MSG_TYPE:
+      dispatchCommand(res.command)
+      break;
+
+    default:
+      break;
+  }
 })
 
 chrome.tabs.onActivated.addListener(info => {
@@ -83,108 +94,111 @@ async function onAlarm() {
 }
 chrome.runtime.onInstalled.addListener(function () {
   console.log('onInstalled')
-
-  onAlarm()
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-    chrome.declarativeContent.onPageChanged.addRules([{
-      conditions: [new chrome.declarativeContent.PageStateMatcher({
-        pageUrl: {
-          hostEquals: 'developer.chrome.com'
-        },
-      })],
-      actions: [new chrome.declarativeContent.ShowPageAction()]
-    }]);
-  });
+  // onAlarm()
+  // chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+  //   chrome.declarativeContent.onPageChanged.addRules([{
+  //     conditions: [new chrome.declarativeContent.PageStateMatcher({
+  //       pageUrl: {
+  //         hostEquals: 'developer.chrome.com'
+  //       },
+  //     })],
+  //     actions: [new chrome.declarativeContent.ShowPageAction()]
+  //   }]);
+  // });
 });
 
 chrome.commands.onCommand.addListener(command => {
   console.log('onCommand', command)
+  dispatchCommand(command);
+});
+
+
+function dispatchCommand(command) {
   switch (command) {
     case "toggle-pin": {
-      Commands.togglePin()
-      break
+      Commands.togglePin();
+      break;
     }
 
     case "toggle-mute": {
-      Commands.toggleMute()
-      break
+      Commands.toggleMute();
+      break;
     }
 
     case "previousTabInSameWindow": {
-      Commands.previousTabInSameWindow(windowsHistory)
-      break
+      Commands.previousTabInSameWindow(windowsHistory);
+      break;
     }
 
     case "previousTabLastWindow": {
-      Commands.previousTabLastWindow(windowsHistory)
-      break
+      Commands.previousTabLastWindow(windowsHistory);
+      break;
     }
 
     case "toShutUp": {
-      Commands.toShutUp()
-      break
+      Commands.toShutUp();
+      break;
     }
 
     case "duplicate": {
-      Commands.duplicate()
-      break
+      Commands.duplicate();
+      break;
     }
 
     case "independent": {
-      Commands.independent()
-      break
+      Commands.independent();
+      break;
     }
 
     case "newTabWithUrl": {
-      Commands.newTabWithUrl()
-      break
+      Commands.newTabWithUrl();
+      break;
     }
 
     case "newQueryWithPasted": {
-      Commands.newQueryWithPasted()
-      break
+      Commands.newQueryWithPasted();
+      break;
     }
 
     case "newQueryWithSelected": {
-      Commands.newQueryWithSelected()
-      break
+      Commands.newQueryWithSelected();
+      break;
     }
 
     case "openNotepad": {
-      Commands.openNotepad()
-      break
+      Commands.openNotepad();
+      break;
     }
 
     case "copyUrl": {
-      Commands.copyUrl()
-      break
+      Commands.copyUrl();
+      break;
     }
 
     case "copyTitleAndUrl": {
-      Commands.copyTitleAndUrl()
-      break
+      Commands.copyTitleAndUrl();
+      break;
     }
     case "uniqueTabs": {
-      Commands.uniqueTabs()
-      break
+      Commands.uniqueTabs();
+      break;
     }
 
     case "killSameDomain": {
-      Commands.killSameDomain()
-      break
+      Commands.killSameDomain();
+      break;
     }
 
     case "killOtherSameDomain": {
-      Commands.killOtherSameDomain()
-      break
+      Commands.killOtherSameDomain();
+      break;
     }
     case "keepSameDomain": {
-      Commands.keepSameDomain()
-      break
+      Commands.keepSameDomain();
+      break;
     }
   }
-});
-
+}
 
 // chrome.bookmarks.onCreated.addListener(async (id, bookmarks) => {
 //   console.log('bookmarks', bookmarks)
