@@ -150,11 +150,11 @@ export default class Api {
     static runtimeOnMessageRemoveListener(listener) {
         chrome.runtime.onMessage.removeListener(listener)
     }
-    static async renameBookmark(id, title) {
-        return await chrome.bookmarks.update(id, {
-            title
-        })
-    }
+    // static async renameBookmark(id, title) {
+    //     return await chrome.bookmarks.update(id, {
+    //         title
+    //     })
+    // }
 
     static async createNotifications(id = '', notificationOptions = {}) {
         return await Object.assign({}, notificationOptions).let(async it => {
