@@ -205,9 +205,14 @@ export default class Api {
             })
     }
 
-    static async getNextOrCurrentIndex(isNext) {
+    static async getNextIndexOrNull(isNext) {
         let tab = await Api.getCurrentTab()
-        return isNext ? tab.index + 1 : tab.index
+        return isNext ? tab.index + 1 : null
+    }
+
+    static async getNewIndex() {
+        let isOpenTabOnNext = await Api.isOpenTabOnNext()
+        return await Api.getNextIndexOrNull(isOpenTabOnNext)
     }
 }
 

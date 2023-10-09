@@ -2,6 +2,7 @@ import {
     IS_PREVENT_CLOSE_TAB_TAG,
     COMMAND_MSG_TYPE,
     EXTENSIONS_URL,
+    IS_OPEN_TAB_ON_NEXT_TAG,
 } from "../assets/js/const"
 import '../assets/css/popup.css'
 import Api from "../assets/js/api"
@@ -42,6 +43,18 @@ import Api from "../assets/js/api"
         })
     })
 
+    document.querySelector('#check-open-on-nex-tab').let(async it => {
+        it.checked = await Api.getStorageData(IS_OPEN_TAB_ON_NEXT_TAG)
+
+        it.addEventListener('change', async e => {
+            await Api.setStorageData({
+                [IS_OPEN_TAB_ON_NEXT_TAG]: e.target.checked
+            })
+
+            console.log('ok')
+        })
+    })
+
     // document.querySelector('#check-bookmark-title-simplifier').let(async it => {
     //     it.checked = await Api.getStorageData(IS_BOOKMARK_TITLE_SIMPLIFIER_TAG)
 
@@ -58,6 +71,10 @@ import Api from "../assets/js/api"
     document.querySelector('#popup_splash_prevent_close_tab').applyy(_ => {
         _.innerHTML = Api.getI18nMsg("popup_splash_prevent_close_tab")
         _.setAttribute('data-tip', Api.getI18nMsg("popup_splash_prevent_close_tab_tooltip"))
+    })
+
+    document.querySelector('#popup_splash_open_on_nex_tab').applyy(_ => {
+        _.innerHTML = Api.getI18nMsg("open_on_next_tab_for_search_or_paste")
     })
 
     // document.querySelector('#bookmark_title_simplifier_tooltip').applyy(_ => {
