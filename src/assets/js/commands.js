@@ -1,9 +1,9 @@
 import {
     GOOGLE_SEARCH_URL,
-} from "./const.js"
+} from "./const"
 import {
     TAB_ID_NONE
-} from "./const_api.js"
+} from "./const_api"
 import Api from "./api"
 
 
@@ -30,12 +30,13 @@ function newTabWithStr(str, index) {
         })
     }
 }
-export default class Commands {
-    static async duplicate() {
+
+class Commands {
+    async duplicate() {
         Api.duplicateTab((await Api.getCurrentTab()).id);
     }
 
-    static previousTabLastWindow(windowsHistory = []) {
+    previousTabLastWindow(windowsHistory = []) {
         // Api.getCurrentWindow(window => {
         //     console.log("getCurrentWindow", window);
         //     var previousWindow
@@ -56,7 +57,7 @@ export default class Commands {
         // })
     }
 
-    static previousTabInSameWindow(windowsHistory = []) {
+    previousTabInSameWindow(windowsHistory = []) {
         Api.getCurrentWindow().then(window => {
             (windowsHistory.find(e => e.windowId == window.id) || false).let(async it => {
                 try {
@@ -69,7 +70,7 @@ export default class Commands {
         })
     }
 
-    static async toShutUp() {
+    async toShutUp() {
         let current = await Api.getCurrentTab()
         current && (await Api.queryTabs({
             currentWindow: true,
@@ -81,7 +82,7 @@ export default class Commands {
         })
     }
 
-    static async toggleMute() {
+    async toggleMute() {
         (await Api.getCurrentTab())
             .let(current => {
                 console.log(current)
@@ -91,7 +92,7 @@ export default class Commands {
             })
     }
 
-    static async independent() {
+    async independent() {
         var tab = await Api.getCurrentTab()
         console.log(tab);
 
@@ -107,12 +108,12 @@ export default class Commands {
             .then(tab => Api.removeTabs(tab.id))
     }
 
-    static openNotepad() {
+    openNotepad() {
         Api.createTab({
             url: 'data:text/html, <html contenteditable>'
         })
     }
-    static async newQueryWithSelected() {
+    async newQueryWithSelected() {
         let current = await Api.getCurrentTab()
         let index = current.index + 1
         Api.executeScript({
@@ -127,7 +128,7 @@ export default class Commands {
             }
         });
     }
-    static async newQueryWithPasted() {
+    async newQueryWithPasted() {
         let index = await Api.getNewIndex()
         Api.getPasted((clipboardContents) => Api.createTab({
             url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || ''),
@@ -135,7 +136,7 @@ export default class Commands {
         }))
     }
 
-    static async copyUrl() {
+    async copyUrl() {
         let current = await Api.getCurrentTab();
         (current.url || false).let(url => {
             url && ({
@@ -152,7 +153,7 @@ export default class Commands {
             })
         })
     }
-    static async copyTitleAndUrl() {
+    async copyTitleAndUrl() {
         let current = await Api.getCurrentTab();
         (current || false).let(current => {
             current && ({
@@ -170,13 +171,13 @@ export default class Commands {
         })
     }
 
-    static async newTabWithUrl() {
+    async newTabWithUrl() {
         let index = await Api.getNewIndex()
         Api.getPasted(content => newTabWithStr(content, index))
     }
 
 
-    static async uniqueTabs() {
+    async uniqueTabs() {
         try {
             let tabs = await Api.queryTabs({
                 currentWindow: true,
@@ -200,7 +201,7 @@ export default class Commands {
     }
 
 
-    static async uniqueTabs() {
+    async uniqueTabs() {
         try {
             let tabs = await Api.queryTabs({
                 currentWindow: true,
@@ -223,7 +224,7 @@ export default class Commands {
         }
     }
 
-    static async keepSameDomain() {
+    async keepSameDomain() {
         let currentTab = await Api.getCurrentTab()
         var preventCloseTabUrl = Api.getPreventCloseTabUrl()
         if (currentTab.url == preventCloseTabUrl) return
@@ -250,7 +251,7 @@ export default class Commands {
             console.error(error)
         }
     }
-    static async killOtherSameDomain() {
+    async killOtherSameDomain() {
         let currentTab = await Api.getCurrentTab()
         var preventCloseTabUrl = Api.getPreventCloseTabUrl()
         if (currentTab.url == preventCloseTabUrl) return
@@ -277,7 +278,7 @@ export default class Commands {
             console.error(error)
         }
     }
-    static async killSameDomain() {
+    async killSameDomain() {
         let currentTab = await Api.getCurrentTab()
         var preventCloseTabUrl = Api.getPreventCloseTabUrl()
         if (currentTab.url == preventCloseTabUrl) return
@@ -303,11 +304,102 @@ export default class Commands {
             console.error(error)
         }
     }
-    static togglePin() {
+    togglePin() {
         Api.getCurrentTab().then(current => {
             Api.updateTabs(current.id, {
                 'pinned': !current.pinned
             });
         });
+    }
+
+
+}
+let commands = new Commands()
+export default class CommandsDispatcher {
+    static dispatch(command, windowsHistory) {
+        switch (command) {
+            case "toggle-pin": {
+                commands.togglePin();
+                break;
+            }
+
+            case "toggle-mute": {
+                commands.toggleMute();
+                break;
+            }
+
+            case "previousTabInSameWindow": {
+                commands.previousTabInSameWindow(windowsHistory);
+                break;
+            }
+
+            case "previousTabLastWindow": {
+                commands.previousTabLastWindow(windowsHistory);
+                break;
+            }
+
+            case "toShutUp": {
+                commands.toShutUp();
+                break;
+            }
+
+            case "duplicate": {
+                commands.duplicate();
+                break;
+            }
+
+            case "independent": {
+                commands.independent();
+                break;
+            }
+
+            case "newTabWithUrl": {
+                commands.newTabWithUrl();
+                break;
+            }
+
+            case "newQueryWithPasted": {
+                commands.newQueryWithPasted();
+                break;
+            }
+
+            case "newQueryWithSelected": {
+                commands.newQueryWithSelected();
+                break;
+            }
+
+            case "openNotepad": {
+                commands.openNotepad();
+                break;
+            }
+
+            case "copyUrl": {
+                commands.copyUrl();
+                break;
+            }
+
+            case "copyTitleAndUrl": {
+                commands.copyTitleAndUrl();
+                break;
+            }
+            case "uniqueTabs": {
+                commands.uniqueTabs();
+                break;
+            }
+
+            case "killSameDomain": {
+                commands.killSameDomain();
+                break;
+            }
+
+            case "killOtherSameDomain": {
+                commands.killOtherSameDomain();
+                break;
+            }
+            case "keepSameDomain": {
+                commands.keepSameDomain();
+                break;
+            }
+        }
     }
 }

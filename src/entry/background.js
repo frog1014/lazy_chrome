@@ -1,8 +1,8 @@
 import Api from "../assets/js/api"
-import Commands from "../assets/js/commands"
+import CommandsDispatcher from "../assets/js/commands"
+import PreventCloasTabHandler from "../assets/js/prevent_close_tab"
 import {
   COMMAND_MSG_TYPE,
-  CREATE_PREVENT_CLOSE_TAB_MSG_TARGET,
   PREVENT_CLOSE_TAB_MSG_TYPE,
 } from "../assets/js/const"
 import {
@@ -18,7 +18,7 @@ Api.runtimeOnMessageAddListener(async (res) => {
   console.log('backgroundJs', res)
   switch (res.type) {
     case COMMAND_MSG_TYPE:
-      dispatchCommand(res.command)
+      dispatchCommand(res.command, windowsHistory)
       break;
     case PREVENT_CLOSE_TAB_MSG_TYPE:
       handlePreventCloseTab(res);
@@ -75,113 +75,14 @@ chrome.runtime.onInstalled.addListener(function () {
 
 chrome.commands.onCommand.addListener(command => {
   console.log('onCommand', command)
-  dispatchCommand(command);
+  dispatchCommand(command, windowsHistory);
 });
 
 
 function handlePreventCloseTab(res) {
-  switch (res.target) {
-    case CREATE_PREVENT_CLOSE_TAB_MSG_TARGET:
-      Api.isPreventClosePageCreated().then(async isPreventClosePageCreated => {
-        console.log(isPreventClosePageCreated)
-        var targetUrl = Api.getPreventCloseTabUrl();
-        !isPreventClosePageCreated && Api.getCurrentTab()
-          .then(currentTab => Api.createTab({
-            url: targetUrl,
-            openerTabId: currentTab.id,
-            pinned: true
-          }));
-      });
-      break;
-
-    default:
-      break;
-  }
+  PreventCloasTabHandler.dispatch(res, windowsHistory)
 }
 
-function dispatchCommand(command) {
-  switch (command) {
-    case "toggle-pin": {
-      Commands.togglePin();
-      break;
-    }
-
-    case "toggle-mute": {
-      Commands.toggleMute();
-      break;
-    }
-
-    case "previousTabInSameWindow": {
-      Commands.previousTabInSameWindow(windowsHistory);
-      break;
-    }
-
-    case "previousTabLastWindow": {
-      Commands.previousTabLastWindow(windowsHistory);
-      break;
-    }
-
-    case "toShutUp": {
-      Commands.toShutUp();
-      break;
-    }
-
-    case "duplicate": {
-      Commands.duplicate();
-      break;
-    }
-
-    case "independent": {
-      Commands.independent();
-      break;
-    }
-
-    case "newTabWithUrl": {
-      Commands.newTabWithUrl();
-      break;
-    }
-
-    case "newQueryWithPasted": {
-      Commands.newQueryWithPasted();
-      break;
-    }
-
-    case "newQueryWithSelected": {
-      Commands.newQueryWithSelected();
-      break;
-    }
-
-    case "openNotepad": {
-      Commands.openNotepad();
-      break;
-    }
-
-    case "copyUrl": {
-      Commands.copyUrl();
-      break;
-    }
-
-    case "copyTitleAndUrl": {
-      Commands.copyTitleAndUrl();
-      break;
-    }
-    case "uniqueTabs": {
-      Commands.uniqueTabs();
-      break;
-    }
-
-    case "killSameDomain": {
-      Commands.killSameDomain();
-      break;
-    }
-
-    case "killOtherSameDomain": {
-      Commands.killOtherSameDomain();
-      break;
-    }
-    case "keepSameDomain": {
-      Commands.keepSameDomain();
-      break;
-    }
-  }
+function dispatchCommand(command, windowsHistory) {
+  CommandsDispatcher.dispatch(command, windowsHistory)
 }
