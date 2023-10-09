@@ -3,6 +3,8 @@ import {
     COMMAND_MSG_TYPE,
     EXTENSIONS_URL,
     IS_OPEN_TAB_ON_NEXT_TAG,
+    PREVENT_CLOSE_TAB_MSG_TYPE,
+    CREATE_PREVENT_CLOSE_TAB_MSG_TARGET,
 } from "../assets/js/const"
 import '../assets/css/popup.css'
 import Api from "../assets/js/api"
@@ -29,17 +31,11 @@ import Api from "../assets/js/api"
 
             console.log('ok')
 
-            // todo handle in backrgound.js
-            e.target.checked && (await Api.getTabs()).let(async tabs => {
-                var targetUrl = Api.getPreventCloseTabUrl();
-                !tabs.find(tab => tab.url == targetUrl) &&
-                    Api.getCurrentTab()
-                        .then(currentTab => Api.createTab({
-                            url: targetUrl,
-                            openerTabId: currentTab.id,
-                            pinned: true
-                        }))
-            })
+            e.target.checked &&
+                await Api.chromeRuntimeSendMessage({
+                    type: PREVENT_CLOSE_TAB_MSG_TYPE,
+                    target: CREATE_PREVENT_CLOSE_TAB_MSG_TARGET
+                })
         })
     })
 

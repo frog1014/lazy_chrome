@@ -2,6 +2,8 @@ import Api from "../assets/js/api"
 import Commands from "../assets/js/commands"
 import {
   COMMAND_MSG_TYPE,
+  CREATE_PREVENT_CLOSE_TAB_MSG_TARGET,
+  PREVENT_CLOSE_TAB_MSG_TYPE,
 } from "../assets/js/const"
 import {
   WINDOW_ID_NONE,
@@ -9,15 +11,17 @@ import {
 
 'use strict';
 
-const windowsOnCreatedAlarm = "windowsOnCreatedAlarm"
 let windowsHistory = []
 let windowId = WINDOW_ID_NONE
 
-Api.runtimeOnMessageAddListener((res) => {
+Api.runtimeOnMessageAddListener(async (res) => {
   console.log('backgroundJs', res)
   switch (res.type) {
     case COMMAND_MSG_TYPE:
       dispatchCommand(res.command)
+      break;
+    case PREVENT_CLOSE_TAB_MSG_TYPE:
+      handlePreventCloseTab(res);
       break;
 
     default:
@@ -38,7 +42,6 @@ chrome.tabs.onActivated.addListener(info => {
 
 chrome.windows.onRemoved.addListener(windowId => {
   console.log('windows.onRemoved', windowId)
-  clearAlarm();
 })
 
 chrome.windows.onCreated.addListener(async window => {
@@ -63,48 +66,11 @@ chrome.windows.onCreated.addListener(async window => {
     } catch (error) {
       console.error('windows.onCreated', error)
     }
-
-    // clearAlarm();
-    // Api.startAlarm(windowsOnCreatedAlarm, 666)
   }
 })
 
-async function onAlarm() {
-  Api.onAlarm(windowsOnCreatedAlarm, async () => {
-    console.log('windows.onCreated id', windowId)
-    try {
-      let tabs = await Api.queryTabs({
-        windowId: windowId
-      })
-      let preventCloseTabUrl = Api.getPreventCloseTabUrl()
-      tabs.forEach(tab => {
-        tab.url == preventCloseTabUrl && Api.removeTabs(tab.id)
-      })
-      await Api.createTab({
-        windowId: windowId,
-        url: preventCloseTabUrl,
-        pinned: true
-      })
-      clearAlarm();
-    } catch (error) {
-      console.error('windows.onCreated', error)
-      clearAlarm();
-    }
-  })
-}
 chrome.runtime.onInstalled.addListener(function () {
   console.log('onInstalled')
-  // onAlarm()
-  // chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-  //   chrome.declarativeContent.onPageChanged.addRules([{
-  //     conditions: [new chrome.declarativeContent.PageStateMatcher({
-  //       pageUrl: {
-  //         hostEquals: 'developer.chrome.com'
-  //       },
-  //     })],
-  //     actions: [new chrome.declarativeContent.ShowPageAction()]
-  //   }]);
-  // });
 });
 
 chrome.commands.onCommand.addListener(command => {
@@ -112,6 +78,26 @@ chrome.commands.onCommand.addListener(command => {
   dispatchCommand(command);
 });
 
+
+function handlePreventCloseTab(res) {
+  switch (res.target) {
+    case CREATE_PREVENT_CLOSE_TAB_MSG_TARGET:
+      Api.isPreventClosePageCreated().then(async isPreventClosePageCreated => {
+        console.log(isPreventClosePageCreated)
+        var targetUrl = Api.getPreventCloseTabUrl();
+        !isPreventClosePageCreated && Api.getCurrentTab()
+          .then(currentTab => Api.createTab({
+            url: targetUrl,
+            openerTabId: currentTab.id,
+            pinned: true
+          }));
+      });
+      break;
+
+    default:
+      break;
+  }
+}
 
 function dispatchCommand(command) {
   switch (command) {
@@ -198,34 +184,4 @@ function dispatchCommand(command) {
       break;
     }
   }
-}
-
-// chrome.bookmarks.onCreated.addListener(async (id, bookmarks) => {
-//   console.log('bookmarks', bookmarks)
-//   let value = await Api.isBookmarkTitleSimplifier()
-//   if (value && bookmarks.id && bookmarks.title.indexOf(' - ') > -1) {
-//     let newTitle = bookmarks.title.split(' - ').let(it => {
-//       it[it.length - 1] = false;
-//       return it.filter(e => e).join(' - ').trim()
-//     }) || bookmarks.title
-
-//     const alarm = "chrome.bookmarks.onCreated";
-
-//     Api.onAlarm(alarm, async () => {
-//       await Api.renameBookmark(bookmarks.id, newTitle);
-//       ({
-//         type: 'basic',
-//         iconUrl: 'images/lazy_chrome48.png?raw=true',
-//         'message': newTitle,
-//         title: "bookmarkRename".let(Api.getI18nMsg)
-//       }).let(it => Api.createNotifications('bookmarkRename', it))
-//       Api.clearAlarm(alarm)
-//     })
-
-//     Api.startAlarm(alarm, 333)
-//   }
-// })
-
-function clearAlarm() {
-  // Api.clearAlarm(windowsOnCreatedAlarm);
 }
