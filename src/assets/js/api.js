@@ -43,10 +43,10 @@ export default class Api {
         return await chrome.windows.create(param)
     }
 
-    static async isPreventClosePageCreated(windowId) {
-        let tabs = await Api.queryTabs({
-            windowId
-        });
+    static async isPreventClosePageCreated(param = {
+        currentWindow: true
+    }) {
+        let tabs = await Api.queryTabs(param);
         var preventCloseTabUrl = Api.getPreventCloseTabUrl()
 
         return await tabs.find(tab => tab.url == preventCloseTabUrl)
