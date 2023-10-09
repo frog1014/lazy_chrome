@@ -128,7 +128,7 @@ export default class Commands {
         });
     }
     static async newQueryWithPasted() {
-        let index = await Api.getNextOrCurrentIndex(true)
+        let index = await Api.getNewIndex()
         Api.getPasted((clipboardContents) => Api.createTab({
             url: GOOGLE_SEARCH_URL + encodeURIComponent(clipboardContents || ''),
             index
@@ -171,7 +171,7 @@ export default class Commands {
     }
 
     static async newTabWithUrl() {
-        let index = await Api.getNextOrCurrentIndex(true)
+        let index = await Api.getNewIndex()
         Api.getPasted(content => newTabWithStr(content, index))
     }
 

@@ -125,6 +125,10 @@
         "message": "Support commands(current shortcut)",
         "description": ""
     },
+    "open_on_next_tab_for_search_or_paste": {
+        "message": "Open search or copy on the next tab",
+        "description": ""
+    },
     "uniqueTabs": {
         "message": "Unique tabs(remove duplicated tabs)",
         "description": ""

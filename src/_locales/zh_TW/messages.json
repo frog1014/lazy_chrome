@@ -111,6 +111,10 @@
     "message": "啟用防關閉視窗 (說明)",
     "description": ""
   },
+  "open_on_next_tab_for_search_or_paste": {
+    "message": "開啟搜尋或複製的於右邊新分頁",
+    "description": ""
+  },
   "bookmark_title_simplifier": {
     "message": "啟用簡化書籤標題 (說明)",
     "description": ""
