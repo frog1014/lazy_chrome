@@ -1,43 +1,29 @@
 import {
     TAB_ID_NONE,
 } from '../assets/js/const_api'
+import {
+    PREVENT_CLOSE_TAB_MSG_TYPE,
+    GO_TO_LAST_TAB_MSG_TARGET,
+} from "../assets/js/const"
 import '../assets/css/tab.css'
 import Api from "../assets/js/api"
 
 
 (async function () {
     const thisTab = await Api.getCurrentTab()
-    let lastTabId = thisTab.openerTabId || TAB_ID_NONE;
-
-    chrome.tabs.onActivated.addListener(tab => {
-        console.log('prevent_close.js', tab);
-        console.log('thisTab', thisTab);
-
-        if (thisTab && tab && thisTab.windowId == tab.windowId && tab.tabId != thisTab.id) {
-            lastTabId = tab.tabId
-            console.log('lastTabId', lastTabId);
-        }
-    })
 
     async function onKeyPress() {
-        console.log('lastTabId in onKeyPress()', lastTabId)
         window.onbeforeunload = function () {
             return "Would you really like to close your browser?";
         }
 
-        // when clicking on the page, return to last tab user watches
-        if (lastTabId != TAB_ID_NONE && lastTabId != thisTab.id) {
-            try {
-                let tab = await Api.getTabById(lastTabId)
-                console.log('getTabById', tab)
-                tab && Api.activeTab(tab.id);
-            } catch (error) {
-                console.log('getTabById', error)
-                Api.findLastTabElseHandler();
+        Api.chromeRuntimeSendMessage({
+            type: PREVENT_CLOSE_TAB_MSG_TYPE,
+            target: GO_TO_LAST_TAB_MSG_TARGET,
+            data: {
+                currentTab: thisTab,
             }
-        } else {
-            Api.findLastTabElseHandler()
-        }
+        })
 
         document.let(it => {
             it.querySelector('#prevent_clost_tab_splash').innerHTML = Api.getI18nMsg("prevent_clost_tab_splash")
